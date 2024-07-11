@@ -1,0 +1,78 @@
+/* Navbar.css */
+
+.navbar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  z-index: 1000;
+  background-color: var(--primary);
+  position: sticky;
+  top: 0;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 20px;
+}
+
+.navbar-links a {
+  cursor: pointer;
+  padding: 10px;
+  font-size: 15px;
+  transition: color 0.3s;
+  text-decoration: none;
+  color: var(--white);
+}
+
+.navbar-link:hover {
+  color: var(--accent);
+}
+
+.navbar-appointment {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+
+.navbar-logo {
+  height: 40px;
+}
+
+.appointment-button {
+  cursor: pointer;
+  padding: 10px 20px;
+  background-color: var(--accent);
+  color: var(--primary);
+  border-radius: 10rem;
+  transition: background-color 0.3s;
+  font-size: 15px;
+  font-weight: 550;
+}
+
+.appointment-button:hover {
+  background-color: var(--color-gray-100);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .navbar-links {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .navbar-appointment {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+  }
+
+  .appointment-button {
+    width: 100%;
+    text-align: center;
+  }
+}

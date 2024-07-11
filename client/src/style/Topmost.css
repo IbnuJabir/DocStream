@@ -1,0 +1,49 @@
+
+ .topmost {
+   width: 100%;
+   height: 70px;
+   display: flex;
+   justify-content: space-around;
+   align-items: center;
+   z-index: 100;
+   /* background-color: #f1f1f1; */
+ }
+
+ .group-parent6 {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   gap: 7rem;
+ }
+
+ .parent,
+ .everyday-parent,
+ .some-place-parent {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   gap: 1rem;
+ }
+p {
+  font-size: 14px;
+}
+img {
+  width: 20px;
+  height: 20px;
+}
+.disc {
+  color: var(--secondary);
+}
+.dical {
+  color: var(--secondary);
+}
+.info {
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  flex-direction: column;
+}
+.meddical span {
+  font-size: 24px;
+  font-weight: bolder;
+}

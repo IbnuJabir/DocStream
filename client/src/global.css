@@ -1,0 +1,50 @@
+@import url("https://fonts.googleapis.com/css2?family=Yeseva+One:wght@400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap");
+body {
+  margin: 0;
+  line-height: normal;
+}
+:root {
+  /* fonts */
+  --body: "Work Sans";
+  --display-2: "Yeseva One";
+
+  /* font sizes */
+  --body-size: 16px;
+  --font-size-17xl: 36px;
+  --caption-size: 18px;
+  --display-2-size: 32px;
+  --small-size: 14px;
+  --title-size: 26px;
+  --font-size-29xl: 48px;
+
+  /* Colors */
+  --white: #fcfefe;
+  --color-gray-100: #fafdfe;
+  --black: #202124;
+  --color-gray-200: rgba(0, 0, 0, 0.19);
+  --primary: #1f2b6c;
+  --secondary: #159eec;
+  --accent: #bfd2f8;
+  --color-black: #000;
+  --color-turquoise: #02ddcd;
+
+  /* Gaps */
+  --gap-257xl: 276px;
+  --gap-xl: 20px;
+  --gap-37xl: 56px;
+  --gap-3xs: 10px;
+
+  /* Paddings */
+  --padding-mid: 17px;
+  --padding-168xl: 187px;
+  --padding-lg: 18px;
+  --padding-smi: 13px;
+  --padding-16xl: 35px;
+  --padding-6xl: 25px;
+  --padding-xl: 20px;
+
+  /* Border radiuses */
+  --br-31xl: 50px;
+  --br-8xs: 5px;
+}
