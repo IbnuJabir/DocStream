@@ -22,10 +22,6 @@ const getAllDoctors = async (req, res) => {
 
 const addDoctor = async (req, res) => {
   try {
-    // Log the file and body data
-    // console.log("File:", req.file);
-    // console.log("Body:", req.body);
-
     let avatar = null;
     if (req.file) {
       const filePath = req.file.path;
@@ -52,6 +48,15 @@ const addDoctor = async (req, res) => {
 };
 
 const deleteDoctor = async (req, res) => {
-  console.log("doctor deleted");
+  const { id } = req.body;
+  try {
+    const deletedDoctor = await Doctor.findOneAndDelete({ _id: id });
+    if (!deletedDoctor) {
+      return res.status(404).json({ error: "doctor not found" });
+    }
+    res.status(200).json({ message: "doctor deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete a doctor" });
+  }
 };
 module.exports = { addDoctor, getAllDoctors, deleteDoctor };

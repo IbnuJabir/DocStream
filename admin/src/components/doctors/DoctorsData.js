@@ -36,6 +36,7 @@ const DoctorDataTable = () => {
   const data = useMemo(() => doctors, [doctors]);
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogContent, setDialogContent] = useState("");
+  const [currentRow, setCurrentROw] = useState(null);
   const selectedRows = [];
 
   useEffect(() => {
@@ -153,7 +154,7 @@ const DoctorDataTable = () => {
       variant: "outlined",
     },
     renderDetailPanel: ({ row }) => <DoctorDetails row={row} />,
-    renderRowActionMenuItems: ({ closeMenu }) => [
+    renderRowActionMenuItems: ({ closeMenu, row }) => [
       <MenuItem
         key={0}
         onClick={() => {
@@ -180,7 +181,10 @@ const DoctorDataTable = () => {
       >
         <Button
           color="error"
-          onClick={() => setOpenDialog(true)}
+          onClick={() => {
+            setCurrentROw(row.original);
+            setOpenDialog(true);
+          }}
           variant="contained"
         >
           Delete
@@ -241,15 +245,19 @@ const DoctorDataTable = () => {
             <DoctorsDialog
               open={openDialog}
               handleClose={handleCloseDialog}
-              row={table.getSelectedRowModel()}
+              row={currentRow}
             />
           )}
         </Box>
       );
     },
   });
-
-  return <MaterialReactTable table={table} />;
+  if (isLoading) return <div>Loading ...</div>;
+  return (
+    <>
+      <MaterialReactTable table={table} />
+    </>
+  );
 };
 
 const DoctorDataTableWithLocalizationProvider = () => (

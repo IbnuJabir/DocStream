@@ -6,12 +6,16 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Alert from "@mui/material/Alert";
+import { useDispatch } from "react-redux";
+import { deleteDoctor } from "../../state/doctorSlice";
 
 export default function AlertDialog({ open, handleClose, row }) {
-    const handleDelete = () => {
-        console.log(row)
-        handleClose()
-    }
+  const dispatch = useDispatch();
+
+  const handleDelete = () => {
+    dispatch(deleteDoctor(row._id));
+    handleClose();
+  };
   return (
     <React.Fragment>
       <Dialog
