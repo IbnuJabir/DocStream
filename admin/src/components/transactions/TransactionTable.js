@@ -9,8 +9,9 @@ import { jsPDF } from "jspdf"; //or use your library of choice here
 import autoTable from "jspdf-autotable";
 //   import { data } from './makeData';
 import { mkConfig, generateCsv, download } from "export-to-csv"; //or use your library of choice here
-import { useMemo } from "react";
-
+import { useEffect, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllTransactions } from "../../state/transactionSlice";
 const columnHelper = createMRTColumnHelper();
 
 const f = new Intl.DateTimeFormat("en-us", {
@@ -24,7 +25,15 @@ const csvConfig = mkConfig({
   useKeysAsHeaders: true,
 });
 
-const TableData = ({ data }) => {
+const TableData = () => {
+  const { transactions, isLoading, error } = useSelector(
+    (state) => state.transactions
+  );
+  const dispatch = useDispatch();
+  const data = useMemo(() => transactions, [transactions]);
+  useEffect(() => {
+    dispatch(getAllTransactions());
+  }, [dispatch]);
   const columns = useMemo(() => [
     {
       accessorKey: "fname",
@@ -119,6 +128,16 @@ const TableData = ({ data }) => {
     columnFilterDisplayMode: "popover",
     paginationDisplayMode: "pages",
     positionToolbarAlertBanner: "bottom",
+    state: { isLoading: isLoading },
+    muiCircularProgressProps: {
+      color: "primary",
+      thickness: 5,
+      size: 55,
+    },
+    muiSkeletonProps: {
+      animation: "pulse",
+      height: 28,
+    },
     renderTopToolbarCustomActions: ({ table }) => (
       <Box
         sx={{

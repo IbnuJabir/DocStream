@@ -9,11 +9,12 @@ import Alert from "@mui/material/Alert";
 import { useDispatch } from "react-redux";
 import { deleteDoctor } from "../../state/doctorSlice";
 
-export default function AlertDialog({ open, handleClose, row }) {
+export default function AlertDialog({ setChange, open, handleClose, row }) {
   const dispatch = useDispatch();
 
   const handleDelete = () => {
     dispatch(deleteDoctor(row._id));
+    setChange((prev) => !prev);
     handleClose();
   };
   return (

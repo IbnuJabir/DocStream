@@ -173,6 +173,16 @@ const AppointmentDataTable = () => {
       shape: "rounded",
       variant: "outlined",
     },
+    state: { isLoading: isLoading },
+    muiCircularProgressProps: {
+      color: "primary",
+      thickness: 5,
+      size: 55,
+    },
+    muiSkeletonProps: {
+      animation: "pulse",
+      height: 28,
+    },
     renderDetailPanel: ({ row }) => <AppointmentDetails row={row} />,
     renderRowActionMenuItems: ({ closeMenu }) => [
       <MenuItem
@@ -314,10 +324,8 @@ const AppointmentDataTable = () => {
       );
     },
   });
-  // if (!appointments) return <h1 style={{ color: "red" }}>Loading again ...</h1>;
   return (
     <div>
-      {/* {isLoading && <h2 style={{ color: "#159eec" }}>Loading...</h2>} */}
       {error && <p style={{ color: "red" }}>{error}</p>}
       {data && (
         <div className="table-responsive">

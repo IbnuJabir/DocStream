@@ -133,6 +133,16 @@ const Departments = () => {
     editDisplayMode: "row", // ('modal', 'cell', 'table', and 'custom' are also available)
     enableEditing: true,
     getRowId: (row) => row._id,
+    state: { isLoading: isLoading },
+    muiCircularProgressProps: {
+      color: "primary",
+      thickness: 5,
+      size: 55,
+    },
+    muiSkeletonProps: {
+      animation: "pulse",
+      height: 28,
+    },
     muiToolbarAlertBannerProps: error
       ? {
           color: "error",

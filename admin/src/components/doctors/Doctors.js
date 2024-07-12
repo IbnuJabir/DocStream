@@ -20,7 +20,7 @@ function Doctors() {
     <>
       <h2 style={{ color: "#159eec" }}>Doctors</h2>
       <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
-        <Button
+        {/* <Button
           sx={{
             padding: "8px 16px",
             backgroundColor: "#159eec",
@@ -31,7 +31,7 @@ function Doctors() {
           onClick={handleClickOpen}
         >
           Add a Doctor
-        </Button>
+        </Button> */}
       </Box>
       <AddDoctor />
       <DoctorsData />

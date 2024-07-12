@@ -28,6 +28,7 @@ import axios from "axios";
 import DoctorDetails from "./DoctorDetails";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllDoctors } from "../../state/doctorSlice";
+import { openSuccessDialog } from "../../state/dialogSlice";
 // import {}
 const DoctorDataTable = () => {
   const dispatch = useDispatch();
@@ -37,11 +38,12 @@ const DoctorDataTable = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogContent, setDialogContent] = useState("");
   const [currentRow, setCurrentROw] = useState(null);
+  const [change, setChange] = useState(false);
   const selectedRows = [];
 
   useEffect(() => {
     dispatch(getAllDoctors());
-  }, [dispatch, dialog, openDialog]);
+  }, [dialog, change]);
 
   const f = new Intl.DateTimeFormat("en-us", {
     dateStyle: "medium",
@@ -153,6 +155,17 @@ const DoctorDataTable = () => {
       shape: "rounded",
       variant: "outlined",
     },
+    state: { isLoading: isLoading },
+    muiCircularProgressProps: {
+      color: "primary",
+      thickness: 5,
+      size: 55,
+    },
+    muiSkeletonProps: {
+      animation: "pulse",
+      height: 28,
+    },
+
     renderDetailPanel: ({ row }) => <DoctorDetails row={row} />,
     renderRowActionMenuItems: ({ closeMenu, row }) => [
       <MenuItem
@@ -223,26 +236,23 @@ const DoctorDataTable = () => {
           </Box>
           <Box>
             <Box sx={{ display: "flex", gap: "0.5rem" }}>
-              <Button
-                color="info"
-                disabled={!table.getIsSomeRowsSelected()}
-                onClick={handleContact}
-                variant="contained"
-              >
-                Contact
-              </Button>
-              <Button
-                color="error"
-                disabled={!table.getIsSomeRowsSelected()}
-                onClick={handleDelete}
-                variant="contained"
-              >
-                Delete
-              </Button>
+            <Button
+          sx={{
+            padding: "8px 16px",
+            backgroundColor: "#159eec",
+            color: "#fff",
+            "&:hover": { backgroundColor: "#127abb" },
+          }}
+          variant="outlined"
+          onClick={()=>dispatch(openSuccessDialog())}
+        >
+          Add a Doctor
+        </Button>
             </Box>
           </Box>
           {openDialog && (
             <DoctorsDialog
+              setChange={setChange}
               open={openDialog}
               handleClose={handleCloseDialog}
               row={currentRow}
@@ -252,7 +262,6 @@ const DoctorDataTable = () => {
       );
     },
   });
-  if (isLoading) return <div>Loading ...</div>;
   return (
     <>
       <MaterialReactTable table={table} />

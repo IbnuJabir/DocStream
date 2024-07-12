@@ -41,7 +41,7 @@ import { RxAvatar } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllDepartments } from "../../state/departmentSlice";
 import bkgImg from "../../assets/images/doc.png";
-import { closeDialog } from "../../state/dialogSlice";
+import { closeSuccessDialog } from "../../state/dialogSlice";
 const useStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
@@ -67,10 +67,10 @@ export default function FullScreenDialog() {
   const { departments, isLoading, error } = useSelector(
     (store) => store.departments
   );
-  const { dialog } = useSelector((store) => store.dialog);
+  const { successDialog } = useSelector((store) => store.dialog);
   useEffect(() => {
     dispatch(getAllDepartments());
-  }, [dispatch, dialog]);
+  }, [dispatch, successDialog]);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -170,7 +170,7 @@ export default function FullScreenDialog() {
       setDocDepartment("");
 
       alert("A doctor added Successfully!");
-      dispatch(closeDialog());
+      dispatch(closeSuccessDialog());
     } catch (error) {
       console.error(error);
       alert("Error saving a Doctor data");
@@ -192,8 +192,8 @@ export default function FullScreenDialog() {
     <ThemeProvider theme={theme}>
       <Dialog
         fullScreen
-        open={dialog}
-        onClose={() => dispatch(closeDialog())}
+        open={successDialog}
+        onClose={() => dispatch(closeSuccessDialog())}
         TransitionComponent={Transition}
       >
         <AppBar sx={{ position: "relative" }}>
@@ -201,7 +201,7 @@ export default function FullScreenDialog() {
             <IconButton
               edge="start"
               color="inherit"
-              onClick={() => dispatch(closeDialog())}
+              onClick={() => dispatch(closeSuccessDialog())}
               aria-label="close"
               sx={{ color: "#f1f1f1" }}
             >
