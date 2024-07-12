@@ -116,7 +116,7 @@ const AppointmentDataTable = () => {
                   : theme.palette.warning.light,
               borderRadius: "0.5rem",
               color: "#fff",
-              maxWidth: "9ch",
+              maxWidth: "12ch",
               padding: "0.25rem",
             })}
           >
@@ -125,13 +125,13 @@ const AppointmentDataTable = () => {
         ),
       },
       {
-        accessorFn: (row) => f.format(new Date(row.createdAt)), //convert to Date for sorting and filtering
+        accessorFn: (row) => new Date(row.createdAt), //convert to Date for sorting and filtering
         id: "startDate",
         header: "Booked Date",
         filterVariant: "date",
         filterFn: "lessThan",
         sortingFn: "datetime",
-        Cell: ({ cell }) => cell.getValue(), //render Date as a string
+        Cell: ({ cell }) => cell.getValue()?.toLocaleDateString(), //render Date as a string
         Header: ({ column }) => <em>{column.columnDef.header}</em>, //custom header markup
         muiFilterTextFieldProps: {
           sx: {
@@ -221,7 +221,6 @@ const AppointmentDataTable = () => {
     //   </MenuItem>,
     // ],
     renderTopToolbar: ({ table }) => {
-
       const handleDeactivate = async () => {
         table.getSelectedRowModel().flatRows.forEach((row) => {
           selectedRows.push(row.original._id);
@@ -300,14 +299,14 @@ const AppointmentDataTable = () => {
                 Approve
               </Button>
 
-              <Button
+              {/* <Button
                 color="info"
                 disabled={!table.getIsSomeRowsSelected()}
                 onClick={handleContact}
                 variant="contained"
               >
                 Contact
-              </Button>
+              </Button> */}
             </Box>
           </Box>
           {dialog || successDialog || cancelDialog ? (

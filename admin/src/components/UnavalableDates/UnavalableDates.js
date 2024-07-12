@@ -17,6 +17,7 @@ import {
 
 const UnAvalableDates = () => {
   const [selectedRow, setSelectedRow] = useState(null);
+  const [formValues, setFormValues] = useState({ date: "", description: "" });
   const [changeData, setChangeData] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
   const dispatch = useDispatch();
@@ -36,10 +37,24 @@ const UnAvalableDates = () => {
   const columns = useMemo(
     () => [
       {
-        // accessorFn: (row) => f.format(new Date(row.date)),
-        accessorFn: (row) => row.date,
-        accessorKey: "date",
+        accessorFn: (row) => new Date(row.date), //convert to Date for sorting and filtering
+        id: "date",
         header: "Date",
+        filterVariant: "date",
+        filterFn: "lessThan",
+        sortingFn: "datetime",
+        Cell: ({ cell }) => {
+          const date = new Date(cell.getValue());
+          return date instanceof Date && !isNaN(date)
+            ? date.toLocaleDateString()
+            : "Invalid Date";
+        }, //render Date as a string
+        Header: ({ column }) => <em>{column.columnDef.header}</em>, //custom header markup
+        muiFilterTextFieldProps: {
+          sx: {
+            minWidth: "250px",
+          },
+        },
         muiEditTextFieldProps: {
           required: true,
           error: !!validationErrors?.date,
@@ -49,6 +64,10 @@ const UnAvalableDates = () => {
               ...validationErrors,
               date: undefined,
             }),
+          value: formValues.date,
+          onChange: (e) => {
+            setFormValues((prev) => ({ ...prev, date: e.target.value }));
+          },
         },
       },
       {
@@ -63,10 +82,14 @@ const UnAvalableDates = () => {
               ...validationErrors,
               description: undefined,
             }),
+          value: formValues.description,
+          onChange: (e) => {
+            setFormValues((prev) => ({ ...prev, description: e.target.value }));
+          },
         },
       },
     ],
-    [validationErrors]
+    [validationErrors, formValues]
   );
 
   const validateDate = (date) => !!date.length;
@@ -92,6 +115,7 @@ const UnAvalableDates = () => {
     await dispatch(addUnAvailableDates(values));
     setChangeData((prev) => !prev);
     table.setCreatingRow(null); // exit creating mode
+    setFormValues({ date: "", description: "" }); // reset form values
   };
 
   // UPDATE action
@@ -105,6 +129,7 @@ const UnAvalableDates = () => {
     await dispatch(updateUnAvailableDates(data));
     setChangeData((prev) => !prev); // Optionally trigger a change indicator
     table.setEditingRow(null); // Exit editing mode
+    setFormValues({ date: "", description: "" }); // reset form values
   };
 
   // DELETE action
@@ -154,6 +179,10 @@ const UnAvalableDates = () => {
             onClick={() => {
               setSelectedRow(row);
               table.setEditingRow(row);
+              setFormValues({
+                date: row.original.date || "",
+                description: row.original.description || "",
+              });
             }}
           >
             <EditIcon />
@@ -171,6 +200,7 @@ const UnAvalableDates = () => {
         variant="contained"
         onClick={() => {
           table.setCreatingRow(true);
+          setFormValues({ date: "", description: "" }); // reset form values for new row
         }}
       >
         Add Unavailable Date

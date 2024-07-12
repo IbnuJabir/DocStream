@@ -3,9 +3,7 @@ const axios = require("axios");
 const { EmailSender } = require("../services/EmailSender");
 const getAllAppointments = async (req, res) => {
   try {
-    const appointments = await Appointment.find({
-      status: { $ne: "pending" },
-    }).sort({
+    const appointments = await Appointment.find().sort({
       createdAt: -1,
     });
 

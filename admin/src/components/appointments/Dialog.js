@@ -284,10 +284,10 @@ export default function AlertDialogSlide({ content, selectedRows }) {
                       >
                         {`${currentAppointment.firstName} ${currentAppointment.lastName}`}
                       </Box>
-                      's Appointment is successfully canceled
+                      's Appointment is successfully suspended
                     </span>
                   ) : (
-                    "All selected Appointments successfully canceled"
+                    "All selected Appointments successfully suspended"
                   )}
                 </DialogContentText>
 
