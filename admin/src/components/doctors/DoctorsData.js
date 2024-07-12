@@ -23,16 +23,14 @@ import {
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import DoctorsDialog from "./DoctorsDialog";
-//Mock Data
-import axios from "axios";
 import DoctorDetails from "./DoctorDetails";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllDoctors } from "../../state/doctorSlice";
 import { openSuccessDialog } from "../../state/dialogSlice";
-// import {}
+
 const DoctorDataTable = () => {
   const dispatch = useDispatch();
-  const { dialog } = useSelector((store) => store.dialog);
+  const { successDialog } = useSelector((store) => store.dialog);
   const { doctors, isLoading, error } = useSelector((store) => store.doctors);
   const data = useMemo(() => doctors, [doctors]);
   const [openDialog, setOpenDialog] = useState(false);
@@ -43,7 +41,7 @@ const DoctorDataTable = () => {
 
   useEffect(() => {
     dispatch(getAllDoctors());
-  }, [dialog, change]);
+  }, [successDialog, change]);
 
   const f = new Intl.DateTimeFormat("en-us", {
     dateStyle: "medium",
@@ -59,7 +57,6 @@ const DoctorDataTable = () => {
         size: 250,
         Cell: ({ renderedCellValue, row }) => {
           const [imageSrc, setImageSrc] = useState(null);
-          // console.log(row.original.avatar);
           useEffect(() => {
             if (
               row.original.avatar &&
@@ -169,25 +166,8 @@ const DoctorDataTable = () => {
     renderDetailPanel: ({ row }) => <DoctorDetails row={row} />,
     renderRowActionMenuItems: ({ closeMenu, row }) => [
       <MenuItem
-        key={0}
-        onClick={() => {
-          // View profile logic...
-          closeMenu();
-        }}
-        sx={{ m: 0 }}
-      >
-        <Button
-          color="info"
-          //   onClick={handleActivate}
-          variant="contained"
-        >
-          Edit
-        </Button>
-      </MenuItem>,
-      <MenuItem
         key={1}
         onClick={() => {
-          // Send email logic...
           closeMenu();
         }}
         sx={{ m: 0 }}
@@ -207,16 +187,6 @@ const DoctorDataTable = () => {
     renderTopToolbar: ({ table }) => {
       const handleCloseDialog = () => {
         setOpenDialog(false);
-      };
-      const handleContact = () => {
-        table.getSelectedRowModel().flatRows.map((row) => {
-          alert("contact " + row.getValue("name"));
-        });
-      };
-      const handleDelete = () => {
-        table.getSelectedRowModel().flatRows.map((row) => {
-          alert("Delete " + row.getValue("name"));
-        });
       };
 
       return (
@@ -250,14 +220,12 @@ const DoctorDataTable = () => {
         </Button>
             </Box>
           </Box>
-          {openDialog && (
             <DoctorsDialog
               setChange={setChange}
               open={openDialog}
               handleClose={handleCloseDialog}
               row={currentRow}
             />
-          )}
         </Box>
       );
     },

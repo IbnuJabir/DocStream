@@ -36,7 +36,8 @@ const UnAvalableDates = () => {
   const columns = useMemo(
     () => [
       {
-        accessorFn: (row) => f.format(new Date(row.date)),
+        // accessorFn: (row) => f.format(new Date(row.date)),
+        accessorFn: (row) => row.date,
         accessorKey: "date",
         header: "Date",
         muiEditTextFieldProps: {

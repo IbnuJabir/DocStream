@@ -15,7 +15,7 @@ const AppointmentSchema = new Schema({
   },
   status: {
     type: String,
-    enum: ["pending", "paid", "booked", "completed", "expired", "canceled"],
+    enum: ["pending", "paid", "booked", "completed", "expired", "suspended"],
     default: "pending",
   },
   createdAt: { type: Date, default: Date.now },

@@ -6,7 +6,7 @@ const {
     getSingleAppointment,
     addAppointment,
     approve,
-    cancel,
+    suspend,
 } = require("../controllers/appointment");
 const appoinmentRoute = express.Router();
 
@@ -15,7 +15,7 @@ appoinmentRoute.get("/booked", getBookedAppointments);
 appoinmentRoute.get("/:id", getSingleAppointment);
 appoinmentRoute.post("/addNew", addAppointment);
 appoinmentRoute.post("/approve", approve);
-appoinmentRoute.post("/cancel", cancel);
+appoinmentRoute.post("/suspend", suspend);
 // appoinmentRoute.get("/success", paymentSuccess);
 
 

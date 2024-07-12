@@ -128,6 +128,8 @@ const TableData = () => {
     columnFilterDisplayMode: "popover",
     paginationDisplayMode: "pages",
     positionToolbarAlertBanner: "bottom",
+    enableRowNumbers: true,
+    enableRowVirtualization: true,
     state: { isLoading: isLoading },
     muiCircularProgressProps: {
       color: "primary",

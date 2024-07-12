@@ -103,7 +103,7 @@ const AppointmentDataTable = () => {
             component="span"
             sx={(theme) => ({
               backgroundColor:
-                cell.getValue() === "canceled"
+                cell.getValue() === "suspended"
                   ? theme.palette.error.dark
                   : cell.getValue() === "paid"
                   ? theme.palette.warning.dark
@@ -151,8 +151,10 @@ const AppointmentDataTable = () => {
     enableGrouping: true,
     enableColumnPinning: true,
     enableFacetedValues: true,
-    enableRowActions: true,
+    enableRowActions: false,
     enableRowSelection: true,
+    enableRowNumbers: true,
+    enableRowVirtualization: true,
     initialState: {
       showColumnFilters: false,
       showGlobalFilter: true,
@@ -184,51 +186,49 @@ const AppointmentDataTable = () => {
       height: 28,
     },
     renderDetailPanel: ({ row }) => <AppointmentDetails row={row} />,
-    renderRowActionMenuItems: ({ closeMenu }) => [
-      <MenuItem
-        key={0}
-        onClick={() => {
-          // View profile logic...
-          closeMenu();
-        }}
-        sx={{ m: 0 }}
-      >
-        <Button
-          color="success"
-          //   onClick={handleActivate}
-          variant="contained"
-        >
-          Approve
-        </Button>
-      </MenuItem>,
-      <MenuItem
-        key={1}
-        onClick={() => {
-          // Send email logic...
-          closeMenu();
-        }}
-        sx={{ m: 0 }}
-      >
-        <Button
-          color="error"
-          // onClick={handleDeactivate}
-          variant="contained"
-        >
-          Cancel
-        </Button>
-      </MenuItem>,
-    ],
+    // renderRowActionMenuItems: ({ closeMenu }) => [
+    //   <MenuItem
+    //     key={0}
+    //     onClick={() => {
+    //       // View profile logic...
+    //       closeMenu();
+    //     }}
+    //     sx={{ m: 0 }}
+    //   >
+    //     <Button
+    //       color="success"
+    //       //   onClick={handleActivate}
+    //       variant="contained"
+    //     >
+    //       Approve
+    //     </Button>
+    //   </MenuItem>,
+    //   <MenuItem
+    //     key={1}
+    //     onClick={() => {
+    //       // Send email logic...
+    //       closeMenu();
+    //     }}
+    //     sx={{ m: 0 }}
+    //   >
+    //     <Button
+    //       color="error"
+    //       // onClick={handleDeactivate}
+    //       variant="contained"
+    //     >
+    //       Cancel
+    //     </Button>
+    //   </MenuItem>,
+    // ],
     renderTopToolbar: ({ table }) => {
-      const handleCloseDialog = () => {
-        // setOpenDialog(false);
-      };
+
       const handleDeactivate = async () => {
         table.getSelectedRowModel().flatRows.forEach((row) => {
           selectedRows.push(row.original._id);
         });
         try {
           const response = await axios.post(
-            "http://localhost:4000/appointment/cancel",
+            "http://localhost:4000/appointment/suspend",
             selectedRows
           );
           dispatch(openCancelDialog());
@@ -278,16 +278,12 @@ const AppointmentDataTable = () => {
                   !table.getIsSomeRowsSelected() ||
                   table
                     .getSelectedRowModel()
-                    .flatRows.some(
-                      (row) =>
-                        row.getValue("status") !== "paid" &&
-                        row.getValue("status") !== "booked"
-                    )
+                    .flatRows.some((row) => row.getValue("status") !== "paid")
                 }
                 onClick={handleDeactivate}
                 variant="contained"
               >
-                Cancel
+                Suspend
               </Button>
 
               <Button

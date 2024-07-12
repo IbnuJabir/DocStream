@@ -86,7 +86,7 @@ const approve = async (req, res) => {
   }
 };
 
-const cancel = async (req, res) => {
+const suspend = async (req, res) => {
   const selectedRows = req.body;
   try {
     // Use Promise.all() to wait for all updates to complete
@@ -94,7 +94,7 @@ const cancel = async (req, res) => {
       selectedRows.map(async (id) => {
         const updatedAppointment = await Appointment.findOneAndUpdate(
           { _id: id },
-          { $set: { status: "canceled" } },
+          { $set: { status: "suspended" } },
           { new: true } // Ensure we get the updated document
         );
         return updatedAppointment;
@@ -114,5 +114,5 @@ module.exports = {
   getSingleAppointment,
   addAppointment,
   approve,
-  cancel,
+  suspend,
 };

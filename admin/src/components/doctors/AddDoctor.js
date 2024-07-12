@@ -12,27 +12,21 @@ import { IoIosWoman } from "react-icons/io";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { MuiTelInput } from "mui-tel-input";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import {
   TextField,
   Button,
-  Container,
   Stack,
   Box,
-  Chip,
   CircularProgress,
   FormControl,
   FormControlLabel,
-  FormGroup,
   FormLabel,
   InputLabel,
-  Link,
   MenuItem,
-  OutlinedInput,
   Radio,
   RadioGroup,
   Select,
-  TextareaAutosize,
   FormHelperText,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
@@ -52,11 +46,6 @@ const useStyles = makeStyles((theme) => ({
     display: "none",
   },
 }));
-const customColors = {
-  primary: "#159eec",
-  secondary: "#1f2b6c",
-  text: "#f1f1f1",
-};
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -422,7 +411,6 @@ export default function FullScreenDialog() {
                   }}
                 >
                   <RxAvatar style={{ fontSize: "40px", pointer: "cursor" }} />
-                  {/* <Avatar>H</Avatar> */}
                   <Button variant="contained" color="primary" component="span">
                     Upload Photo
                   </Button>
