@@ -64,6 +64,9 @@ export default function AlertDialogSlide({ content, selectedRows }) {
   const filteredAppointments = appointments.filter((appointment) =>
     selectedRows.includes(appointment._id)
   );
+  React.useEffect(() => {
+    dispatch(getAllDoctors());
+  }, [dialog,successDialog, cancelDialog]);
 
   const handleApproval = async () => {
     const currentAppointment = filteredAppointments[currentAppointmentIndex];

@@ -299,14 +299,14 @@ const AppointmentDataTable = () => {
                 Approve
               </Button>
 
-              {/* <Button
+              <Button
                 color="info"
                 disabled={!table.getIsSomeRowsSelected()}
                 onClick={handleContact}
                 variant="contained"
               >
                 Contact
-              </Button> */}
+              </Button>
             </Box>
           </Box>
           {dialog || successDialog || cancelDialog ? (
