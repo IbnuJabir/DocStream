@@ -18,14 +18,20 @@ import {
 import "./global.css";
 import { useNavigationType, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { checkUserStatus } from "./state/userSlice";
+import { useDispatch } from "react-redux";
 
 function App() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const action = useNavigationType();
   const location = useLocation();
   const pathname = location.pathname;
 
+  useEffect(() => {
+    dispatch(checkUserStatus());
+  }, []);
   useEffect(() => {
     if (action !== "POP") {
       window.scrollTo(0, 0);

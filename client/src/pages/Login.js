@@ -1,18 +1,11 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import "../style/login.css";
-import {
-  Alert,
-  CircularProgress,
-  FormGroup,
-  Link,
-  TextField,
-} from "@mui/material";
+import { useNavigate, Link } from "react-router-dom";
+import { Alert, CircularProgress, FormGroup, TextField } from "@mui/material";
 import { FaUser } from "react-icons/fa";
-import "../style/login.css";
 import toast from "react-hot-toast";
 import { login } from "../state/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+import "../style/login.css";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -22,6 +15,14 @@ export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isLoading, isLoggedIn, error } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (error) {
+      setErr(error.message);
+    } else {
+      setErr("");
+    }
+  }, [error]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,7 +35,6 @@ export default function Login() {
 
     const data = { password, email };
     await dispatch(login(data));
-
     if (isLoggedIn) {
       toast.success("Successfully Logged In!");
       navigate("/");
@@ -48,7 +48,7 @@ export default function Login() {
           <FaUser style={{ fontSize: 80, color: "#fff" }} />
         </div>
         <div style={{ marginTop: "10%" }}>
-          <form onSubmit={handleSubmit} action="/">
+          <form onSubmit={handleSubmit}>
             <FormGroup style={{ marginTop: 30 }}>
               <TextField
                 label="Email"
@@ -72,7 +72,6 @@ export default function Login() {
                 <Alert severity="error">{err}</Alert>
               </div>
             )}
-
             <div>
               {isLoading ? (
                 <div style={{ marginTop: "20px", textAlign: "center" }}>
@@ -87,14 +86,14 @@ export default function Login() {
           </form>
           <div style={{ marginTop: "15px" }}>
             <Link
-              href="/signup"
+              to="/signup"
               style={{
                 textDecoration: "none",
                 color: "#13A014",
                 cursor: "pointer",
               }}
             >
-              Creat Account
+              Create Account
             </Link>
           </div>
         </div>

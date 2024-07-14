@@ -44,7 +44,7 @@ export default function Login({ isSignUpAllowed }) {
 
     const data = { password, email };
     await dispatch(login(data));
-    
+
     if (isLoggedIn) {
       toast.success("Successfully Logged In!");
       navigate("/");
