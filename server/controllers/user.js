@@ -93,7 +93,7 @@ const home = async (req, res) => {
 };
 
 const checkAuth = async (req, res) => {
-  res.status(200).json("Authentic"); // Send user data as response
+  res.status(200).json({ message: "Authentic user" }); // Send user data as response
   // console.log("Authentic");
 };
 

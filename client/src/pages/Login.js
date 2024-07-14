@@ -1,5 +1,4 @@
-import { useState } from "react";
-import axios from "axios";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../style/login.css";
 import {
@@ -12,56 +11,33 @@ import {
 import { FaUser } from "react-icons/fa";
 import "../style/login.css";
 import toast from "react-hot-toast";
-import { useAuth } from "../context/AuthContext";
+import { login } from "../state/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 
-export default function Login({ isSignUpAllowed }) {
-  const [isLogin, setIsLogin] = useState(false);
-  const [email, setemail] = useState("");
+export default function Login() {
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [err, setErr] = useState("");
+
   const navigate = useNavigate();
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const { login, setIsAuthenticated } = useAuth;
+  const dispatch = useDispatch();
+  const { isLoading, isLoggedIn, error } = useSelector((state) => state.user);
 
   const handleSubmit = async (e) => {
-    // e.preventDefault();
-    setError("");
+    e.preventDefault();
+    setErr("");
 
     if (!email || !password) {
-      setError("Fill all fields");
+      setErr("Fill all fields");
       return;
     }
-    setLoading(true);
-    let data = {
-      password,
-      email,
-    };
-    try {
-      const result = await axios.post("/user/login", data);
-      console.log(result.data);
-      if (result.data) {
-        toast.success("Successfully LoggedIn!");
-        navigate("/");
-        setIsLogin(true);
-        setError("");
-      } else {
-        setError(result.data.message);
-      }
-      // console.log(result.data);
-    } catch (error) {
-      if (error.response) {
-        console.log("Server responded with an error:", error.response.data);
-        setError(error.response.data.message);
-      } else if (error.request) {
-        console.log("No response received:", error.request);
-        setError("No response from server. Please try again later.");
-      } else {
-        console.log("Error", error.message);
-        setError("Error: " + error.message);
-      }
-    } finally {
-      if (isLogin) setIsAuthenticated(true);
-      setLoading(false);
+
+    const data = { password, email };
+    await dispatch(login(data));
+
+    if (isLoggedIn) {
+      toast.success("Successfully Logged In!");
+      navigate("/");
     }
   };
 
@@ -76,7 +52,7 @@ export default function Login({ isSignUpAllowed }) {
             <FormGroup style={{ marginTop: 30 }}>
               <TextField
                 label="Email"
-                onChange={(e) => setemail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
                 type="text"
                 style={{ width: 300 }}
               />
@@ -91,14 +67,14 @@ export default function Login({ isSignUpAllowed }) {
                 style={{ width: 300 }}
               />
             </FormGroup>
-            {error && (
-              <div style={{ margin: "8px 0 8px", width: 300 }}>
-                <Alert severity="error">{error}</Alert>
+            {err && (
+              <div style={{ width: 300 }}>
+                <Alert severity="error">{err}</Alert>
               </div>
             )}
 
             <div>
-              {loading ? (
+              {isLoading ? (
                 <div style={{ marginTop: "20px", textAlign: "center" }}>
                   <CircularProgress />
                 </div>

@@ -1,15 +1,23 @@
-import React from "react";
+import { useEffect } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { checkUserStatus } from "../state/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+const ProtectedRoute = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(checkUserStatus());
+  }, []);
+  const {
+    isLoading,
+    isLoggedIn,
+    error: reduxError,
+  } = useSelector((state) => state.user);
 
-const ProtectedRoute = ({ component: Component, ...rest }) => {
-  const { isAuthenticated, loading } = useAuth();
-
-  if (loading) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 
-  return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
+  return isLoggedIn ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export default ProtectedRoute;

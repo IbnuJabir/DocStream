@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Link, Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Appointments from "./components/appointments/Appointments";
 import Doctors from "./components/doctors/Doctors";

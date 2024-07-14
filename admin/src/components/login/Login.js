@@ -25,15 +25,15 @@ export default function Login({ isSignUpAllowed }) {
     }
   }, [error]);
 
-  useEffect(() => {
-    console.log('isLogin', isLoggedIn)
-    if (isLoggedIn) {
-      toast.success("Successfully Logged In!");
-      navigate("/");
-    }
-  }, [isLoggedIn, navigate]);
+  // useEffect(() => {
+  //   console.log('isLogin', isLoggedIn)
+  //   if (isLoggedIn) {
+  //     toast.success("Successfully Logged In!");
+  //     navigate("/");
+  //   }
+  // }, [isLoggedIn, navigate]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setErr("");
 
@@ -43,7 +43,12 @@ export default function Login({ isSignUpAllowed }) {
     }
 
     const data = { password, email };
-    dispatch(login(data));
+    await dispatch(login(data));
+    
+    if (isLoggedIn) {
+      toast.success("Successfully Logged In!");
+      navigate("/");
+    }
   };
 
   return (
@@ -74,7 +79,7 @@ export default function Login({ isSignUpAllowed }) {
               />
             </FormGroup>
             {err && (
-              <div style={{  width: 300 }}>
+              <div style={{ width: 300 }}>
                 <Alert severity="error">{err}</Alert>
               </div>
             )}

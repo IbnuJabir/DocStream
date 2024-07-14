@@ -142,7 +142,7 @@ const adminSignUp = async (req, res) => {
 };
 
 const checkAuth = async (req, res) => {
-  res.status(200).json("Authentic"); // Send user data as response
+  res.status(200).json({ message: "Authentic Admin" }); // Send user data as response
   // console.log("Authentic");
 };
 
@@ -152,4 +152,12 @@ const adminLogOut = async (req, res) => {
   return res.status(200).json({ message: "user logged out" });
 };
 
-module.exports = { addAdmin, getAllAdmins, deleteAdmin, adminLogIn, adminSignUp, adminLogOut, checkAuth };
+module.exports = {
+  addAdmin,
+  getAllAdmins,
+  deleteAdmin,
+  adminLogIn,
+  adminSignUp,
+  adminLogOut,
+  checkAuth,
+};

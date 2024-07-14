@@ -11,6 +11,8 @@ import {
   Box,
   DialogContentText,
   FormControl,
+  FormHelperText,
+  FormLabel,
   InputLabel,
   MenuItem,
   Select,
@@ -38,18 +40,19 @@ import {
 } from "../../state/dialogSlice";
 import { getAllDoctors } from "../../state/doctorSlice";
 import { getAllAppointments } from "../../state/appointmentSlice";
+import dayjs from "dayjs";
+import { CircularProgress } from "@material-ui/core";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function AlertDialogSlide({ content, selectedRows }) {
-  const [appointmentDate, setAppointmentDate] = React.useState(null);
   const [appointmentTime, setAppointmentTime] = React.useState(null);
   const [doctorName, setDoctorName] = React.useState("");
   const [meetingLink, setMeetingLink] = React.useState("");
+  const [docEmail, setDocEmail] = React.useState("");
   const [currentAppointmentIndex, setCurrentAppointmentIndex] =
     React.useState(0);
-  const [showSuccessDialog, setShowSuccessDialog] = React.useState(false);
 
   const { dialog, successDialog, cancelDialog } = useSelector(
     (store) => store.dialog
@@ -59,23 +62,53 @@ export default function AlertDialogSlide({ content, selectedRows }) {
 
   const dispatch = useDispatch();
 
-  console.log("dialog", dialog);
+  const [errors, setErrors] = React.useState({
+    doctorName: "",
+    appointmentTime: "",
+    meetingLink: "",
+  });
 
   const filteredAppointments = appointments.filter((appointment) =>
     selectedRows.includes(appointment._id)
   );
+
   React.useEffect(() => {
     dispatch(getAllDoctors());
-  }, [dialog,successDialog, cancelDialog]);
+  }, [dispatch, dialog, successDialog, cancelDialog]);
 
   const handleApproval = async () => {
     const currentAppointment = filteredAppointments[currentAppointmentIndex];
+    const formattedDate = dayjs(currentAppointment.selectedDate).format(
+      "dddd, MMMM D, YYYY"
+    );
+
+    let newErrors = { doctorName: "", appointmentTime: "", meetingLink: "" };
+
+    if (!doctorName) {
+      newErrors.doctorName = "You must choose a doctor";
+    }
+    if (!appointmentTime) {
+      newErrors.appointmentTime = "You have to choose appointment time";
+    }
+    if (!meetingLink) {
+      newErrors.meetingLink = "Please add a meeting link";
+    }
+    if (
+      newErrors.doctorName ||
+      newErrors.appointmentTime ||
+      newErrors.meetingLink
+    ) {
+      setErrors(newErrors);
+      return; // Exit function if there are errors
+    }
+
     const approvalData = {
       appointment: currentAppointment,
-      appointmentDate,
+      appointmentDate: formattedDate,
       appointmentTime,
       doctorName,
       meetingLink,
+      docEmail
     };
 
     try {
@@ -83,7 +116,6 @@ export default function AlertDialogSlide({ content, selectedRows }) {
         "http://localhost:4000/appointment/approve",
         approvalData
       );
-      setAppointmentDate(null);
       setAppointmentTime(null);
       setDoctorName("");
       setMeetingLink("");
@@ -138,22 +170,31 @@ export default function AlertDialogSlide({ content, selectedRows }) {
                 id="alert-dialog-slide-description"
                 sx={{ marginTop: 1 }}
               >
-                <Stack spacing={2} direction="row" sx={{ marginBottom: 4 }}>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      label="Appointment date"
-                      onChange={(newValue) => setAppointmentDate(newValue)}
-                      renderInput={(params) => (
-                        <TextField {...params} fullWidth sx={{ m: 1 }} />
-                      )}
-                      sx={{ width: "100%", m: 1 }}
+                <Stack spacing={2} direction="column" sx={{ marginBottom: 4 }}>
+                  <Box
+                    component="span"
+                    sx={{ color: "#159eec", fontWeight: "bold" }}
+                  >
+                    <FormLabel>Selected Date:</FormLabel>
+                    {"  "}
+                    {dayjs(currentAppointment.selectedDate).format(
+                      "dddd, MMMM D, YYYY"
+                    )}
+                  </Box>{" "}
+                  <Box>
+                    <TimePicker
+                      sx={{ width: "100%" }}
+                      label="Appointment time"
+                      onChange={(newValue) => setAppointmentTime(newValue)}
                     />
-                  </LocalizationProvider>
-                  <TimePicker
-                    sx={{ width: "100%" }}
-                    label="Appointment time"
-                    onChange={(newValue) => setAppointmentTime(newValue)}
-                  />
+                    {errors.appointmentTime && (
+                      <FormHelperText
+                        sx={{ color: "#f44336", marginLeft: "14px" }}
+                      >
+                        {errors.appointmentTime}
+                      </FormHelperText>
+                    )}
+                  </Box>
                 </Stack>
                 <Stack spacing={2} direction="row" sx={{ marginBottom: 4 }}>
                   <FormControl fullWidth>
@@ -171,11 +212,19 @@ export default function AlertDialogSlide({ content, selectedRows }) {
                         <MenuItem
                           key={row._id}
                           value={`Dr. ${row.firstName} ${row.lastName}`}
+                          onClick={()=>setDocEmail(row.email)}
                         >
                           {`Dr. ${row.firstName} ${row.lastName}`}
                         </MenuItem>
                       ))}
                     </Select>
+                    {errors.doctorName && (
+                      <FormHelperText
+                        sx={{ color: "#f44336", marginLeft: "14px" }}
+                      >
+                        {errors.doctorName}
+                      </FormHelperText>
+                    )}
                   </FormControl>
                   <TextField
                     type="text"
@@ -184,11 +233,24 @@ export default function AlertDialogSlide({ content, selectedRows }) {
                     onChange={(e) => setMeetingLink(e.target.value)}
                     value={meetingLink}
                     fullWidth
+                    error={Boolean(errors.meetingLink)}
+                    helperText={errors.meetingLink}
                   />
                 </Stack>
               </DialogContentText>
             </DialogContent>
             <DialogActions>
+              <Button
+                sx={{
+                  padding: "8px 16px",
+                  backgroundColor: "#FF0000",
+                  color: "#fff",
+                  "&:hover": { backgroundColor: "#CC0000" },
+                }}
+                onClick={() => dispatch(closeDialog())}
+              >
+                Cancel
+              </Button>
               <Button
                 sx={{
                   padding: "8px 16px",
@@ -310,6 +372,63 @@ export default function AlertDialogSlide({ content, selectedRows }) {
               </Alert>
             </DialogTitle>
           </Dialog>
+
+          {/* <Dialog
+            open={cancelDialog}
+            TransitionComponent={Transition}
+            keepMounted
+            onClose={() => dispatch(closeCancelDialog())}
+            aria-describedby="alert-dialog-slide-description"
+            key={currentAppointment._id}
+          >
+            <DialogTitle sx={{ padding: 0 }}>
+              <Alert
+                severity="error"
+                sx={{
+                  padding: "16px 24px",
+                  display: "flex",
+                  alignItems: "top",
+                }}
+              >
+                <DialogContentText
+                  sx={{
+                    fontSize: "1rem",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                    marginBottom: "16px",
+                  }}
+                >
+                  {selectedRows.length === 1 ? (
+                    <span>
+                      <Box
+                        component="span"
+                        sx={{ color: "#159eec", fontWeight: "bold" }}
+                      >
+                        {`${currentAppointment.firstName} ${currentAppointment.lastName}`}
+                      </Box>
+                      's Appointment is successfully suspended
+                    </span>
+                  ) : (
+                    "All selected Appointments successfully suspended"
+                  )}
+                </DialogContentText>
+
+                <DialogActions sx={{ padding: 0 }}>
+                  <Button
+                    onClick={() => dispatch(closeCancelDialog())}
+                    sx={{
+                      padding: "8px 16px",
+                      backgroundColor: "#159eec",
+                      color: "#fff",
+                      "&:hover": { backgroundColor: "#127abb" },
+                    }}
+                  >
+                    Ok
+                  </Button>
+                </DialogActions>
+              </Alert>
+            </DialogTitle>
+          </Dialog> */}
         </>
       )}
     </>

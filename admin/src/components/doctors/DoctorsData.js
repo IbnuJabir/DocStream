@@ -41,7 +41,7 @@ const DoctorDataTable = () => {
 
   useEffect(() => {
     dispatch(getAllDoctors());
-  }, [successDialog, change]);
+  }, [dispatch, successDialog, change]);
 
   const f = new Intl.DateTimeFormat("en-us", {
     dateStyle: "medium",

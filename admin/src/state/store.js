@@ -18,4 +18,8 @@ export const store = configureStore({
     unAvailableDates: unAvailableDatesReducer,
     departments: DepartmentReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });

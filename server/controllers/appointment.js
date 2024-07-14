@@ -1,6 +1,6 @@
 const Appointment = require("../models/Appointment");
 const axios = require("axios");
-const { EmailSender } = require("../services/EmailSender");
+const { EmailToClient, EmailToDoctor } = require("../services/EmailSender");
 const getAllAppointments = async (req, res) => {
   try {
     const appointments = await Appointment.find().sort({
@@ -55,10 +55,10 @@ const approve = async (req, res) => {
     appointmentTime,
     doctorName,
     meetingLink,
+    docEmail,
   } = req.body;
 
   try {
-
     const updatedAppointment = await Appointment.findOneAndUpdate(
       { _id: appointment._id },
       { $set: { status: "booked" } },
@@ -66,11 +66,19 @@ const approve = async (req, res) => {
     );
 
     if (updatedAppointment) {
-      await EmailSender({
+      await EmailToClient({
         appointment,
         appointmentDate,
         appointmentTime,
         doctorName,
+        meetingLink,
+      });
+      await EmailToDoctor({
+        appointment,
+        appointmentDate,
+        appointmentTime,
+        doctorName,
+        docEmail,
         meetingLink,
       });
     } else {

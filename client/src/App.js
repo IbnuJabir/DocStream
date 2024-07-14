@@ -64,7 +64,6 @@ function App() {
   }, [pathname]);
   return (
     <>
-      <AuthProvider>
         {/* <Navbar /> */}
         <Topmost />
         <Navbar />
@@ -80,7 +79,6 @@ function App() {
           <Route path="*" element={<PageNotFound />} />
         </Routes>
         <Toaster position="bottom-center" reverseOrder={false} />
-      </AuthProvider>
     </>
   );
 }

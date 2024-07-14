@@ -4,38 +4,19 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 // import { Context } from "../main";
-import { useAuth } from "../context/AuthContext";
 import { FaBars, FaTimes } from "react-icons/fa";
 import "../style/navbar.css";
+import { useDispatch, useSelector } from "react-redux";
 
 const Navbar = () => {
   const [show, setShow] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isLoading, isLoggedIn, error } = useSelector((state) => state.user);
 
-  const { isAuthenticated, setIsAuthenticated } = useAuth();
+  // const { isAuthenticated, setIsAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
-    try {
-      const result = await axios.get("/user/logout", { withCredentials: true });
-      console.log(result.data);
-      if (result.data) {
-        toast.success("Successfully LoggedOut!");
-        navigate("/login");
-        setIsAuthenticated(false);
-      } else {
-        console.log(result.data.message);
-      }
-    } catch (error) {
-      if (error.response) {
-        console.log("Server responded with an error:", error.response.data);
-      } else if (error.request) {
-        console.log("No response received:", error.request);
-      } else {
-        console.log("Error", error.message);
-      }
-    }
-  };
+  const handleLogout = async () => {};
 
   const goToLogin = () => {
     navigate("/login");
@@ -123,7 +104,7 @@ const Navbar = () => {
             </NavLink>
           </div>
           <div className="btn_container">
-            {isAuthenticated ? (
+            {isLoggedIn ? (
               <button className="nav_btn logout_btn" onClick={handleLogout}>
                 LOGOUT
               </button>

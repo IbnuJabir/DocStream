@@ -11,6 +11,7 @@ import {
   FaVideo,
   FaFileAlt,
 } from "react-icons/fa";
+import dayjs from "dayjs";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -88,28 +89,28 @@ const AppointmentDetails = ({ row }) => {
         <Box className={classes.leftSide}>
           <Box className={classes.details}>
             <Typography variant="h6" className={classes.title}>
-            <FaUser className={classes.icon} />
+              <FaUser className={classes.icon} />
               Full Name:
             </Typography>
             <Typography variant="body1">{`${row.original.firstName} ${row.original.lastName}`}</Typography>
           </Box>
           <Box className={classes.details}>
             <Typography variant="h6" className={classes.title}>
-            <FaEnvelope className={classes.icon} />
+              <FaEnvelope className={classes.icon} />
               Email:
             </Typography>
             <Typography variant="body1">{row.original.email}</Typography>
           </Box>
           <Box className={classes.details}>
             <Typography variant="h6" className={classes.title}>
-            <FaMapMarkerAlt className={classes.icon} />
+              <FaMapMarkerAlt className={classes.icon} />
               Address:
             </Typography>
             <Typography variant="body1">{row.original.address}</Typography>
           </Box>
           <Box className={classes.details}>
             <Typography variant="h6" className={classes.title}>
-            <FaCalendarAlt className={classes.icon} />
+              <FaCalendarAlt className={classes.icon} />
               Date Of Birth:
             </Typography>
             <Typography variant="body1">
@@ -120,21 +121,23 @@ const AppointmentDetails = ({ row }) => {
         <Box className={classes.rightSide}>
           <Box className={classes.details}>
             <Typography variant="h6" className={classes.title}>
-            <FaGenderless className={classes.icon} />
+              <FaGenderless className={classes.icon} />
               Gender:
             </Typography>
             <Typography variant="body1">{row.original.gender}</Typography>
           </Box>
           <Box className={classes.details}>
             <Typography variant="h6" className={classes.title}>
-            <FaVideo className={classes.icon} />
+              <FaVideo className={classes.icon} />
               Meeting Platform:
             </Typography>
-            <Typography variant="body1">{row.original.meetingPlatform}</Typography>
+            <Typography variant="body1">
+              {row.original.meetingPlatform}
+            </Typography>
           </Box>
           <Box className={classes.details}>
             <Typography variant="h6" className={classes.title}>
-            <FaFileAlt className={classes.icon} />
+              <FaFileAlt className={classes.icon} />
               Treatment:
             </Typography>
             <Typography variant="body1">{row.original.treatment}</Typography>
@@ -150,13 +153,9 @@ const AppointmentDetails = ({ row }) => {
 
       <Box className={classes.details}>
         <Typography variant="h6" className={classes.title}>
-          Preferred Days:
+          Selected Date:
         </Typography>
-        <ul className={classes.ul}>
-          {row.original.selectedDays.map((day) => (
-            <li key={day}>{day}</li>
-          ))}
-        </ul>
+        <Typography variant="body1">{dayjs(row.original.selectedDate).format("dddd, MMMM D, YYYY")}</Typography>
       </Box>
 
       <Box className={classes.details}>
