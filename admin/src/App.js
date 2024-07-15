@@ -19,11 +19,13 @@ import "./global.css";
 import { useNavigationType, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { checkUserStatus } from "./state/userSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const { isLoading } = useSelector((state) => state.user);
 
   const action = useNavigationType();
   const location = useLocation();
@@ -43,9 +45,46 @@ function App() {
 
     switch (pathname) {
       case "/":
-        title = "";
-        metaDescription = "";
+      case "/dashboard":
+        title = "Dashboard | DocStream";
+        metaDescription = "Welcome to the dashboard of DocStream.";
         break;
+      case "/appointments":
+        title = "Appointments | DocStream";
+        metaDescription = "Manage your appointments in DocStream.";
+        break;
+      case "/doctors":
+        title = "Doctors | DocStream";
+        metaDescription = "Manage doctors in DocStream.";
+        break;
+      case "/transactions":
+        title = "Transactions | DocStream";
+        metaDescription = "View and manage transactions in DocStream.";
+        break;
+      case "/unavailabledates":
+        title = "Unavailable Dates | DocStream";
+        metaDescription = "Manage unavailable dates in DocStream.";
+        break;
+      case "/admins":
+        title = "Admins | DocStream";
+        metaDescription = "Manage admin users in DocStream.";
+        break;
+      case "/departments":
+        title = "Departments | DocStream";
+        metaDescription = "Manage departments in DocStream.";
+        break;
+      case "/login":
+        title = "Login | DocStream";
+        metaDescription = "Login to your DocStream account.";
+        break;
+      case "/signup":
+        title = "Signup | DocStream";
+        metaDescription = "Create a new DocStream account.";
+        break;
+      default:
+        title = "DocStream";
+        metaDescription =
+          "Welcome to DocStream, your hospital management solution.";
     }
 
     if (title) {
@@ -61,9 +100,12 @@ function App() {
       }
     }
   }, [pathname]);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="App">
-      {/* <ModeSwitcher /> */}
       <Routes>
         <Route element={<PublicRoute />}>
           <Route path="/login" element={<Login />} />
@@ -87,68 +129,3 @@ function App() {
 }
 
 export default App;
-
-/*
-import * as React from 'react';
-import IconButton from '@mui/material/IconButton';
-import Box from '@mui/material/Box';
-import { useTheme, ThemeProvider, createTheme } from '@mui/material/styles';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
-
-const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
-
-function MyApp() {
-  const theme = useTheme();
-  const colorMode = React.useContext(ColorModeContext);
-  return (
-    <Box
-      sx={{
-        display: 'flex',
-        width: '100%',
-        alignItems: 'center',
-        justifyContent: 'center',
-        bgcolor: 'background.default',
-        color: 'text.primary',
-        borderRadius: 1,
-        p: 3,
-      }}
-    >
-      {theme.palette.mode} mode
-      <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
-        {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-      </IconButton>
-    </Box>
-  );
-}
-/*
-export default function ToggleColorMode() {
-  const [mode, setMode] = React.useState('light');
-  const colorMode = React.useMemo(
-    () => ({
-      toggleColorMode: () => {
-        setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
-      },
-    }),
-    [],
-  );
-
-  const theme = React.useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode,
-        },
-      }),
-    [mode],
-  );
-
-  return (
-    <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
-        <MyApp />
-      </ThemeProvider>
-    </ColorModeContext.Provider>
-  );
-}
-*/

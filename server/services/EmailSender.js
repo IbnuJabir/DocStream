@@ -293,13 +293,7 @@ const EmailToDoctor = ({
   });
 };
 
-const SuspendedEmail = ({
-  appointment,
-  appointmentDate,
-  appointmentTime,
-  doctorName,
-  meetingLink,
-}) => {
+const SuspendedEmail = ({ updatedAppointment }) => {
   const t = new Intl.DateTimeFormat("en-us", {
     timeStyle: "short",
   });
@@ -309,8 +303,8 @@ const SuspendedEmail = ({
       name: "DocStream",
       address: EMAIL_USER,
     },
-    to: appointment.email,
-    subject: "Your Appointment is Booked!",
+    to: updatedAppointment.email,
+    subject: "Your Appointment is Suspended!",
     html: `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -397,10 +391,14 @@ const SuspendedEmail = ({
             <h1>Appointment Suspended</h1>
         </header>
         <section class="content">
-            <p>Dear [Client Name],</p>
+           <p>Dear ${updatedAppointment.firstName} ${
+      updatedAppointment.lastName
+    },</p>
             <p>We regret to inform you that your appointment has been suspended because we are unable to provide the service at the scheduled time you selected. We sincerely apologize for any inconvenience this may cause.</p>
             <div class="appointment-details">
-                <p><strong>Transaction Reference:</strong> [Transaction Reference]</p>
+                <p><strong>Transaction Reference:</strong> ${
+                  updatedAppointment.tx_ref
+                } </p>
             </div>
             <p>You can reschedule your appointment by using your transaction reference on the DocStream website in the suspended appointments page. Alternatively, you can also use the following link:</p>
             <a href="web_link_here" class="button">Reschedule Appointment</a>
@@ -425,8 +423,102 @@ const SuspendedEmail = ({
     }
   });
 };
+
+const ContactEmail = ({ currentAppointment, contactMessage }) => {
+  const t = new Intl.DateTimeFormat("en-us", {
+    timeStyle: "short",
+  });
+
+  const mailOptions = {
+    from: {
+      name: "DocStream",
+      address: EMAIL_USER,
+    },
+    to: currentAppointment.email,
+    subject: "Message from DocStream!",
+    html: `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <style>
+        body {
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          line-height: 1.6;
+          background-color: #f7f7f7;
+          margin: 0;
+          padding: 0;
+        }
+        .container {
+          width: 100%;
+          max-width: 600px;
+          margin: 0 auto;
+          border: 1px solid #ddd;
+          border-radius: 8px;
+          overflow: hidden;
+          background-color: #fff;
+          box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .header {
+          background-color: #159eec;
+          color: #fff;
+          padding: 20px;
+          text-align: center;
+          border-bottom: 1px solid #ddd;
+        }
+        .content {
+          padding: 20px;
+          color: rgb(127, 133, 138)!important;
+        }
+        .content p {
+          margin: 10px 0;
+        }
+        .footer {
+          background-color: #159eec;
+          padding: 10px;
+          text-align: center;
+          border-top: 1px solid #ddd;
+          color: #fff;
+          font-size: 12px;
+        }
+        .footer p {
+          margin: 5px 0;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <header class="header">
+          <h1>Message from DocStream</h1>
+        </header>
+        <section class="content">
+          <p>Dear ${currentAppointment.firstName} ${currentAppointment.lastName},</p>
+          <p>${contactMessage}</p>
+          <p>Thank you,<br />DocStream</p>
+        </section>
+        <footer class="footer">
+          <p>&copy; ${new Date().getFullYear()} DocStream. All rights reserved.</p>
+          <p>Adiss Ababa, Ethiopia</p>
+        </footer>
+      </div>
+    </body>
+    </html>
+    `,
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Contact Email sent to client");
+    }
+  });
+};
+
 module.exports = {
   EmailToClient,
   EmailToDoctor,
   SuspendedEmail,
+  ContactEmail,
 };

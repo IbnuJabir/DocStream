@@ -1,24 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
-import axios from "axios";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import Home from "./pages/Home";
-import RootPage from "./pages/RootPage";
-import PageNotFound from "./pages/PageNotFound";
-import UnAuthorizedAccess from "./pages/UnAuthorizedAccess";
-import ProtectedRoute from "./utils/ProtectedRoute";
-// import { AuthProvider } from "./context/AuthContext";
-import { Toaster } from "react-hot-toast";
-import "./App.css";
-import "./global.css";
-import Navbar from "./pages/NavBar";
-// import Navbar from "./components/Navbar";
-import Topmost from "./components/Topmost";
-import PaymentSuccessTable from "./components/paymentSuccessTable";
-import Appointement from "./pages/Appointement";
-import PaymentSuccess from "./pages/PaymentSuccess";
+import React, { useEffect } from "react";
 import {
+  Navigate,
   Routes,
   Route,
   useNavigationType,
@@ -26,32 +8,65 @@ import {
 } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { checkUserStatus } from "./state/userSlice";
+import { Toaster } from "react-hot-toast";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import Home from "./pages/Home";
+import PageNotFound from "./pages/PageNotFound";
+import Navbar from "./pages/NavBar";
+import Topmost from "./components/Topmost";
+import Appointement from "./pages/Appointement";
+import PaymentSuccess from "./pages/PaymentSuccess";
+import ProtectedRoute from "./utils/ProtectedRoute";
+import PublicRoute from "./utils/PublicRoute";
+import "./App.css";
+import "./global.css";
 
 function App() {
   const action = useNavigationType();
   const location = useLocation();
-  let pathname = location.pathname;
-  const { isLoading, isLoggedIn, error } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const { isLoading } = useSelector((state) => state.user);
+
   useEffect(() => {
     dispatch(checkUserStatus());
-  }, [dispatch, pathname]);
+  }, []);
 
   useEffect(() => {
     if (action !== "POP") {
       window.scrollTo(0, 0);
     }
-  }, [action, pathname]);
+  }, [action, location.pathname]);
 
   useEffect(() => {
     let title = "";
     let metaDescription = "";
 
-    switch (pathname) {
+    switch (location.pathname) {
       case "/":
-        title = "";
-        metaDescription = "";
+        title = "Home";
+        metaDescription = "Welcome to Home page";
         break;
+      case "/home":
+        title = "Home";
+        metaDescription = "Welcome to Home page";
+        break;
+      case "/appointment":
+        title = "Appointment";
+        metaDescription = "Welcome to Appointment page";
+        break;
+      case "/login":
+        title = "Login";
+        metaDescription = "Login to your account";
+        break;
+      case "/signup":
+        title = "Signup";
+        metaDescription = "Create a new account";
+        break;
+      // Add more cases for other routes if needed
+      default:
+        title = "DocStream";
+        metaDescription = "DocStream description";
     }
 
     if (title) {
@@ -66,28 +81,27 @@ function App() {
         metaDescriptionTag.content = metaDescription;
       }
     }
-  }, [pathname]);
+  }, [location.pathname]);
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
+
   return (
     <>
-      {/* <Navbar /> */}
       <Topmost />
       <Navbar />
       <Routes>
-        {isLoggedIn && (
-          <>
-            {/* <Route element={<ProtectedRoute />}> */}
-              <Route path="/" element={<Home />} />
-              <Route path="/home" element={<Home />} />
-              <Route path="/appointment" element={<Appointement />} />
-              <Route path="/payment/success" element={<PaymentSuccess />} />
-            {/* </Route> */}
-          </>
-        )}
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/" element={<Navigate to="/home" replace />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/appointment" element={<Appointement />} />
+          <Route path="/payment/success" element={<PaymentSuccess />} />
+        </Route>
+        <Route element={<PublicRoute />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+        </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>
       <Toaster position="top-center" reverseOrder={false} />

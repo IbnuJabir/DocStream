@@ -4,6 +4,7 @@ const initialState = {
   dialog: false,
   successDialog: false,
   cancelDialog: false,
+  contactDialog: false,
 };
 
 const dialogSlice = createSlice({
@@ -28,6 +29,12 @@ const dialogSlice = createSlice({
     closeCancelDialog: (state) => {
       state.cancelDialog = false;
     },
+    openContactDialog: (state) => {
+      state.contactDialog = true;
+    },
+    closeContactDialog: (state) => {
+      state.contactDialog = false;
+    },
   },
 });
 
@@ -38,6 +45,8 @@ export const {
   closeSuccessDialog,
   openCancelDialog,
   closeCancelDialog,
+  openContactDialog,
+  closeContactDialog
 } = dialogSlice.actions;
 
 export default dialogSlice.reducer;

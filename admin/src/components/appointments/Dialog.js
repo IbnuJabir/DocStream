@@ -37,6 +37,8 @@ import {
   closeSuccessDialog,
   openCancelDialog,
   closeCancelDialog,
+  openContactDialog,
+  closeContactDialog,
 } from "../../state/dialogSlice";
 import { getAllDoctors } from "../../state/doctorSlice";
 import { getAllAppointments } from "../../state/appointmentSlice";
@@ -50,11 +52,13 @@ export default function AlertDialogSlide({ content, selectedRows }) {
   const [appointmentTime, setAppointmentTime] = React.useState(null);
   const [doctorName, setDoctorName] = React.useState("");
   const [meetingLink, setMeetingLink] = React.useState("");
+  const [contactMessage, setContactMessage] = React.useState("");
   const [docEmail, setDocEmail] = React.useState("");
+  const [successMessage, setSuccessMessage] = React.useState("");
   const [currentAppointmentIndex, setCurrentAppointmentIndex] =
     React.useState(0);
 
-  const { dialog, successDialog, cancelDialog } = useSelector(
+  const { dialog, successDialog, cancelDialog, contactDialog } = useSelector(
     (store) => store.dialog
   );
   const { appointments } = useSelector((store) => store.appointment);
@@ -66,6 +70,7 @@ export default function AlertDialogSlide({ content, selectedRows }) {
     doctorName: "",
     appointmentTime: "",
     meetingLink: "",
+    contactMessage: "",
   });
 
   const filteredAppointments = appointments.filter((appointment) =>
@@ -75,7 +80,11 @@ export default function AlertDialogSlide({ content, selectedRows }) {
   React.useEffect(() => {
     dispatch(getAllDoctors());
   }, [dispatch, dialog, successDialog, cancelDialog]);
-
+  // React.useEffect(() => {
+  //   if (dialog || cancelDialog || contactDialog) {
+  //     dispatch(closeSuccessDialog());
+  //   }
+  // }, [dispatch, dialog, successDialog, cancelDialog, contactDialog]);
   const handleApproval = async () => {
     const currentAppointment = filteredAppointments[currentAppointmentIndex];
     const formattedDate = dayjs(currentAppointment.selectedDate).format(
@@ -108,7 +117,7 @@ export default function AlertDialogSlide({ content, selectedRows }) {
       appointmentTime,
       doctorName,
       meetingLink,
-      docEmail
+      docEmail,
     };
 
     try {
@@ -119,6 +128,9 @@ export default function AlertDialogSlide({ content, selectedRows }) {
       setAppointmentTime(null);
       setDoctorName("");
       setMeetingLink("");
+      setSuccessMessage(
+        "Appointment is successfully approved and the details sent to"
+      );
       dispatch(openSuccessDialog());
     } catch (error) {
       console.error("Error while Approving the appointment:", error);
@@ -126,17 +138,40 @@ export default function AlertDialogSlide({ content, selectedRows }) {
   };
 
   const handleSuccessDialogClose = () => {
-    dispatch(closeSuccessDialog());
+    dispatch(closeContactDialog());
     setCurrentAppointmentIndex((prevIndex) => prevIndex + 1);
-    if (currentAppointmentIndex >= filteredAppointments.length - 1) {
+    if (currentAppointmentIndex >= filteredAppointments.length) {
+      dispatch(closeContactDialog());
       dispatch(closeDialog());
-    } else dispatch(openDialog());
+      dispatch(closeSuccessDialog());
+    } else {
+      dispatch(openContactDialog());
+      dispatch(openDialog());
+    }
   };
-  const handleCancelDialogClose = () => {
-    dispatch(closeCancelDialog());
-    setCurrentAppointmentIndex((prevIndex) => prevIndex + 1);
-    if (currentAppointmentIndex < filteredAppointments.length - 1) {
-      dispatch(openCancelDialog());
+
+  const handleContactDialogClose = async () => {
+    const currentAppointment = filteredAppointments[currentAppointmentIndex];
+    let newError = { contactMessage: "" };
+    if (!contactMessage) {
+      newError.contactMessage = "Please drop a message first";
+    }
+    if (newError.contactMessage) {
+      setErrors(newError);
+      return;
+    }
+    const data = {
+      currentAppointment,
+      contactMessage,
+    };
+    try {
+      await axios.post("http://localhost:4000/appointment/contact", data);
+      setSuccessMessage("Your Message Successfully sent to ");
+      setContactMessage("");
+      dispatch(closeContactDialog());
+      dispatch(openSuccessDialog());
+    } catch (error) {
+      console.error("Error while contacting the client:", error);
     }
   };
 
@@ -147,7 +182,7 @@ export default function AlertDialogSlide({ content, selectedRows }) {
       {currentAppointment && (
         <>
           <Dialog
-            open={dialog && !successDialog && !cancelDialog}
+            open={dialog && !successDialog && !cancelDialog & !contactDialog}
             TransitionComponent={Transition}
             keepMounted
             onClose={() => dispatch(closeDialog())}
@@ -212,7 +247,7 @@ export default function AlertDialogSlide({ content, selectedRows }) {
                         <MenuItem
                           key={row._id}
                           value={`Dr. ${row.firstName} ${row.lastName}`}
-                          onClick={()=>setDocEmail(row.email)}
+                          onClick={() => setDocEmail(row.email)}
                         >
                           {`Dr. ${row.firstName} ${row.lastName}`}
                         </MenuItem>
@@ -266,7 +301,7 @@ export default function AlertDialogSlide({ content, selectedRows }) {
           </Dialog>
 
           <Dialog
-            open={successDialog && !cancelDialog}
+            open={successDialog && !cancelDialog && !contactDialog && !dialog}
             TransitionComponent={Transition}
             keepMounted
             onClose={() => dispatch(closeSuccessDialog())}
@@ -290,8 +325,7 @@ export default function AlertDialogSlide({ content, selectedRows }) {
                     marginBottom: "16px",
                   }}
                 >
-                  Appointment is successfully approved and the details sent to{" "}
-                  <br></br>
+                  {successMessage} <br></br>
                   <Box
                     component="span"
                     sx={{ color: "#159eec", fontWeight: "bold" }}
@@ -317,7 +351,7 @@ export default function AlertDialogSlide({ content, selectedRows }) {
             </DialogTitle>
           </Dialog>
           <Dialog
-            open={cancelDialog}
+            open={cancelDialog && !contactDialog}
             TransitionComponent={Transition}
             keepMounted
             onClose={() => dispatch(closeCancelDialog())}
@@ -349,10 +383,10 @@ export default function AlertDialogSlide({ content, selectedRows }) {
                       >
                         {`${currentAppointment.firstName} ${currentAppointment.lastName}`}
                       </Box>
-                      's Appointment is successfully suspended
+                      's Appointment is successfully suspended and email sent.
                     </span>
                   ) : (
-                    "All selected Appointments successfully suspended"
+                    "All selected Appointments successfully suspended and email sent to the client"
                   )}
                 </DialogContentText>
 
@@ -373,62 +407,72 @@ export default function AlertDialogSlide({ content, selectedRows }) {
             </DialogTitle>
           </Dialog>
 
-          {/* <Dialog
-            open={cancelDialog}
+          <Dialog
+            open={contactDialog}
             TransitionComponent={Transition}
             keepMounted
-            onClose={() => dispatch(closeCancelDialog())}
+            onClose={() => dispatch(closeContactDialog())}
             aria-describedby="alert-dialog-slide-description"
             key={currentAppointment._id}
           >
-            <DialogTitle sx={{ padding: 0 }}>
-              <Alert
-                severity="error"
-                sx={{
-                  padding: "16px 24px",
-                  display: "flex",
-                  alignItems: "top",
-                }}
-              >
-                <DialogContentText
-                  sx={{
-                    fontSize: "1rem",
-                    fontWeight: "bold",
-                    textAlign: "center",
-                    marginBottom: "16px",
-                  }}
+            <DialogTitle>
+              <Alert severity="info" sx={{ marginBottom: 4 }}>
+                {content}{" "}
+                <Box
+                  component="span"
+                  sx={{ color: "#159eec", fontWeight: "bold" }}
                 >
-                  {selectedRows.length === 1 ? (
-                    <span>
-                      <Box
-                        component="span"
-                        sx={{ color: "#159eec", fontWeight: "bold" }}
-                      >
-                        {`${currentAppointment.firstName} ${currentAppointment.lastName}`}
-                      </Box>
-                      's Appointment is successfully suspended
-                    </span>
-                  ) : (
-                    "All selected Appointments successfully suspended"
-                  )}
-                </DialogContentText>
-
-                <DialogActions sx={{ padding: 0 }}>
-                  <Button
-                    onClick={() => dispatch(closeCancelDialog())}
-                    sx={{
-                      padding: "8px 16px",
-                      backgroundColor: "#159eec",
-                      color: "#fff",
-                      "&:hover": { backgroundColor: "#127abb" },
-                    }}
-                  >
-                    Ok
-                  </Button>
-                </DialogActions>
+                  {`${currentAppointment.firstName} ${currentAppointment.lastName}`}
+                </Box>{" "}
               </Alert>
             </DialogTitle>
-          </Dialog> */}
+            <DialogContent>
+              <DialogContentText
+                id="alert-dialog-slide-description"
+                sx={{ marginTop: 1 }}
+              >
+                <Stack spacing={2} direction="row" sx={{ marginBottom: 4 }}>
+                  <TextField
+                    type="text"
+                    variant="outlined"
+                    label="Message"
+                    onChange={(e) => setContactMessage(e.target.value)}
+                    value={contactMessage}
+                    fullWidth
+                    error={Boolean(errors.contactMessage)}
+                    helperText={errors.contactMessage}
+                    multiline
+                    rows={4} // Sets the minimum number of rows
+                    inputProps={{ minLength: 20 }} // Sets the minimum number of characters (columns)
+                  />
+                </Stack>
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button
+                sx={{
+                  padding: "8px 16px",
+                  backgroundColor: "#FF0000",
+                  color: "#fff",
+                  "&:hover": { backgroundColor: "#CC0000" },
+                }}
+                onClick={() => dispatch(closeContactDialog())}
+              >
+                Cancel
+              </Button>
+              <Button
+                sx={{
+                  padding: "8px 16px",
+                  backgroundColor: "#159eec",
+                  color: "#fff",
+                  "&:hover": { backgroundColor: "#127abb" },
+                }}
+                onClick={handleContactDialogClose}
+              >
+                Send
+              </Button>
+            </DialogActions>
+          </Dialog>
         </>
       )}
     </>

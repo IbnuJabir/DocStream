@@ -1,6 +1,11 @@
 const Appointment = require("../models/Appointment");
 const axios = require("axios");
-const { EmailToClient, EmailToDoctor } = require("../services/EmailSender");
+const {
+  EmailToClient,
+  EmailToDoctor,
+  SuspendedEmail,
+  ContactEmail,
+} = require("../services/EmailSender");
 const getAllAppointments = async (req, res) => {
   try {
     const appointments = await Appointment.find().sort({
@@ -18,6 +23,57 @@ const getAllAppointments = async (req, res) => {
     return res.status(500).send("Server error");
   }
 };
+
+const getAllAppointmentsWithInterval = async (req, res) => {
+  try {
+    const appointments = await Appointment.find().sort({ createdAt: -1 });
+
+    if (!appointments || appointments.length === 0) {
+      console.log("No Appointments");
+      return res.status(404).send("Appointments not found");
+    }
+
+    // Helper function to get the day of the month from a date
+    const getDayOfMonth = (dateStr) => {
+      return new Date(dateStr).getUTCDate();
+    };
+
+    // Initialize the result object with intervals
+    const result = {
+      '1-5': 0,
+      '6-10': 0,
+      '11-15': 0,
+      '16-20': 0,
+      '21-25': 0,
+      '26-30': 0,
+    };
+
+    // Iterate over each appointment
+    appointments.forEach(appointment => {
+      const day = getDayOfMonth(appointment.createdAt);
+      
+      if (day >= 1 && day <= 5) {
+        result['1-5']++;
+      } else if (day >= 6 && day <= 10) {
+        result['6-10']++;
+      } else if (day >= 11 && day <= 15) {
+        result['11-15']++;
+      } else if (day >= 16 && day <= 20) {
+        result['16-20']++;
+      } else if (day >= 21 && day <= 25) {
+        result['21-25']++;
+      } else if (day >= 26 && day <= 30) {
+        result['26-30']++;
+      }
+    });
+
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error("Error fetching appointments:", error);
+    return res.status(500).send("Server error");
+  }
+};
+
 
 const getSingleAppointment = async (req, res) => {
   console.log("from getSingleAppointment");
@@ -103,10 +159,13 @@ const suspend = async (req, res) => {
           { $set: { status: "suspended" } },
           { new: true } // Ensure we get the updated document
         );
+        await SuspendedEmail({
+          updatedAppointment,
+        });
+        console.log("updatedAppointment", updatedAppointment);
         return updatedAppointment;
       })
     );
-
     res.json(updatedAppointments);
   } catch (error) {
     console.error("Error while updating appointments:", error);
@@ -114,11 +173,26 @@ const suspend = async (req, res) => {
   }
 };
 
+const contact = async (req, res) => {
+  const { currentAppointment, contactMessage } = req.body;
+  try {
+    await ContactEmail({
+      currentAppointment,
+      contactMessage,
+    });
+    res.json({ message: contactMessage });
+  } catch (error) {
+    console.error("Error while updating appointments:", error);
+    res.status(500).json({ error: "Failed to update appointments" });
+  }
+};
 module.exports = {
   getAllAppointments,
+  getAllAppointmentsWithInterval,
   getBookedAppointments,
   getSingleAppointment,
   addAppointment,
   approve,
   suspend,
+  contact,
 };

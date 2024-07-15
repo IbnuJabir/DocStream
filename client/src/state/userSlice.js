@@ -4,7 +4,7 @@ import axios from "axios";
 const initialState = {
   isLoggedIn: false,
   error: null,
-  isLoading: false,
+  isLoading: true, // Initially true to indicate loading state
 };
 
 // Thunk for checking user authentication status
@@ -55,16 +55,16 @@ export const logout = createAsyncThunk(
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(checkUserStatus.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(checkUserStatus.fulfilled, (state) => {
+      .addCase(checkUserStatus.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isLoggedIn = true;
+        state.error = null;
       })
       .addCase(checkUserStatus.rejected, (state, action) => {
         state.isLoading = false;
@@ -74,7 +74,7 @@ const userSlice = createSlice({
       .addCase(login.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(login.fulfilled, (state) => {
+      .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isLoggedIn = true;
         state.error = null;

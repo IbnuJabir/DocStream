@@ -38,6 +38,8 @@ import {
   closeSuccessDialog,
   openCancelDialog,
   closeCancelDialog,
+  openContactDialog,
+  closeContactDialog,
 } from "../../state/dialogSlice";
 
 const AppointmentDataTable = () => {
@@ -48,7 +50,7 @@ const AppointmentDataTable = () => {
     (store) => store.appointment
   );
 
-  const { dialog, successDialog, cancelDialog } = useSelector(
+  const { dialog, successDialog, cancelDialog, contactDialog } = useSelector(
     (store) => store.dialog
   );
 
@@ -186,40 +188,6 @@ const AppointmentDataTable = () => {
       height: 28,
     },
     renderDetailPanel: ({ row }) => <AppointmentDetails row={row} />,
-    // renderRowActionMenuItems: ({ closeMenu }) => [
-    //   <MenuItem
-    //     key={0}
-    //     onClick={() => {
-    //       // View profile logic...
-    //       closeMenu();
-    //     }}
-    //     sx={{ m: 0 }}
-    //   >
-    //     <Button
-    //       color="success"
-    //       //   onClick={handleActivate}
-    //       variant="contained"
-    //     >
-    //       Approve
-    //     </Button>
-    //   </MenuItem>,
-    //   <MenuItem
-    //     key={1}
-    //     onClick={() => {
-    //       // Send email logic...
-    //       closeMenu();
-    //     }}
-    //     sx={{ m: 0 }}
-    //   >
-    //     <Button
-    //       color="error"
-    //       // onClick={handleDeactivate}
-    //       variant="contained"
-    //     >
-    //       Cancel
-    //     </Button>
-    //   </MenuItem>,
-    // ],
     renderTopToolbar: ({ table }) => {
       const handleDeactivate = async () => {
         table.getSelectedRowModel().flatRows.forEach((row) => {
@@ -246,12 +214,12 @@ const AppointmentDataTable = () => {
         dispatch(openDialog());
       };
       const handleContact = () => {
-        table.getSelectedRowModel().flatRows.map((row) => {
-          // alert("contact " + row.getValue("name"));
-          setDialogContent("Contact with selected Appointments");
-          // setOpenDialog(true);
-        });
-        // setOpenDialog(true);
+        const selectedIds = table
+          .getSelectedRowModel()
+          .flatRows.map((row) => row.original._id);
+        setSelectedRows(selectedIds);
+        setDialogContent("Leave a message for");
+        dispatch(openContactDialog());
       };
 
       return (
@@ -309,7 +277,7 @@ const AppointmentDataTable = () => {
               </Button>
             </Box>
           </Box>
-          {dialog || successDialog || cancelDialog ? (
+          {dialog || successDialog || cancelDialog || contactDialog ? (
             <AlertDialogSlide
               content={dialogContent}
               selectedRows={selectedRows}
