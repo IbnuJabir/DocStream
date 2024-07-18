@@ -1,16 +1,16 @@
 import React from "react";
-import './top.css'
+import "./top.css";
 import avatar from "../../../assets/images/avatar.png";
 function Top() {
   return (
     <div className="top">
       <div className=" description">
         <h2>
-          Make a <span>difference</span> in the lives of others
+          Bridging <span>Healthcare</span> Beyond Distance.
         </h2>
         <p>
-          Health is one of the most important things for us therefore
-          immediately check your health for your good
+          Make a <span>difference</span> in the lives of others Health. check
+          your health for your good
         </p>
         <button>Book Appointment</button>
       </div>

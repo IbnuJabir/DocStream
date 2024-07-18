@@ -7,4 +7,47 @@
     background-image: url('../../../assets/images/footer.png');
     background-size: cover;
     background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 2rem;
+    gap: 2rem;
+}
+
+.docstream,
+.useful_links,
+.contact,
+.newslatter {
+    width: 25%;
+    height: 100%;
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    flex-direction: column;
+    color: #fff;
+    gap: 2rem;
+}
+.useful_links, .useful_links ul {
+    gap: 1rem;
+}
+.useful_links li {
+    list-style-type:none;
+}
+.useful_links a{
+    text-decoration: none;
+}
+.docstream img {
+    width: 100%;
+    height: 50px;
+}
+
+.contact {
+    gap: 2rem !important;
+
+}
+.contact span {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: .5rem;
 }

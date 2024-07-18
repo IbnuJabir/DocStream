@@ -13,6 +13,8 @@ import Navbar from "../navbar/Navbar";
 import Services from "./services/Services";
 import Offer from "./offer/Offer";
 import Experts from "./experts/Experts";
+import About from "./about/About";
+
 function Home() {
   return (
     <div className="home">
@@ -25,6 +27,7 @@ function Home() {
       </section> */}
       <Top />
       <Offer />
+      <About />
       <Services />
       <Experts />
       <Footer />
