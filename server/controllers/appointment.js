@@ -33,37 +33,34 @@ const getAllAppointmentsWithInterval = async (req, res) => {
       return res.status(404).send("Appointments not found");
     }
 
-    // Helper function to get the day of the month from a date
-    const getDayOfMonth = (dateStr) => {
-      return new Date(dateStr).getUTCDate();
+    // Initialize the result object with 5-hour intervals
+    const result = {
+      "00-05": 0,
+      "05-10": 0,
+      "10-15": 0,
+      "15-20": 0,
+      "20-24": 0,
     };
 
-    // Initialize the result object with intervals
-    const result = {
-      '1-5': 0,
-      '6-10': 0,
-      '11-15': 0,
-      '16-20': 0,
-      '21-25': 0,
-      '26-30': 0,
+    // Helper function to get the hour from a date
+    const getHourOfDay = (dateStr) => {
+      return new Date(dateStr).getUTCHours();
     };
 
     // Iterate over each appointment
-    appointments.forEach(appointment => {
-      const day = getDayOfMonth(appointment.createdAt);
-      
-      if (day >= 1 && day <= 5) {
-        result['1-5']++;
-      } else if (day >= 6 && day <= 10) {
-        result['6-10']++;
-      } else if (day >= 11 && day <= 15) {
-        result['11-15']++;
-      } else if (day >= 16 && day <= 20) {
-        result['16-20']++;
-      } else if (day >= 21 && day <= 25) {
-        result['21-25']++;
-      } else if (day >= 26 && day <= 30) {
-        result['26-30']++;
+    appointments.forEach((appointment) => {
+      const hour = getHourOfDay(appointment.createdAt);
+
+      if (hour >= 0 && hour < 5) {
+        result["00-05"]++;
+      } else if (hour >= 5 && hour < 10) {
+        result["05-10"]++;
+      } else if (hour >= 10 && hour < 15) {
+        result["10-15"]++;
+      } else if (hour >= 15 && hour < 20) {
+        result["15-20"]++;
+      } else if (hour >= 20 && hour < 24) {
+        result["20-24"]++;
       }
     });
 
@@ -74,7 +71,27 @@ const getAllAppointmentsWithInterval = async (req, res) => {
   }
 };
 
-
+const getUsersAppointments = async (req, res) => {
+  const { userEmail } = req.body;
+  console.log("userEmail:", userEmail);
+  
+  try {
+    const userAppointments = await Appointment.find({ email: userEmail })
+      .sort({ createdAt: -1 });
+    
+    console.log("Fetched Appointments:", userAppointments);
+    
+    if (!userAppointments || userAppointments.length === 0) {
+      console.log("No user Appointments found");
+      return res.status(404).send("You have No Appointments!");
+    }
+    
+    return res.status(200).json(userAppointments);
+  } catch (error) {
+    console.error("Error fetching appointments:", error);
+    return res.status(500).send("Server error");
+  }
+};
 const getSingleAppointment = async (req, res) => {
   console.log("from getSingleAppointment");
   console.log(req.params);
@@ -189,6 +206,7 @@ const contact = async (req, res) => {
 module.exports = {
   getAllAppointments,
   getAllAppointmentsWithInterval,
+  getUsersAppointments,
   getBookedAppointments,
   getSingleAppointment,
   addAppointment,

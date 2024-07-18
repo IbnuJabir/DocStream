@@ -1,10 +1,19 @@
 @import url("https://fonts.googleapis.com/css2?family=Yeseva+One:wght@400&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap");
+
 body {
   margin: 0;
   line-height: normal;
 }
+
 :root {
+  /* main colors */
+  --main: #003639;
+  --sub: #1DA0FF;
+  --sub-hover: #187fc8;
+  --bkg: #f5f5f5;
+
+
   /* fonts */
   --body: "Work Sans";
   --display-2: "Yeseva One";

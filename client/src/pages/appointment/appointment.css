@@ -1,0 +1,196 @@
+@import url("https://fonts.googleapis.com/css2?family=Yeseva+One:wght@400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+
+body {
+  margin: 0;
+  line-height: normal;
+  font-family: var(--body);
+  background-color: #f5f5f5;
+}
+
+.appointment_container {
+  display: flex;
+  align-items: top;
+  justify-content: center;
+  width: 100%;
+  background-color: var(--color-gray-100);
+  background-color: #f5f5f5;
+  font-family: "Quicksand" !important;
+  padding: 0;
+  position: relative;
+}
+
+.left_Container {
+  width: 45%;
+  display: flex;
+  align-items: top;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+  height: 100lvh;
+  left: 0;
+  top: 0;
+}
+
+.left_side {
+  flex: 2;
+  font-family: "Quicksand" !important;
+  background-image: url('../../assets/images/videoDoc.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: right;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
+.left_side p {
+  text-align: right;
+  padding-right: 5px;
+}
+
+.left_side p:nth-of-type(1) {
+  font-size: 60px;
+  color: var(--primary);
+}
+
+.left_side p:nth-of-type(2) {
+  font-size: 30px;
+  font-weight: 900;
+  color: var(--secondary);
+}
+
+.left_side p:nth-of-type(3) {
+  font-size: 50px;
+  color: var(--primary);
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--padding-16xl) var(--padding-6xl);
+  background: var(--white);
+  border-radius: 5px;
+  /* box-shadow: -6px -4px 6px var(--color-gray-200); */
+  width: 55%;
+  height: fit-content;
+  background-color: #fff;
+  position: relative;
+  right: 0;
+  overflow-y: scroll;
+  padding-top: 2rem;
+  height: 100vh;
+}
+
+.main h1 {
+  font-family: var(--display-2);
+  font-size: var(--font-size-29xl);
+  color: var(--primary);
+  margin-bottom: var(--gap-xl);
+}
+
+form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-xl);
+}
+
+form .MuiFormControl-root {
+  width: 100%;
+}
+
+form label {
+  font-size: var(--caption-size);
+  color: var(--primary);
+  margin-bottom: var(--gap-3xs);
+}
+
+input[type="date"] {
+  width: 100%;
+  padding: var(--padding-smi);
+  font-size: var(--body-size);
+  background-color: var(--accent);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--br-8xs);
+  outline: none;
+}
+
+textarea {
+  width: 100%;
+  padding: var(--padding-smi);
+  font-size: var(--body-size);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--br-8xs);
+  resize: vertical;
+}
+
+.btn-primary {
+  background-color: var(--sub);
+  color: var(--white);
+  padding: var(--padding-smi) var(--padding-16xl);
+  font-size: var(--body-size);
+  border: none;
+  border-radius: var(--br-8xs);
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: var(--sub-hover);
+}
+
+.MuiFormControlLabel-root {
+  align-items: center;
+}
+
+.MuiFormControlLabel-label {
+  display: flex;
+  align-items: center;
+}
+
+.MuiFormControlLabel-label img {
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+.MuiChip-root {
+  margin: 2px;
+}
+
+.MuiCircularProgress-root {
+  color: var(--primary);
+}
+
+@media (max-width: 768px) {
+  .main {
+    padding: var(--padding-xl);
+  }
+
+  .main h1 {
+    font-size: var(--font-size-17xl);
+  }
+}
+
+
+/*     My-Appointments       */
+.my_appointments{
+  background-color: #f5f5f1;
+}
+.my_appointments h2 {
+  text-align: center;
+  font-weight: bold;
+}
+.my_appointments > a {
+  text-align: right;
+  text-decoration: none;
+  color: #fff;
+  background-color:var(--sub);;
+  padding: .4rem 1rem;
+  border-radius: 1rem;
+  margin-left: 1rem;
+}

@@ -40,7 +40,7 @@ const Navbar = () => {
               Home
             </NavLink>
             <NavLink
-              to="/aboutus"
+              to="#aboutus"
               activeClassName="active"
               onClick={hideNavbar}
             >

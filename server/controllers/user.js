@@ -6,25 +6,29 @@ const ClientModel = require("../models/ClientModel");
 const SECRET = process.env.TOKEN_SECRET;
 const maxAge = 1 * 24 * 60 * 60; // has age of 1 day (24hrs)
 
-const createToken = (id) => {
-  return jwt.sign({ id }, SECRET, {
+const createToken = (id, email) => {
+  return jwt.sign({ id, email }, SECRET, {
     expiresIn: maxAge,
   });
 };
-
 const userLogIn = async (req, res) => {
   const { email, password } = req.body;
   try {
     // Find the user by email
-    const user = await ClientModel.findOne({ email: email });
+    const user = await ClientModel.findOne({ email });
 
     if (user) {
       // Compare the provided password with the stored hashed password
       const auth = await bcrypt.compare(password, user.password);
       if (auth) {
-        const token = createToken(user._id);
-        res.cookie("token", token, { httpOnly: true, maxAge: maxAge * 1000 });
-        return res.status(200).json({ ...user.toObject(), isLogin: true });
+        const token = createToken(user._id, user.email);
+        res.cookie("token", token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production", // Use secure flag in production
+          sameSite: "strict", // Prevent CSRF attacks
+          maxAge: maxAge * 1000, // maxAge in milliseconds
+        });
+        return res.status(200).json({ email: user.email, isLogin: true });
       } else {
         return res.status(400).json({ message: "Incorrect password" });
       }
@@ -32,10 +36,8 @@ const userLogIn = async (req, res) => {
       return res.status(400).json({ message: "Email doesn't exist" });
     }
   } catch (error) {
-    // console.error("Error during login:", error);
-    res
-      .status(500)
-      .json({ message: "Internal server error", error: error.message });
+    console.error("Error during login:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 const userSignUp = async (req, res) => {
@@ -69,7 +71,7 @@ const userSignUp = async (req, res) => {
 
     // Create a new user if no user with the given email or username exists
     const newUser = await ClientModel.create(req.body);
-    const token = createToken(newUser._id);
+    // const token = createToken(newUser._id);
     // res.cookie("token", token, { httpOnly: true, maxAge: maxAge * 1000 });
     // console.log(newUser);
     res.status(201).json({ newUser });
@@ -93,7 +95,9 @@ const home = async (req, res) => {
 };
 
 const checkAuth = async (req, res) => {
-  res.status(200).json({ message: "Authentic user" }); // Send user data as response
+  const { email } = req.user;
+  // console.log("req.user", req.user);
+  res.status(200).json({ userEmail: email, message: "Authentic user" }); // Send user data as response
   // console.log("Authentic");
 };
 

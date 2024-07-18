@@ -3,6 +3,7 @@ const authMiddleWare = require("../middleware/authMiddleware");
 const {
     getAllAppointments,
     getAllAppointmentsWithInterval,
+    getUsersAppointments,
     getBookedAppointments,
     getSingleAppointment,
     addAppointment,
@@ -14,6 +15,7 @@ const appoinmentRoute = express.Router();
 
 appoinmentRoute.get("/getAll", getAllAppointments);
 appoinmentRoute.get("/getAllAppointmentsWithInterval", getAllAppointmentsWithInterval);
+appoinmentRoute.post("/getUsersAppointments", getUsersAppointments);
 appoinmentRoute.get("/booked", getBookedAppointments);
 appoinmentRoute.get("/:id", getSingleAppointment);
 appoinmentRoute.post("/addNew", addAppointment);

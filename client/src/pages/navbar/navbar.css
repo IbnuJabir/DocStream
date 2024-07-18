@@ -1,0 +1,140 @@
+/* Base styles */
+.nav {
+  width: 100%;
+  background-color: #f5f5f5;
+  padding: 0 30px;
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+  height: 60px;
+}
+
+.navbar {
+  height: 60px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #f5f5f5;
+  color: #1DA0FF;
+  width: 100%;
+}
+
+.logo {
+  margin-left: 1rem;
+}
+
+.logo img {
+  width: 250px;
+  height: 30px;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.navbar-link {
+  color: #003639;
+  /* Text color */
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.navbar-link:hover,
+.navbar-link:active,
+.navbar-link.isActive {
+  /* background-color: #1f2b6c; Secondary color */
+  color: var(--sub);
+}
+
+.navbar-appointment {
+  display: flex;
+  align-items: center;
+}
+
+.appointment-button {
+  background-color: var(--sub);
+  /* Secondary color */
+  color: #f1f1f1;
+  /* Text color */
+  padding: 10px 20px;
+  border-radius: 0 10px 0 10px;
+  cursor: pointer;
+}
+
+.nav_btn {
+  background-color: var(--sub);
+  color: var(--bkg);
+  border: none;
+  padding: .2rem 1rem;
+  border-radius: 2rem;
+}
+
+.appointment-button:hover,
+.nav_btn:hover {
+  background-color: var(--sub-hover);
+}
+
+.mobile_btn_container {
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+
+  .navbar-links,
+  .btn_container {
+    display: none;
+  }
+
+  .navbar {
+    justify-content: space-between;
+  }
+
+  .menu-icon {
+    display: block;
+    font-size: 2em;
+    cursor: pointer;
+  }
+}
+
+@media (min-width: 769px) {
+  .menu-icon {
+    display: none;
+  }
+}
+
+/* Mobile menu */
+.mobile-menu {
+  display: flex;
+  flex-direction: column;
+  background-color: #f1f1f1;
+  /* Main color */
+  position: absolute;
+  top: 60px;
+  /* Adjust based on your navbar height */
+  width: 100%;
+  left: 0;
+  height: 0;
+  overflow: hidden;
+  transition: height .3s ease-in-out;
+}
+
+.mobile-menu.open {
+  height: 330px;
+  /* Adjust based on the content height */
+}
+
+.mobile-menu.closed {
+  height: 0;
+}
+
+.mobile-menu .navbar-link {
+  padding: 15px;
+  border-bottom: .1px solid gray;
+  /* Secondary color */
+}

@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
+  userEmail: null,
   isLoggedIn: false,
   error: null,
   isLoading: true, // Initially true to indicate loading state
@@ -37,6 +38,21 @@ export const login = createAsyncThunk(
   }
 );
 
+// Thunk for user signup
+export const signup = createAsyncThunk(
+  "user/signup",
+  async (data, { rejectWithValue }) => {
+    try {
+      const result = await axios.post("/user/signup", data, {
+        withCredentials: true,
+      });
+      return result.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 // Thunk for user logout
 export const logout = createAsyncThunk(
   "user/logout",
@@ -45,6 +61,7 @@ export const logout = createAsyncThunk(
       const result = await axios.get("/user/logout", {
         withCredentials: true,
       });
+      console.log('user', result.data)
       return result.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -62,6 +79,7 @@ const userSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(checkUserStatus.fulfilled, (state, action) => {
+        state.userEmail = action.payload.userEmail
         state.isLoading = false;
         state.isLoggedIn = true;
         state.error = null;
@@ -95,6 +113,17 @@ const userSlice = createSlice({
       .addCase(logout.rejected, (state, action) => {
         state.isLoading = false;
         state.isLoggedIn = true;
+        state.error = action.payload;
+      })
+      .addCase(signup.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(signup.fulfilled, (state) => {
+        state.isLoading = false;
+        state.error = null;
+      })
+      .addCase(signup.rejected, (state, action) => {
+        state.isLoading = false;
         state.error = action.payload;
       });
   },

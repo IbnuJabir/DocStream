@@ -1,50 +1,63 @@
-import * as React from "react";
 import { useTheme } from "@mui/material/styles";
 import { LineChart, axisClasses } from "@mui/x-charts";
-
 import Title from "./Title";
 import axios from "axios";
+import { Alert } from "@mui/material";
+import { Fragment, useEffect, useState } from "react";
 
 // Generate Sales Data
 function createData(time, amount) {
   return { time, amount: amount ?? null };
 }
 
-const data = [
-  createData("0", 0),
-  createData("01-05", 300),
-  createData("06-10", 600),
-  createData("11-15", 800),
-  createData("16-20", 1500),
-  createData("21-25", 2000),
-  createData("26-30", 2400),
-  // createData("31-35", 2400),
-  // createData("36-40", 2500),
-  // createData("41-45", 2400),
-  // createData("46-50", 2500),
-];
-
 export default function Chart() {
+  const [appointmentData, setAppointmentData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const theme = useTheme();
-  const fetchApp = async () => {
-    try {
-      const result = await axios.get(
-        "/appointment/getAllAppointmentsWithInterval"
-      );
-      console.log(result.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  React.useEffect(() => {
-    fetchApp();
+
+  useEffect(() => {
+    const fetchAppointmentData = async () => {
+      try {
+        const response = await axios.get(
+          "/appointment/getAllAppointmentsWithInterval" // Adjust the URL to your actual endpoint
+        );
+        const fetchedData = response.data;
+
+        // Transform the fetched data into the required format
+        const transformedData = Object.entries(fetchedData).map(
+          ([time, amount]) => createData(time, amount)
+        );
+
+        setAppointmentData(transformedData);
+      } catch (error) {
+        console.log(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAppointmentData();
   }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return (
+      <div style={{ width: "100%", padding: 20}}>
+        <Alert severity="error">{error}</Alert>
+      </div>
+    );
+  }
+
   return (
-    <React.Fragment>
+    <Fragment>
       <Title>Today</Title>
       <div style={{ width: "100%", flexGrow: 1, overflow: "hidden" }}>
         <LineChart
-          dataset={data}
+          dataset={appointmentData}
           margin={{
             top: 16,
             right: 20,
@@ -67,8 +80,8 @@ export default function Chart() {
                 fill: theme.palette.text.primary,
               },
               tickLabelStyle: theme.typography.body2,
-              max: 2500,
-              tickNumber: 3,
+              max: Math.max(...appointmentData.map((data) => data.amount)) + 5,
+              tickNumber: 6,
             },
           ]}
           series={[
@@ -91,6 +104,6 @@ export default function Chart() {
           }}
         />
       </div>
-    </React.Fragment>
+    </Fragment>
   );
 }

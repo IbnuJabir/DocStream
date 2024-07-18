@@ -25,13 +25,6 @@ export default function Login({ isSignUpAllowed }) {
     }
   }, [error]);
 
-  // useEffect(() => {
-  //   console.log('isLogin', isLoggedIn)
-  //   if (isLoggedIn) {
-  //     toast.success("Successfully Logged In!");
-  //     navigate("/");
-  //   }
-  // }, [isLoggedIn, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

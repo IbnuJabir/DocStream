@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Navigate,
   Routes,
@@ -9,30 +9,33 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { checkUserStatus } from "./state/userSlice";
 import { Toaster } from "react-hot-toast";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import Home from "./pages/Home";
-import PageNotFound from "./pages/PageNotFound";
-import Navbar from "./pages/NavBar";
+import Login from "./pages/login/Login";
+import Signup from "./pages/signup/Signup";
+import Home from "./pages/home/Home";
+import PageNotFound from "./pages/pageNotFound/PageNotFound";
+import Navbar from "./pages/navbar/Navbar";
 import Topmost from "./components/Topmost";
-import Appointement from "./pages/Appointement";
-import PaymentSuccess from "./pages/PaymentSuccess";
+import Appointement from "./pages/appointment/Appointement";
+import PaymentSuccess from "./pages/payment/PaymentSuccess";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import PublicRoute from "./utils/PublicRoute";
+import RootPage from "./pages/RootPage";
 import "./App.css";
 import "./global.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import MyAppointments from "./pages/appointment/MyAppointments";
 
 function App() {
+  // const [userEmail, setUserEmail] = useState("");
   const action = useNavigationType();
   const location = useLocation();
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.user);
 
-  useEffect(() => {
-    dispatch(checkUserStatus());
-  }, []);
+
 
   useEffect(() => {
+    dispatch(checkUserStatus());
     if (action !== "POP") {
       window.scrollTo(0, 0);
     }
@@ -83,25 +86,26 @@ function App() {
     }
   }, [location.pathname]);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <>
-      <Topmost />
+      {/* <Topmost /> */}
       <Navbar />
+      {/* <RootPage /> */}
       <Routes>
         <Route element={<ProtectedRoute />}>
-          <Route path="/" element={<Navigate to="/home" replace />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/appointment" element={<Appointement />} />
+          <Route
+            path="/my-appointments"
+            element={<MyAppointments />}
+          />
           <Route path="/payment/success" element={<PaymentSuccess />} />
         </Route>
         <Route element={<PublicRoute />}>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
         </Route>
+        <Route path="/" element={<Navigate to="/home" replace />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/appointment" element={<Appointement />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
       <Toaster position="top-center" reverseOrder={false} />

@@ -1,0 +1,16 @@
+:root {
+    --main: #1ba344;
+    --sub: ;
+    --button: #1e873d;
+}
+
+.home {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: grey;
+    /* background-image: url('../assets//images/Group\ 123.png'); */
+    background-color: #f5f5f5;
+}

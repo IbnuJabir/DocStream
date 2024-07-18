@@ -1,21 +1,15 @@
 const jwt = require("jsonwebtoken");
-require("dotenv").config();
+const SECRET = process.env.TOKEN_SECRET;
 
 const authMiddleWare = (req, res, next) => {
   const token = req.cookies.token;
-  if (token) {
-    jwt.verify(token, process.env.TOKEN_SECRET, (error, decodedToken) => {
-      if (error) {
-        console.log(error.message);
-        res.status(401).json({ error: "No authorithy for this access" });
-      } else {
-        next();
-      }
-    });
-  } else {
-    // console.log("token not found")
-    res.status(401).json({ error: "No authorithy for this access" });
-  }
+  if (!token) return res.status(401).json({ error: "No authorized token found" });
+
+  jwt.verify(token, SECRET, (err, user) => {
+    if (err) return res.status(403).json({ error: "No authorithy for this access" });
+    req.user = user;
+    next();
+  });
 };
 
 module.exports = authMiddleWare;
