@@ -1,28 +1,28 @@
 {
   "files": {
-    "main.css": "/docstream/static/css/main.f787f530.css",
-    "main.js": "/docstream/static/js/main.f6b34dd2.js",
-    "static/js/453.258b012d.chunk.js": "/docstream/static/js/453.258b012d.chunk.js",
-    "static/media/videoDoc.png": "/docstream/static/media/videoDoc.6854d4a2b82fef10bbb0.png",
-    "static/media/Group 94.png": "/docstream/static/media/Group 94.7f5f6ba04f5b257fa8e1.png",
-    "static/media/doc9.jpg": "/docstream/static/media/doc9.0d1db1a61cc6d431cc37.jpg",
-    "static/media/home.png": "/docstream/static/media/home.dc56c8ea6cdf04d444a9.png",
-    "static/media/avatar.png": "/docstream/static/media/avatar.2be09b0bc963f2c480bb.png",
-    "static/media/barin.png": "/docstream/static/media/barin.51f5a70680b1a5e4c0e3.png",
-    "static/media/neuron.png": "/docstream/static/media/neuron.1d5b5e6550bfa62e7ccd.png",
-    "static/media/Rheumatology.png": "/docstream/static/media/Rheumatology.6ee0314e1adf8951d2af.png",
-    "static/media/cardiology.png": "/docstream/static/media/cardiology.e5e913670dcc6c530ab8.png",
-    "static/media/bed.png": "/docstream/static/media/bed.dba2b1e45fd9b3993c4a.png",
-    "static/media/hospital.png": "/docstream/static/media/hospital.285ebf5a11c52e32741f.png",
-    "static/media/sectionBack.png": "/docstream/static/media/sectionBack.62cea979cfb2ef758497.png",
-    "static/media/pharmacy.png": "/docstream/static/media/pharmacy.781e002673741d12bf13.png",
-    "index.html": "/docstream/index.html",
-    "main.f787f530.css.map": "/docstream/static/css/main.f787f530.css.map",
-    "main.f6b34dd2.js.map": "/docstream/static/js/main.f6b34dd2.js.map",
-    "453.258b012d.chunk.js.map": "/docstream/static/js/453.258b012d.chunk.js.map"
+    "main.css": "/DocStream/static/css/main.8eb42c1e.css",
+    "main.js": "/DocStream/static/js/main.1ee97fe0.js",
+    "static/js/453.258b012d.chunk.js": "/DocStream/static/js/453.258b012d.chunk.js",
+    "static/media/videoDoc.png": "/DocStream/static/media/videoDoc.6854d4a2b82fef10bbb0.png",
+    "static/media/Group 94.png": "/DocStream/static/media/Group 94.7f5f6ba04f5b257fa8e1.png",
+    "static/media/doc9.jpg": "/DocStream/static/media/doc9.0d1db1a61cc6d431cc37.jpg",
+    "static/media/home.png": "/DocStream/static/media/home.dc56c8ea6cdf04d444a9.png",
+    "static/media/avatar.png": "/DocStream/static/media/avatar.2be09b0bc963f2c480bb.png",
+    "static/media/barin.png": "/DocStream/static/media/barin.51f5a70680b1a5e4c0e3.png",
+    "static/media/neuron.png": "/DocStream/static/media/neuron.1d5b5e6550bfa62e7ccd.png",
+    "static/media/Rheumatology.png": "/DocStream/static/media/Rheumatology.6ee0314e1adf8951d2af.png",
+    "static/media/cardiology.png": "/DocStream/static/media/cardiology.e5e913670dcc6c530ab8.png",
+    "static/media/bed.png": "/DocStream/static/media/bed.dba2b1e45fd9b3993c4a.png",
+    "static/media/hospital.png": "/DocStream/static/media/hospital.285ebf5a11c52e32741f.png",
+    "static/media/sectionBack.png": "/DocStream/static/media/sectionBack.62cea979cfb2ef758497.png",
+    "static/media/pharmacy.png": "/DocStream/static/media/pharmacy.781e002673741d12bf13.png",
+    "index.html": "/DocStream/index.html",
+    "main.8eb42c1e.css.map": "/DocStream/static/css/main.8eb42c1e.css.map",
+    "main.1ee97fe0.js.map": "/DocStream/static/js/main.1ee97fe0.js.map",
+    "453.258b012d.chunk.js.map": "/DocStream/static/js/453.258b012d.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f787f530.css",
-    "static/js/main.f6b34dd2.js"
+    "static/css/main.8eb42c1e.css",
+    "static/js/main.1ee97fe0.js"
   ]
 }
