@@ -29,7 +29,7 @@ app.use(express.json());
 app.use(cors());
 app.use(cors(
   {
-      origin: ["https://docstream_api.vercel.app"],
+      origin: [""],
       methods: ["POST", "GET", "PUT", "DELETE"],
       credentials: true
   }
@@ -45,6 +45,10 @@ app.use("/doctor", doctorRoute);
 app.use("/admin", adminRoute);
 app.use("/unAvailableDates", unAvailableDatesRoute);
 app.use("/departments", departmentsRoute);
+
+app.get("/", (req, res) => {
+  res.json("Hello");
+})
 
 const PORT = process.env.PORT || 4000;
 mongoose
