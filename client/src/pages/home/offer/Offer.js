@@ -6,7 +6,7 @@ import appointment from "../../../assets/images/appointment.png"
 import solution from "../../../assets/images/solution.png"
 function Offer() {
   return (
-    <div className="offer">
+    <div id="offer" className="offer">
       <div className="offer_card">
         <img src={doctor} alt="#" />
         <p className="offer_title">Search Doctor</p>

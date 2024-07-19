@@ -34,6 +34,10 @@
   align-items: center;
 }
 
+.navbar-links a{
+  text-decoration: none;
+  color: var(--main);
+}
 .navbar-link {
   color: #003639;
   /* Text color */
@@ -43,8 +47,10 @@
 }
 
 .navbar-link:hover,
+.navbar-links a:hover,
 .navbar-link:active,
-.navbar-link.isActive {
+.navbar-link.isActive ,
+.navbar-links a.isActive {
   /* background-color: #1f2b6c; Secondary color */
   color: var(--sub);
 }

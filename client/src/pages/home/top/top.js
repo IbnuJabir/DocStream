@@ -1,9 +1,10 @@
 import React from "react";
 import "./top.css";
 import avatar from "../../../assets/images/avatar.png";
+import { Link } from "react-router-dom";
 function Top() {
   return (
-    <div className="top">
+    <div id="home" className="top">
       <div className=" description">
         <h2>
           Bridging <span>Healthcare</span> Beyond Distance.
@@ -12,7 +13,9 @@ function Top() {
           Make a <span>difference</span> in the lives of others Health. check
           your health for your good
         </p>
-        <button>Book Appointment</button>
+        <Link to="/appointment">
+          <button>Book Appointment</button>
+        </Link>
       </div>
     </div>
   );

@@ -1,33 +1,61 @@
-import React, { useState, useCallback } from "react";
-import { useNavigate, NavLink } from "react-router-dom";
+import React, { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import "./navbar.css";
 import logo from "../../assets/images/DocStream.png";
 import { logout } from "../../state/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
+
 function Navbar() {
   const navigate = useNavigate();
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { isLoading, isLoggedIn, error } = useSelector((state) => state.user);
+  const [activeSection, setActiveSection] = useState("home");
+  const { isLoggedIn } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
+  
   const onButtonContainerClick = useCallback(() => {
-    if(isLoggedIn){
+    if (isLoggedIn) {
       navigate("/my-appointments");
-    }else{
-
+    } else {
       navigate("/appointment");
     }
-  }, [navigate]);
+  }, [isLoggedIn, navigate]);
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!isMobileMenuOpen);
   };
+
   const handleLogout = async () => {
     dispatch(logout());
     toast.success("Successfully LoggedOut!");
     navigate("/login");
   };
+
+  const handleScroll = () => {
+    const sections = ["home", "aboutus", "services", "doctors", "contact"];
+    let currentSection = "home";
+
+    sections.forEach((section) => {
+      const element = document.getElementById(section);
+      if (element) {
+        const rect = element.getBoundingClientRect();
+        if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
+          currentSection = section;
+        }
+      }
+    });
+
+    setActiveSection(currentSection);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <section className="nav">
       <div className="navbar">
@@ -35,46 +63,36 @@ function Navbar() {
           <img src={logo} alt="logo" />
         </div>
         <div className="navbar-links">
-          <NavLink
-            className={({ isActive }) =>
-              isActive ? "navbar-link isActive" : "navbar-link"
-            }
-            to="/home"
+          <a
+            className={activeSection === "home" ? "navbar-link isActive" : "navbar-link"}
+            href="/home"
           >
             Home
-          </NavLink>
-          <NavLink
-            className={({ isActive }) =>
-              isActive ? "navbar-link isActive" : "navbar-link"
-            }
-            to="/aboutus"
+          </a>
+          <a
+            className={activeSection === "aboutus" ? "navbar-link isActive" : "navbar-link"}
+            href="#aboutus"
           >
             About Us
-          </NavLink>
-          <NavLink
-            className={({ isActive }) =>
-              isActive ? "navbar-link isActive" : "navbar-link"
-            }
-            to="/services"
+          </a>
+          <a
+            className={activeSection === "services" ? "navbar-link isActive" : "navbar-link"}
+            href="#services"
           >
             Services
-          </NavLink>
-          <NavLink
-            className={({ isActive }) =>
-              isActive ? "navbar-link isActive" : "navbar-link"
-            }
-            to="/doctors"
+          </a>
+          <a
+            className={activeSection === "doctors" ? "navbar-link isActive" : "navbar-link"}
+            href="#doctors"
           >
             Doctors
-          </NavLink>
-          <NavLink
-            className={({ isActive }) =>
-              isActive ? "navbar-link isActive" : "navbar-link"
-            }
-            to="/contact"
+          </a>
+          <a
+            className={activeSection === "contact" ? "navbar-link isActive" : "navbar-link"}
+            href="#contact"
           >
             Contact
-          </NavLink>
+          </a>
         </div>
         <div className="navbar-appointment">
           <div className="appointment-button" onClick={onButtonContainerClick}>
@@ -102,63 +120,48 @@ function Navbar() {
         </div>
       </div>
       <div className={`mobile-menu ${isMobileMenuOpen ? "open" : "closed"}`}>
-        <NavLink
-          className={({ isActive }) =>
-            isActive ? "navbar-link isActive" : "navbar-link"
-          }
-          to="/home"
-          onClick={toggleMobileMenu}
+        <a
+          className={activeSection === "home" ? "navbar-link isActive" : "navbar-link"}
+          href="/home"
         >
           Home
-        </NavLink>
-        <NavLink
-          className={({ isActive }) =>
-            isActive ? "navbar-link isActive" : "navbar-link"
-          }
-          to="/aboutus"
-          onClick={toggleMobileMenu}
+        </a>
+        <a
+          className={activeSection === "aboutus" ? "navbar-link isActive" : "navbar-link"}
+          href="#aboutus"
         >
           About Us
-        </NavLink>
-        <NavLink
-          className={({ isActive }) =>
-            isActive ? "navbar-link isActive" : "navbar-link"
-          }
-          to="/services"
-          onClick={toggleMobileMenu}
+        </a>
+        <a
+          className={activeSection === "services" ? "navbar-link isActive" : "navbar-link"}
+          href="#services"
         >
           Services
-        </NavLink>
-        <NavLink
-          className={({ isActive }) =>
-            isActive ? "navbar-link isActive" : "navbar-link"
-          }
-          to="/doctors"
-          onClick={toggleMobileMenu}
+        </a>
+        <a
+          className={activeSection === "doctors" ? "navbar-link isActive" : "navbar-link"}
+          href="#doctors"
         >
           Doctors
-        </NavLink>
-        <NavLink
-          className={({ isActive }) =>
-            isActive ? "navbar-link isActive" : "navbar-link"
-          }
-          to="/contact"
-          onClick={toggleMobileMenu}
+        </a>
+        <a
+          className={activeSection === "contact" ? "navbar-link isActive" : "navbar-link"}
+          href="#contact"
         >
           Contact
-        </NavLink>
+        </a>
         <div className="mobile_btn_container navbar-link">
           {isLoggedIn ? (
             <button className="nav_btn logout_btn" onClick={handleLogout}>
               LOGOUT
             </button>
           ) : (
-              <button
-                className="nav_btn signup_btn "
-                onClick={() => navigate("/login")}
-              >
-                SIGNUP
-              </button>
+            <button
+              className="nav_btn signup_btn"
+              onClick={() => navigate("/login")}
+            >
+              SIGNUP
+            </button>
           )}
         </div>
       </div>

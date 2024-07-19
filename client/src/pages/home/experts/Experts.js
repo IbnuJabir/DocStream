@@ -20,7 +20,7 @@ function Experts() {
   }
 
   return (
-    <div className="experts">
+    <div id="doctors" className="experts">
       <h1>Meet Our Experience Doctors</h1>
       <div className="doctors_container">
         <div className="doctors_grid">

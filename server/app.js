@@ -27,6 +27,13 @@ const authMiddleWare = require("./middleware/authMiddleware");
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(cors(
+  {
+      origin: ["https://docstream_api.vercel.app"],
+      methods: ["POST", "GET", "PUT", "DELETE"],
+      credentials: true
+  }
+));
 app.use(cookieParser());
 
 // app.use("/auth", authRoute);
@@ -41,7 +48,7 @@ app.use("/departments", departmentsRoute);
 
 const PORT = process.env.PORT || 4000;
 mongoose
-  .connect("mongodb://127.0.0.1:27017/client", {})
+  .connect(process.env.MONGO_DB_URL, {})
   .then(() => {
     app.listen(PORT, () => console.log(`server listening on port ${PORT}`));
   })

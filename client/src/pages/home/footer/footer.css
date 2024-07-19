@@ -35,6 +35,10 @@
 }
 .useful_links a{
     text-decoration: none;
+    color: #fff;
+}
+.useful_links a:hover {
+    color: var(--sub);
 }
 .docstream img {
     width: 100%;

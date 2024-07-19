@@ -17,7 +17,7 @@ import About from "./about/About";
 
 function Home() {
   return (
-    <div className="home">
+    <div id="home" className="home">
       {/* <h1>Hello</h1> */}
       {/* <MedicalExcellenceSection />
       <CareContainer />

@@ -88,9 +88,7 @@ function App() {
 
   return (
     <>
-      {/* <Topmost /> */}
       <Navbar />
-      {/* <RootPage /> */}
       <Routes>
         <Route element={<ProtectedRoute />}>
           <Route

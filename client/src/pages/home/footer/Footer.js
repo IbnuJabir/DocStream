@@ -7,7 +7,7 @@ import { FaPhoneAlt } from "react-icons/fa";
 
 function Footer() {
   return (
-    <section className="footer">
+    <section id="footer" className="footer">
       <div className="docstream">
         <img src={dostream} alt="#" />
         <p>
@@ -23,16 +23,16 @@ function Footer() {
             <a href="/home">Home</a>
           </li>
           <li>
-            <a href="/about">About Us</a>
+            <a href="#aboutus">About Us</a>
           </li>
           <li>
-            <a href="/services">Services</a>
+            <a href="#services">Services</a>
           </li>
           <li>
-            <a href="/doctors">Doctors</a>
+            <a href="#doctors">Doctors</a>
           </li>
           <li>
-            <a href="/contact">Contact</a>
+            <a href="#footer">Contact</a>
           </li>
         </ul>
       </div>
