@@ -12,7 +12,7 @@ export const getAllDepartments = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        "http://localhost:4000/departments/getAll"
+        `${process.env.DOCSTREAM_API_URL}/departments/getAll`
       );
       return response.data;
     } catch (error) {
@@ -27,7 +27,7 @@ export const addDepartment = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        "http://localhost:4000/departments/addNew",
+        `${process.env.DOCSTREAM_API_URL}/departments/addNew`,
         data
       );
       return response.data;
@@ -43,7 +43,7 @@ export const updateDepartment = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        "http://localhost:4000/departments/update",
+        `${process.env.DOCSTREAM_API_URL}/departments/update`,
         data
       );
       return response.data;
@@ -60,7 +60,7 @@ export const deleteDepartment = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        "http://localhost:4000/departments/delete",
+        `${process.env.DOCSTREAM_API_URL}/departments/delete`,
         { id }
       );
       return response.data;

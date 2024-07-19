@@ -18,13 +18,6 @@ import About from "./about/About";
 function Home() {
   return (
     <div id="home" className="home">
-      {/* <h1>Hello</h1> */}
-      {/* <MedicalExcellenceSection />
-      <CareContainer />
-      <Doctors />
-      <section id="aboutus">
-        <Button>Hello world</Button>
-      </section> */}
       <Top />
       <Offer />
       <About />

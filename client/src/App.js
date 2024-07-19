@@ -32,8 +32,6 @@ function App() {
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.user);
 
-
-
   useEffect(() => {
     dispatch(checkUserStatus());
     if (action !== "POP") {
@@ -55,7 +53,11 @@ function App() {
         metaDescription = "Welcome to Home page";
         break;
       case "/appointment":
-        title = "Appointment";
+        title = "New Appointment";
+        metaDescription = "Welcome to Appointment page";
+        break;
+      case "/my-appointments":
+        title = "My Appointment";
         metaDescription = "Welcome to Appointment page";
         break;
       case "/login":
@@ -91,10 +93,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route element={<ProtectedRoute />}>
-          <Route
-            path="/my-appointments"
-            element={<MyAppointments />}
-          />
+          <Route path="/my-appointments" element={<MyAppointments />} />
           <Route path="/payment/success" element={<PaymentSuccess />} />
         </Route>
         <Route element={<PublicRoute />}>

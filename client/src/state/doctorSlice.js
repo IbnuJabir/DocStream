@@ -11,7 +11,7 @@ export const getAllDoctors = createAsyncThunk(
   "doctor/getAll",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get("http://localhost:4000/doctor/getAll");
+      const response = await axios.get(`${process.env.DOCSTREAM_API_URL}/doctor/getAll`);
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -25,7 +25,7 @@ export const deleteDoctor = createAsyncThunk(
   "doctor/delete",
   async (id, { rejectWithValue }) => {
     try {
-      const response = await axios.post("http://localhost:4000/doctor/delete", { id });
+      const response = await axios.post(`${process.env.DOCSTREAM_API_URL}/doctor/delete`, { id });
       return response.data;
     } catch (error) {
       return rejectWithValue(

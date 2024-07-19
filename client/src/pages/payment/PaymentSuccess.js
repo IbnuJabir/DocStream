@@ -48,7 +48,7 @@ const PaymentSuccess = () => {
 
   return (
     <div className="whole_container">
-      <div className="container">
+      <div className="payment_container">
         <div className="docstram_logo">
           <span>Doc</span>
           <span className="dical">Stream</span>

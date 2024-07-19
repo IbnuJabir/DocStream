@@ -31,6 +31,8 @@ import {
   useTheme,
 } from "@mui/material";
 import AppointmentScheduler from "./AppoinmentScheduler";
+import google from '../../assets/images/google.png'
+import zoom from '../../assets/images/zoom.webp'
 function Appointement() {
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
@@ -297,7 +299,7 @@ function Appointement() {
                   label={
                     <span>
                       <img
-                        src="/google.png"
+                        src={google}
                         alt=""
                         style={{
                           verticalAlign: "middle",
@@ -314,7 +316,7 @@ function Appointement() {
                   label={
                     <span>
                       <img
-                        src="/zoom.webp"
+                        src={zoom}
                         alt=""
                         style={{
                           verticalAlign: "middle",
