@@ -27,13 +27,7 @@ const authMiddleWare = require("./middleware/authMiddleware");
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.use(cors(
-  {
-      origin: [""],
-      methods: ["POST", "GET", "PUT", "DELETE"],
-      credentials: true
-  }
-));
+app.use(cors());
 app.use(cookieParser());
 
 // app.use("/auth", authRoute);
@@ -48,7 +42,7 @@ app.use("/departments", departmentsRoute);
 
 app.get("/", (req, res) => {
   res.json("Hello");
-})
+});
 
 const PORT = process.env.PORT || 4000;
 mongoose
