@@ -24,8 +24,6 @@ const userLogIn = async (req, res) => {
         const token = createToken(user._id, user.email);
         res.cookie("token", token, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === "production", // Use secure flag in production
-          sameSite: "strict", // Prevent CSRF attacks
           maxAge: maxAge * 1000, // maxAge in milliseconds
         });
         return res.status(200).json({ email: user.email, isLogin: true });

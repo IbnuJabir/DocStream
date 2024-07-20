@@ -18,7 +18,11 @@ export const checkUserStatus = createAsyncThunk(
       });
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      if (error.response) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue({ message: error.message });
+      }
     }
   }
 );
@@ -33,7 +37,11 @@ export const login = createAsyncThunk(
       });
       return result.data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      if (error.response) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue({ message: error.message });
+      }
     }
   }
 );
@@ -48,7 +56,11 @@ export const signup = createAsyncThunk(
       });
       return result.data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      if (error.response) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue({ message: error.message });
+      }
     }
   }
 );
@@ -64,7 +76,11 @@ export const logout = createAsyncThunk(
       console.log('user', result.data)
       return result.data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      if (error.response) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue({ message: error.message });
+      }
     }
   }
 );
@@ -79,7 +95,7 @@ const userSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(checkUserStatus.fulfilled, (state, action) => {
-        state.userEmail = action.payload.userEmail
+        state.userEmail = action.payload.userEmail;
         state.isLoading = false;
         state.isLoggedIn = true;
         state.error = null;
