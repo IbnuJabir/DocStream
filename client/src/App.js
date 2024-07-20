@@ -31,9 +31,10 @@ function App() {
   const location = useLocation();
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.user);
-
   useEffect(() => {
-    // dispatch(checkUserStatus());
+    dispatch(checkUserStatus());
+  }, []);
+  useEffect(() => {
     if (action !== "POP") {
       window.scrollTo(0, 0);
     }
