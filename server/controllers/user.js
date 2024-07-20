@@ -26,6 +26,7 @@ const userLogIn = async (req, res) => {
           httpOnly: true,
           maxAge: maxAge * 1000, // maxAge in milliseconds
         });
+        console.log("token 1", req.cookies.token);
         return res.status(200).json({ email: user.email, isLogin: true });
       } else {
         return res.status(400).json({ message: "Incorrect password" });
