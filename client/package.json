@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "proxy": "https://docstream-yhox.onrender.com",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
