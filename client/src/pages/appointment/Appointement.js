@@ -138,11 +138,11 @@ function Appointement() {
     };
     setLoading(true);
     try {
-      const appointmentResult = await axios.post("/appointment/addNew", data);
+      const appointmentResult = await axios.post(`${process.env.REACT_APP_DOCSTREAM_API_URL}/appointment/addNew`, data);
       console.log(appointmentResult.data);
 
       const res = await axios.post(
-        "/payment/createpayment",
+        `${process.env.REACT_APP_DOCSTREAM_API_URL}/payment/createpayment`,
         appointmentResult.data
       );
 

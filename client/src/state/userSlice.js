@@ -13,7 +13,7 @@ export const checkUserStatus = createAsyncThunk(
   "user/checkUserAuth",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get("/user/checkUserAuth", {
+      const response = await axios.get(`${process.env.REACT_APP_DOCSTREAM_API_URL}/user/checkUserAuth`, {
         withCredentials: true,
       });
       return response.data;
@@ -28,7 +28,7 @@ export const login = createAsyncThunk(
   "user/login",
   async (data, { rejectWithValue }) => {
     try {
-      const result = await axios.post("/user/login", data, {
+      const result = await axios.post(`${process.env.REACT_APP_DOCSTREAM_API_URL}/user/login`, data, {
         withCredentials: true,
       });
       return result.data;
@@ -43,7 +43,7 @@ export const signup = createAsyncThunk(
   "user/signup",
   async (data, { rejectWithValue }) => {
     try {
-      const result = await axios.post("/user/signup", data, {
+      const result = await axios.post(`${process.env.REACT_APP_DOCSTREAM_API_URL}/user/signup`, data, {
         withCredentials: true,
       });
       return result.data;
@@ -58,7 +58,7 @@ export const logout = createAsyncThunk(
   "user/logout",
   async (_, { rejectWithValue }) => {
     try {
-      const result = await axios.get("/user/logout", {
+      const result = await axios.get(`${process.env.REACT_APP_DOCSTREAM_API_URL}/user/logout`, {
         withCredentials: true,
       });
       console.log('user', result.data)

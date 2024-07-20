@@ -11,7 +11,7 @@ export const getAllAdmins = createAsyncThunk(
   "admin/getAll",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_DOCSTREAM_API_URL}/doctor/getAll`);
+      const response = await axios.get(`${process.env.REACT_APP_DOCSTREAM_API_URL}/admin/getAll`);
       return response.data;
     } catch (error) {
       return rejectWithValue(
