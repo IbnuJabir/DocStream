@@ -28,6 +28,7 @@ app.use(express.json());
 app.use(cors({
   origin: [
     process.env.FRONTEND_URL || "https://docstream-frontend.onrender.com", 
+    "https://docstream-client.onrender.com",
     "http://localhost:3000"
   ],
   methods: ["POST", "GET", "PUT", "DELETE"],
