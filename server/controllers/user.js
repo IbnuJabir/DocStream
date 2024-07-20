@@ -25,7 +25,8 @@ const userLogIn = async (req, res) => {
         res.cookie("token", token, {
           httpOnly: true,
           maxAge: maxAge * 1000, // maxAge in milliseconds
-          SameSite: None,
+          sameSite: 'None',
+          secure: true, // Ensure the cookie is only sent over HTTPS
         });
         return res.status(200).json({ email: user.email, isLogin: true });
       } else {
@@ -39,6 +40,7 @@ const userLogIn = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+
 const userSignUp = async (req, res) => {
   try {
     const { username, email, password } = req.body;
