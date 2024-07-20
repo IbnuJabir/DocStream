@@ -13,7 +13,7 @@ export default function Deposits() {
 
   const fetchRevenue = async () => {
     try {
-      const result = await axios.get("http://localhost:4000/transactions/revenue");
+      const result = await axios.get(`${process.env.REACT_APP_DOCSTREAM_API_URL}/transactions/revenue`);
       // console.log(result.data);
       setRevenue(result.data);
     } catch (error) {

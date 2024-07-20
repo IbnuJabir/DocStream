@@ -12,7 +12,7 @@ export const getAllTransactions = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        "http://localhost:4000/transactions/getAll"
+        `${process.env.REACT_APP_DOCSTREAM_API_URL}/transactions/getAll`
       );
       return response.data;
     } catch (error) {

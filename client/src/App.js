@@ -87,7 +87,7 @@ function App() {
       }
     }
   }, [location.pathname]);
-
+console.log('process.env.REACT_APP_DOCSTREAM_API_URL', process.env.REACT_APP_DOCSTREAM_API_URL)
   return (
     <>
       <Navbar />

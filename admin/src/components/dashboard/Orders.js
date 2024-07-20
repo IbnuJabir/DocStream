@@ -24,7 +24,7 @@ export default function Orders() {
     const fetchBookedAppointments = async () => {
       try {
         const result = await axios.get(
-          "http://localhost:4000/appointment/booked"
+         `${process.env.REACT_APP_DOCSTREAM_API_URL}/appointment/booked`
         );
         // console.log(result.data);
         setBookedAppointments(result.data);

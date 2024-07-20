@@ -13,7 +13,7 @@ export const getAllAppointments = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        `${process.env.DOCSTREAM_API_URL}/appointment/getAll`
+        `${process.env.REACT_APP_DOCSTREAM_API_URL}/appointment/getAll`
       );
       return response.data;
     } catch (error) {
@@ -28,7 +28,7 @@ export const getUserAppointments = createAsyncThunk(
   async (userEmail, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `${process.env.DOCSTREAM_API_URL}/appointment/getUsersAppointments`,
+        `${process.env.REACT_APP_DOCSTREAM_API_URL}/appointment/getUsersAppointments`,
         { userEmail }
       );
       return response.data;

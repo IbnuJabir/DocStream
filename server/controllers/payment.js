@@ -22,8 +22,8 @@ const createPayment = async (req, res) => {
   const TEXT_REF = await chapa.generateTransactionReference();
   // const TEXT_REF = "tx-dostream12345-" + Date.now();
   console.log("from create payment: "+ TEXT_REF)
-  const CALLBACK_URL = "https://docstream-1.onrender.com/payment/verifypayment/";
-  const return_url = `https://docstream-1.onrender.com/payment/success?tx_ref=${TEXT_REF}`;
+  const CALLBACK_URL = "https://docstream-frontend.onrender.com/payment/verifypayment/";
+  const return_url = `https://docstream-frontend.onrender.com/payment/success?tx_ref=${TEXT_REF}`;
 
   const { firstName, lastName, email, phone, _id: appointmentId } = req.body;
 

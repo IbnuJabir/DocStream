@@ -122,7 +122,7 @@ export default function AlertDialogSlide({ content, selectedRows }) {
 
     try {
       await axios.post(
-        "http://localhost:4000/appointment/approve",
+       `${process.env.REACT_APP_DOCSTREAM_API_URL}/appointment/approve`,
         approvalData
       );
       setAppointmentTime(null);
@@ -165,7 +165,7 @@ export default function AlertDialogSlide({ content, selectedRows }) {
       contactMessage,
     };
     try {
-      await axios.post("http://localhost:4000/appointment/contact", data);
+      await axios.post(`${process.env.REACT_APP_DOCSTREAM_API_URL}/appointment/contact`, data);
       setSuccessMessage("Your Message Successfully sent to ");
       setContactMessage("");
       dispatch(closeContactDialog());

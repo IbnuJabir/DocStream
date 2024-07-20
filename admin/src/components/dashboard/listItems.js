@@ -89,12 +89,12 @@ export const SecondaryListItems = () => {
       >
         Managements
       </ListSubheader>
-      {/* <ListItemButton sx={{height: "40px"}} onClick={() => goTo("/admins")}>
+      <ListItemButton sx={{height: "40px"}} onClick={() => goTo("/admins")}>
          <ListItemIcon>
           <MdManageAccounts style={{ fontSize: "25px" }} />
         </ListItemIcon>
         <ListItemText primary="Admins" /> 
-      </ListItemButton> */}
+      </ListItemButton>
       {/* <ListItemButton>
          <ListItemIcon>
           <AssignmentIcon />

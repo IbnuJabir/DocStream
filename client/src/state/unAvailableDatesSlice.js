@@ -11,7 +11,7 @@ export const getAllUnAvailableDates = createAsyncThunk(
   "unAvailableDates/getAll",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${process.env.DOCSTREAM_API_URL}/unAvailableDates/getAll`);
+      const response = await axios.get(`${process.env.REACT_APP_DOCSTREAM_API_URL}/unAvailableDates/getAll`);
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -24,7 +24,7 @@ export const addUnAvailableDates = createAsyncThunk(
   "unAvailableDates/addNew",
   async (data, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${process.env.DOCSTREAM_API_URL}/unAvailableDates/addNew`, data);
+      const response = await axios.post(`${process.env.REACT_APP_DOCSTREAM_API_URL}/unAvailableDates/addNew`, data);
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -37,7 +37,7 @@ export const updateUnAvailableDates = createAsyncThunk(
   "unAvailableDates/update",
   async (data, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${process.env.DOCSTREAM_API_URL}/unAvailableDates/update`, data);
+      const response = await axios.post(`${process.env.REACT_APP_DOCSTREAM_API_URL}/unAvailableDates/update`, data);
       return response.data;
     } catch (error) {
       return rejectWithValue(

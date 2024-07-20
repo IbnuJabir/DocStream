@@ -195,7 +195,7 @@ const AppointmentDataTable = () => {
         });
         try {
           const response = await axios.post(
-            "http://localhost:4000/appointment/suspend",
+            `${process.env.REACT_APP_DOCSTREAM_API_URL}/appointment/suspend`,
             selectedRows
           );
           dispatch(openCancelDialog());
