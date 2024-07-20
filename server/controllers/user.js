@@ -69,7 +69,7 @@ const userSignUp = async (req, res) => {
 
     // Create a new user if no user with the given email or username exists
     const newUser = await ClientModel.create(req.body);
-    // const token = createToken(newUser._id);
+    const token = createToken(newUser._id, newUser.email);
     // res.cookie("token", token, { httpOnly: true, maxAge: maxAge * 1000 });
     // console.log(newUser);
     res.status(201).json({ newUser });
@@ -87,10 +87,6 @@ const userSignUp = async (req, res) => {
       .json({ message: "Internal server error", error: error.message });
   }
 };
-const home = async (req, res) => {
-  console.log("home component");
-  return res.status(200).json({ message: "Authenticated" });
-};
 
 const checkAuth = async (req, res) => {
   const { email } = req.user;
@@ -105,4 +101,4 @@ const userLogOut = async (req, res) => {
   return res.status(200).json({ message: "user logged out" });
 };
 
-module.exports = { userLogIn, userSignUp, userLogOut, home, checkAuth };
+module.exports = { userLogIn, userSignUp, userLogOut, checkAuth };
