@@ -46,7 +46,7 @@ app.get("/", (req, res) => {
 
 const PORT = process.env.PORT || 4000;
 mongoose
-  .connect(process.env.MONGO_DB_URL, {})
+  .connect("mongodb://localhost:27017/client")
   .then(() => {
     app.listen(PORT, () => console.log(`server listening on port ${PORT}`));
   })
