@@ -19,7 +19,7 @@ const AppointmentScheduler = ({ selectedDate, setSelectedDate }) => {
   const fetchUnavailableDates = async () => {
     try {
       const response = await axios.get(
-        `${process.env.DOCSTREAM_API_URL}/unAvailableDates/getAll`
+        `${process.env.REACT_APP_DOCSTREAM_API_URL}/unAvailableDates/getAll`
       );
       setUnavailableDates(response.data);
     } catch (error) {
