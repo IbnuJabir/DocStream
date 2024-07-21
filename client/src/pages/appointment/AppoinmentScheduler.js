@@ -29,7 +29,7 @@ const AppointmentScheduler = ({ selectedDate, setSelectedDate }) => {
 
   useEffect(() => {
     fetchUnavailableDates();
-  }, []);
+  }, [unavailableDates]);
 
   // Check if the date is an unavailable day
   const isUnavailableDay = (date) => {
