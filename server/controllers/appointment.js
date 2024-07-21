@@ -79,7 +79,7 @@ const getUsersAppointments = async (req, res) => {
     const userAppointments = await Appointment.find({ email: userEmail })
       .sort({ createdAt: -1 });
     
-    console.log("Fetched Appointments:", userAppointments);
+    // console.log("Fetched Appointments:", userAppointments);
     
     if (!userAppointments || userAppointments.length === 0) {
       console.log("No user Appointments found");
@@ -94,7 +94,7 @@ const getUsersAppointments = async (req, res) => {
 };
 const getSingleAppointment = async (req, res) => {
   console.log("from getSingleAppointment");
-  console.log(req.params);
+  // console.log(req.params);
   // const appointments = await Appointment.findOne({ _id: appointmentId });
 };
 
