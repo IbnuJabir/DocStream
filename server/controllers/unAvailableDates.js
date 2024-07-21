@@ -5,6 +5,7 @@ const getAllUnAvailableDates = async (req, res) => {
     const days = await UnavailableDay.find().sort({ createdAt: -1 });
 
     if (!days || days.length === 0) {
+      console.log("unavailable date not found")
       return res.status(404).send("No Un-Available dates found");
     }
 
