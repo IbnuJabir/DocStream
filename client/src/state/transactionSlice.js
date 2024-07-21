@@ -3,6 +3,7 @@ import axios from "axios";
 
 const initialState = {
   transactions: [],
+  transactionDetails: [],
   error: null,
   isLoading: false,
 };
@@ -13,6 +14,21 @@ export const getAllTransactions = createAsyncThunk(
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_DOCSTREAM_API_URL}/transactions/getAll`
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response ? error.response.data : "An error occurred"
+      );
+    }
+  }
+);
+export const getTransactionDetails = createAsyncThunk(
+  "transactions/tx_ref",
+  async (tx_ref, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_DOCSTREAM_API_URL}/transactions/${tx_ref}`
       );
       return response.data;
     } catch (error) {
@@ -38,6 +54,18 @@ const transactionSlice = createSlice({
         state.transactions = action.payload;
       })
       .addCase(getAllTransactions.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(getTransactionDetails.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(getTransactionDetails.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.transactionDetails = action.payload;
+      })
+      .addCase(getTransactionDetails.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });

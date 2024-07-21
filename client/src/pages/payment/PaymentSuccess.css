@@ -93,6 +93,7 @@
     margin: 1rem;
     color: var(--secondary);
 }
+
 .hint i {
     font-size: 14px;
 }
@@ -139,6 +140,7 @@
         font-size: 14px;
     }
 
+    .appointment-footer button,
     .btn {
         display: none;
     }

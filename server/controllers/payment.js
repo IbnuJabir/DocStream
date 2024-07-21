@@ -23,11 +23,11 @@ const createPayment = async (req, res) => {
 
   const publicUrl = process.env.BACKEND_URL; // Replace with your actual Localtunnel URL
   const frontEndUrl = process.env.FRONTEND_URL;
-  const callback_url = `${publicUrl}/api/payment/verifypayment`;
-  const return_url = `${frontEndUrl}/payment/success?tx_ref=${TEXT_REF}`;
+  // const callback_url = "http://localhost:3000/payment/verifypayment";
+  // const return_url = `http://localhost:3000/payment/success?tx_ref=${TEXT_REF}`;
 
-  // const CALLBACK_URL = "https://docstream-yhox.onrender.com/payment/verifypayment/";
-  // const return_url = `https://docstream-client.onrender.com/payment/success?tx_ref=${TEXT_REF}`;
+  const CALLBACK_URL = `${publicUrl}/payment/verifypayment/`;
+  const return_url = `${frontEndUrl}/payment/success?tx_ref=${TEXT_REF}`;
 
   const { firstName, lastName, email, phone, _id: appointmentId } = req.body;
 
@@ -38,7 +38,7 @@ const createPayment = async (req, res) => {
     first_name: firstName,
     last_name: lastName,
     tx_ref: TEXT_REF,
-    callback_url: callback_url + `${TEXT_REF}-${appointmentId}`,
+    callback_url: CALLBACK_URL + `${TEXT_REF}-${appointmentId}`,
     return_url: return_url,
   };
   try {
