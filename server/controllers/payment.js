@@ -25,7 +25,7 @@ const createPayment = async (req, res) => {
   // const return_url = `${frontEndUrl}/payment/success?tx_ref=${tx_ref}`;
 
   const CALLBACK_URL = "https://docstream-yhox.onrender.com/payment/verifypayment/";
-  const return_url = `https://docstream-frontend.onrender.com/payment/success?tx_ref=${TEXT_REF}`;
+  const return_url = `https://docstream-client.onrender.com/payment/success?tx_ref=${TEXT_REF}`;
 
   const { firstName, lastName, email, phone, _id: appointmentId } = req.body;
 
