@@ -11,7 +11,6 @@
     min-height: 75vh;
     margin: 10px auto;
     margin-bottom: 2rem;
-    /* padding: 50px; */
 }
 
 .login-button{
@@ -36,8 +35,6 @@
     background-color: var(--primary); 
     padding: 30px;
     border-radius: 50%; 
-    /* position: absolute;
-    top: 18% */
 }
 @media(max-width: 1300px){
     .login-container{

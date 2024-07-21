@@ -7,7 +7,6 @@
     padding: 20px;
 }
 
-/* Container */
 .payment_container {
     background: #ffffff;
     border-radius: 10px;
@@ -26,7 +25,6 @@
     font-weight: bolder;
 }
 
-/* Header */
 .head {
     text-align: center;
     color: #4CAF50;
@@ -39,7 +37,6 @@
     color: #f44336;
 }
 
-/* Appointment */
 .appointment {
     border-top: 2px solid #4CAF50;
     margin-top: 20px;
@@ -100,7 +97,6 @@
     font-size: 14px;
 }
 
-/* Print styles */
 @media print {
     body * {
         visibility: hidden;
@@ -147,24 +143,3 @@
         display: none;
     }
 }
-
-/* Print Styles */
-/*
-@media print {
-    body * {
-        visibility: hidden;
-    }
-    #appointment, #appointment * {
-        visibility: visible;
-    }
-    #appointment {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        padding: 0;
-    }
-    .appointment-footer {
-        display: none;
-    }
-}*/

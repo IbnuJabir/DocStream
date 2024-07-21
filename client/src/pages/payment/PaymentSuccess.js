@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
-import "./PaymentSuccess.css";
 import axios from "axios";
 import { FaStarOfLife } from "react-icons/fa6";
 
