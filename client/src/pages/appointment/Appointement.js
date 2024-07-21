@@ -31,8 +31,8 @@ import {
   useTheme,
 } from "@mui/material";
 import AppointmentScheduler from "./AppoinmentScheduler";
-import google from '../../assets/images/google.png'
-import zoom from '../../assets/images/zoom.webp'
+import google from "../../assets/images/google.png";
+import zoom from "../../assets/images/zoom.webp";
 function Appointement() {
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
@@ -138,7 +138,10 @@ function Appointement() {
     };
     setLoading(true);
     try {
-      const appointmentResult = await axios.post(`${process.env.REACT_APP_DOCSTREAM_API_URL}/appointment/addNew`, data);
+      const appointmentResult = await axios.post(
+        `${process.env.REACT_APP_DOCSTREAM_API_URL}/appointment/addNew`,
+        data
+      );
       console.log(appointmentResult.data);
 
       const res = await axios.post(
@@ -304,6 +307,8 @@ function Appointement() {
                         style={{
                           verticalAlign: "middle",
                           marginRight: 4,
+                          width: "20px",
+                          height: "20px",
                         }}
                       />
                       Google{" "}
@@ -322,6 +327,8 @@ function Appointement() {
                           verticalAlign: "middle",
                           marginRight: 4,
                           color: "green",
+                          width: "20px",
+                          height: "20px",
                         }}
                       />
                       Zoom{" "}
