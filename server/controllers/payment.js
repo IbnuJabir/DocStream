@@ -19,10 +19,12 @@ const config = {
 
 const createPayment = async (req, res) => {
   // a unique reference given to every transaction
-  const TEXT_REF = await chapa.generateTransactionReference();
-  // const TEXT_REF = "tx-dostream12345-" + Date.now();
-  console.log("from create payment: "+ TEXT_REF)
-  const CALLBACK_URL = "https://docstream-frontend.onrender.com/payment/verifypayment/";
+  // const publicUrl = process.env.BACKEND_API; // Replace with your actual Localtunnel URL
+  // const frontEndUrl = process.env.FRONTEND_API;
+  // const callback_url = `${publicUrl}/api/payment/verifypayment`;
+  // const return_url = `${frontEndUrl}/payment/success?tx_ref=${tx_ref}`;
+
+  const CALLBACK_URL = "https://docstream-yhox.onrender.com/payment/verifypayment/";
   const return_url = `https://docstream-frontend.onrender.com/payment/success?tx_ref=${TEXT_REF}`;
 
   const { firstName, lastName, email, phone, _id: appointmentId } = req.body;
