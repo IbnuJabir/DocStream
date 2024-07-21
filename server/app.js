@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
-
+const path = require('path');
 //######## Routes ##############
 const userRoute = require("./routes/userRoute");
 const paymentRoute = require("./routes/paymentRoute");
