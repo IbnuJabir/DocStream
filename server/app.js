@@ -6,7 +6,7 @@ require("dotenv").config();
 const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
 
-//######## Routes ############## 
+//######## Routes ##############
 const userRoute = require("./routes/userRoute");
 const paymentRoute = require("./routes/paymentRoute");
 const appoinmentRoute = require("./routes/appointmentRoute");
@@ -25,17 +25,20 @@ const authMiddleWare = require("./middleware/authMiddleware");
 
 const app = express();
 app.use(express.json());
-app.use(cors({
-  origin: [
-    process.env.FRONTEND_URL || "https://docstream-frontend.onrender.com", 
-    "https://docstream-client.onrender.com",
-    "http://localhost:3000"
-  ],
-  methods: ["POST", "GET", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: [
+      process.env.FRONTEND_URL || "https://docstream-frontend.onrender.com",
+      "https://docstream-client.onrender.com",
+      "http://localhost:3000",
+    ],
+    methods: ["POST", "GET", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
 app.use(cookieParser());
+// app.use(express.static(path.join(__dirname, "public")));
 
 // app.use("/auth", authRoute);
 app.use("/user", userRoute);
@@ -54,7 +57,7 @@ app.get("/", (req, res) => {
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).send('Something broke!');
+  res.status(500).send("Something broke!");
 });
 
 const PORT = process.env.PORT || 4000;
