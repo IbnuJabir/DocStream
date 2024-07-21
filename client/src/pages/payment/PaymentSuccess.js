@@ -12,6 +12,7 @@ const PaymentSuccess = () => {
 
   useEffect(() => {
     const tx_ref = searchParams.get("tx_ref");
+    console.log('tx_ref', tx_ref)
     if (tx_ref) {
       setLoading(true);
       axios
