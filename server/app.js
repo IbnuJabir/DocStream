@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
-const path = require('path');
+const path = require("path");
 //######## Routes ##############
 const userRoute = require("./routes/userRoute");
 const paymentRoute = require("./routes/paymentRoute");
@@ -31,6 +31,7 @@ app.use(
       process.env.FRONTEND_URL || "https://docstream-frontend.onrender.com",
       "https://docstream-client.onrender.com",
       "http://localhost:3000",
+      "http://localhost:3001",
     ],
     methods: ["POST", "GET", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -48,11 +49,11 @@ app.use(cookieParser());
 // app.use(express.static('Images'))
 // app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "build")));
 
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "public", "index.html"));
-// });
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
 
 // app.use("/auth", authRoute);
 app.use("/user", userRoute);
