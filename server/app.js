@@ -40,6 +40,20 @@ app.use(
 app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, "public")));
 
+// app.use(cors());
+// app.use(express.urlencoded({extended:false}))
+// app.use(express.json())
+// app.use(bodyParser.json());
+// app.use(cookieParser())
+// app.use(express.static('Images'))
+// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+app.use(express.static(path.join(__dirname, "public")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
 // app.use("/auth", authRoute);
 app.use("/user", userRoute);
 app.use("/appointment", appoinmentRoute);
