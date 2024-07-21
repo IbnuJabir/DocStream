@@ -19,6 +19,8 @@ const config = {
 
 const createPayment = async (req, res) => {
   // a unique reference given to every transaction
+  const TEXT_REF = await chapa.generateTransactionReference();
+
   // const publicUrl = process.env.BACKEND_API; // Replace with your actual Localtunnel URL
   // const frontEndUrl = process.env.FRONTEND_API;
   // const callback_url = `${publicUrl}/api/payment/verifypayment`;
