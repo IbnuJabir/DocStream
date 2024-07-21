@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
+// import "./PaymentSuccess.css";
 import axios from "axios";
 import { FaStarOfLife } from "react-icons/fa6";
 
@@ -14,7 +15,11 @@ const PaymentSuccess = () => {
     if (tx_ref) {
       setLoading(true);
       axios
-        .get(`/transactions/${tx_ref}`)
+        .get(`/transactions/${tx_ref}`, {
+          headers:{
+            "Content-Type": "application/json",
+          }
+        })
         .then((res) => {
           setTransactionDetails(res.data);
           setLoading(false);
