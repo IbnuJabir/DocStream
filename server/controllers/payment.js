@@ -23,11 +23,11 @@ const createPayment = async (req, res) => {
 
   const publicUrl = process.env.BACKEND_URL; // Replace with your actual Localtunnel URL
   const frontEndUrl = process.env.FRONTEND_URL;
-  const CALLBACK_URL = "http://localhost:4000/payment/verifypayment";
-  const return_url = `http://localhost:3000/payment/success?tx_ref=${TEXT_REF}`;
+  // const CALLBACK_URL = "http://localhost:4000/payment/verifypayment";
+  // const return_url = `http://localhost:3000/payment/success?tx_ref=${TEXT_REF}`;
 
-  // const CALLBACK_URL = `${publicUrl}/payment/verifypayment/`;
-  // const return_url = `${frontEndUrl}/payment/success?tx_ref=${TEXT_REF}`;
+  const CALLBACK_URL = `${publicUrl}/payment/verifypayment/`;
+  const return_url = `${frontEndUrl}/payment/success?tx_ref=${TEXT_REF}`;
 
   const { firstName, lastName, email, phone, _id: appointmentId } = req.body;
 

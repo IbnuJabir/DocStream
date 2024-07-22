@@ -25,7 +25,7 @@ const getSingleTransaction = async (req, res) => {
   try {
     const transaction = await Transaction.findOne({
       tx_ref: tx_ref,
-      status: "paid",
+      // status: "paid",
     });
     if (!transaction) {
       return res.status(400).json({ error: "Paid Transaction Not Found" });
