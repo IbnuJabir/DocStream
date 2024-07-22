@@ -32,7 +32,7 @@ app.use(
       "https://docstream-client.onrender.com",
       "http://localhost:3000",
       "http://localhost:3001",
-      "https://docstreamfront.netlify.app/appointment"
+      "https://docstreamfront.netlify.app"
     ],
     methods: ["POST", "GET", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
