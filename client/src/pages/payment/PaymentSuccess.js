@@ -15,8 +15,12 @@ const PaymentSuccess = () => {
 
   const tx_ref = searchParams.get("tx_ref");
   console.log("tx_ref", tx_ref);
+  const transDetail = async () => {
+    const result = await dispatch(getTransactionDetails(tx_ref));
+    console.log('result', result)
+  }
   useEffect(() => {
-    dispatch(getTransactionDetails(tx_ref));
+    transDetail()
   }, []);
 
 

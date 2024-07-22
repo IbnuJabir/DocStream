@@ -5,7 +5,7 @@ const initialState = {
   transactions: [],
   transactionDetails: [],
   error: null,
-  isLoading: false,
+  isLoading: true,
 };
 
 export const getAllTransactions = createAsyncThunk(
@@ -47,11 +47,11 @@ const transactionSlice = createSlice({
     builder
       .addCase(getAllTransactions.pending, (state) => {
         state.isLoading = true;
-        state.error = null;
       })
       .addCase(getAllTransactions.fulfilled, (state, action) => {
         state.isLoading = false;
         state.transactions = action.payload;
+        state.error = null;
       })
       .addCase(getAllTransactions.rejected, (state, action) => {
         state.isLoading = false;
