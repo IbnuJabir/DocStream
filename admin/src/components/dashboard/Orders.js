@@ -9,7 +9,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Title from "./Title";
 import axios from "axios";
-import { Typography } from "@material-ui/core";
+import { Typography } from "@mui/material";
 
 export default function Orders() {
   const [bookedAppointments, setBookedAppointments] = React.useState(null);

@@ -43,7 +43,6 @@ import {
 import { getAllDoctors } from "../../state/doctorSlice";
 import { getAllAppointments } from "../../state/appointmentSlice";
 import dayjs from "dayjs";
-import { CircularProgress } from "@material-ui/core";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });

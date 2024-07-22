@@ -12,7 +12,7 @@ import { IoIosWoman } from "react-icons/io";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { MuiTelInput } from "mui-tel-input";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { createTheme, makeStyles, ThemeProvider } from "@mui/material/styles";
 import {
   TextField,
   Button,
@@ -36,7 +36,7 @@ import {
   FormHelperText,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import { makeStyles } from "@material-ui/core/styles";
+// import { makeStyles } from "@material-ui/core/styles";
 import { RxAvatar } from "react-icons/rx";
 
 import bkgImg from "../../assets/images/doc.png";
