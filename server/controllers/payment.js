@@ -27,7 +27,7 @@ const createPayment = async (req, res) => {
   // const return_url = `http://localhost:3000/payment/success?tx_ref=${TEXT_REF}`;
 
   const CALLBACK_URL = `${publicUrl}/payment/verifypayment/`;
-  const return_url = `${frontEndUrl}/payment/success?tx_ref=${TEXT_REF}`;
+  const return_url = `${frontEndUrl}/success?tx_ref=${TEXT_REF}`;
 
   const { firstName, lastName, email, phone, _id: appointmentId } = req.body;
 

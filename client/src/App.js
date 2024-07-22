@@ -94,7 +94,7 @@ function App() {
       <Routes>
         <Route element={<ProtectedRoute />}>
           <Route path="/my-appointments" element={<MyAppointments />} />
-          <Route path="/payment/success" element={<PaymentSuccess />} />
+          <Route path="/success" element={<PaymentSuccess />} />
         </Route>
         <Route element={<PublicRoute />}>
           <Route path="/login" element={<Login />} />
