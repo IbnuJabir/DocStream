@@ -85,28 +85,28 @@ export const SecondaryListItems = () => {
       <ListSubheader
         component="div"
         inset
-        sx={{ backgroundColor: "#159eec", color: "#fff", marginTop: "65px" }}
+        sx={{ backgroundColor: "#159eec", color: "#fff", marginTop: "115px" }}
       >
         Managements
       </ListSubheader>
-      <ListItemButton sx={{height: "40px"}} onClick={() => goTo("/admins")}>
+      {/* <ListItemButton sx={{height: "40px"}} onClick={() => goTo("/admins")}>
          <ListItemIcon>
           <MdManageAccounts style={{ fontSize: "25px" }} />
         </ListItemIcon>
         <ListItemText primary="Admins" /> 
-      </ListItemButton>
+      </ListItemButton> */}
       {/* <ListItemButton>
          <ListItemIcon>
           <AssignmentIcon />
         </ListItemIcon>
         <ListItemText primary="Unavailable dates" /> 
       </ListItemButton> */}
-      <ListItemButton onClick={() => goTo("/profile")}>
+      {/* <ListItemButton onClick={() => goTo("/profile")}>
         <ListItemIcon>
           <CgProfile style={{ fontSize: "25px" }} />
         </ListItemIcon>
         <ListItemText primary="Profile" />
-      </ListItemButton>
+      </ListItemButton> */}
       <ListItemButton onClick={handleLogout}>
         <ListItemIcon>
           <FaPowerOff />
