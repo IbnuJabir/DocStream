@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import "./style.css"; // Make sure this path is correct according to your project structure
-import { useNavigate, Link } from "react-router-dom";
-import { Alert, CircularProgress, FormGroup, TextField } from "@mui/material";
-import { FaUser } from "react-icons/fa";
+import "./style.css";
+import { useNavigate } from "react-router-dom";
+import { Alert, CircularProgress } from "@mui/material";
 import toast from "react-hot-toast";
 import { login, signup } from "../../state/userSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -49,18 +48,14 @@ const AuthComponent = () => {
       setErr("Fill all fields");
       return;
     }
-    // setLoading(true);
     let data = {
       username,
       password,
       email,
     };
 
-    const result = await dispatch(signup(data));
-    console.log('result', result)
+    await dispatch(signup(data));
     if (error) return;
-    console.log(result);
-    console.log(error);
     toast.success("Account created Successfully!");
     handleLoginClick();
   };
@@ -137,9 +132,6 @@ const AuthComponent = () => {
                 <CircularProgress />
               </div>
             ) : (
-              //   <button className="login-button" type="submit">
-              //     Login
-              //   </button>
               <button type="submit">Sign In</button>
             )}
           </div>

@@ -8,26 +8,18 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import {
-  Box,
-  Button,
-  Chip,
   CircularProgress,
   FormControl,
   FormControlLabel,
-  FormGroup,
   FormHelperText,
   FormLabel,
   InputLabel,
-  Link,
   MenuItem,
-  OutlinedInput,
   Radio,
   RadioGroup,
   Select,
   Stack,
   TextField,
-  TextareaAutosize,
-  Typography,
   useTheme,
 } from "@mui/material";
 import AppointmentScheduler from "./AppoinmentScheduler";
@@ -142,7 +134,6 @@ function Appointement() {
         `${process.env.REACT_APP_DOCSTREAM_API_URL}/appointment/addNew`,
         data
       );
-      console.log(appointmentResult.data);
 
       const res = await axios.post(
         `${process.env.REACT_APP_DOCSTREAM_API_URL}/payment/createpayment`,
@@ -151,7 +142,6 @@ function Appointement() {
 
       window.location.href = res.data.checkout_url;
     } catch (error) {
-      console.error(error);
       alert("Error saving appointment");
     } finally {
       setLoading(false);

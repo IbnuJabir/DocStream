@@ -73,7 +73,6 @@ export const logout = createAsyncThunk(
       const result = await axios.get(`${process.env.REACT_APP_DOCSTREAM_API_URL}/user/logout`, {
         withCredentials: true,
       });
-      console.log('user', result.data)
       return result.data;
     } catch (error) {
       if (error.response) {

@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, useSearchParams } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import "./PaymentSuccess.css";
-import axios from "axios";
 import { FaStarOfLife } from "react-icons/fa6";
 import { getTransactionDetails } from "../../state/transactionSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,15 +13,10 @@ const PaymentSuccess = () => {
   );
 
   const tx_ref = searchParams.get("tx_ref");
-  console.log("tx_ref", tx_ref);
-  const transDetail = async () => {
-    const result = await dispatch(getTransactionDetails(tx_ref));
-    console.log('result', result)
-  }
+  
   useEffect(() => {
-    transDetail()
+    dispatch(getTransactionDetails(tx_ref));
   }, []);
-
 
   const handlePrint = () => {
     window.print();
@@ -33,7 +27,6 @@ const PaymentSuccess = () => {
   }
 
   if (error) {
-    console.log(error)
     return <div className="alert alert-danger">{error.error}</div>;
   }
 

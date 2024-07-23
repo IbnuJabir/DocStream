@@ -1,6 +1,5 @@
 import React from "react";
 import "./top.css";
-import avatar from "../../../assets/images/avatar.png";
 import { Link } from "react-router-dom";
 function Top() {
   return (

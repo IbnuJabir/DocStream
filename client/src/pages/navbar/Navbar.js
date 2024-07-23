@@ -13,7 +13,7 @@ function Navbar() {
   const { isLoggedIn } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
-  
+
   const onButtonContainerClick = useCallback(() => {
     if (isLoggedIn) {
       navigate("/my-appointments");
@@ -29,6 +29,7 @@ function Navbar() {
   const handleLogout = async () => {
     dispatch(logout());
     toast.success("Successfully LoggedOut!");
+    setMobileMenuOpen(!isMobileMenuOpen);
     navigate("/login");
   };
 
@@ -40,7 +41,10 @@ function Navbar() {
       const element = document.getElementById(section);
       if (element) {
         const rect = element.getBoundingClientRect();
-        if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
+        if (
+          rect.top <= window.innerHeight / 2 &&
+          rect.bottom >= window.innerHeight / 2
+        ) {
           currentSection = section;
         }
       }
@@ -64,31 +68,49 @@ function Navbar() {
         </div>
         <div className="navbar-links">
           <a
-            className={activeSection === "home" ? "navbar-link isActive" : "navbar-link"}
+            className={
+              activeSection === "home" ? "navbar-link isActive" : "navbar-link"
+            }
             href="/home"
           >
             Home
           </a>
           <a
-            className={activeSection === "aboutus" ? "navbar-link isActive" : "navbar-link"}
+            className={
+              activeSection === "aboutus"
+                ? "navbar-link isActive"
+                : "navbar-link"
+            }
             href="#aboutus"
           >
             About Us
           </a>
           <a
-            className={activeSection === "services" ? "navbar-link isActive" : "navbar-link"}
+            className={
+              activeSection === "services"
+                ? "navbar-link isActive"
+                : "navbar-link"
+            }
             href="#services"
           >
             Services
           </a>
           <a
-            className={activeSection === "doctors" ? "navbar-link isActive" : "navbar-link"}
+            className={
+              activeSection === "doctors"
+                ? "navbar-link isActive"
+                : "navbar-link"
+            }
             href="#doctors"
           >
             Doctors
           </a>
           <a
-            className={activeSection === "contact" ? "navbar-link isActive" : "navbar-link"}
+            className={
+              activeSection === "contact"
+                ? "navbar-link isActive"
+                : "navbar-link"
+            }
             href="#contact"
           >
             Contact
@@ -121,32 +143,49 @@ function Navbar() {
       </div>
       <div className={`mobile-menu ${isMobileMenuOpen ? "open" : "closed"}`}>
         <a
-          className={activeSection === "home" ? "navbar-link isActive" : "navbar-link"}
+          className={
+            activeSection === "home" ? "navbar-link isActive" : "navbar-link"
+          }
           href="/home"
+          onClick={toggleMobileMenu}
         >
           Home
         </a>
         <a
-          className={activeSection === "aboutus" ? "navbar-link isActive" : "navbar-link"}
+          className={
+            activeSection === "aboutus" ? "navbar-link isActive" : "navbar-link"
+          }
           href="#aboutus"
+          onClick={toggleMobileMenu}
         >
           About Us
         </a>
         <a
-          className={activeSection === "services" ? "navbar-link isActive" : "navbar-link"}
+          className={
+            activeSection === "services"
+              ? "navbar-link isActive"
+              : "navbar-link"
+          }
           href="#services"
+          onClick={toggleMobileMenu}
         >
           Services
         </a>
         <a
-          className={activeSection === "doctors" ? "navbar-link isActive" : "navbar-link"}
+          className={
+            activeSection === "doctors" ? "navbar-link isActive" : "navbar-link"
+          }
           href="#doctors"
+          onClick={toggleMobileMenu}
         >
           Doctors
         </a>
         <a
-          className={activeSection === "contact" ? "navbar-link isActive" : "navbar-link"}
+          className={
+            activeSection === "contact" ? "navbar-link isActive" : "navbar-link"
+          }
           href="#contact"
+          onClick={toggleMobileMenu}
         >
           Contact
         </a>
@@ -158,7 +197,10 @@ function Navbar() {
           ) : (
             <button
               className="nav_btn signup_btn"
-              onClick={() => navigate("/login")}
+              onClick={() => {
+                setMobileMenuOpen(!isMobileMenuOpen);
+                navigate("/login");
+              }}
             >
               SIGNUP
             </button>

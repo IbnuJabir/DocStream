@@ -75,7 +75,6 @@ body {
   padding: var(--padding-16xl) var(--padding-6xl);
   background: var(--white);
   border-radius: 5px;
-  /* box-shadow: -6px -4px 6px var(--color-gray-200); */
   width: 55%;
   height: fit-content;
   background-color: #fff;

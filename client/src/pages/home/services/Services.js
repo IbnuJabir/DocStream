@@ -1,9 +1,5 @@
 import React from "react";
 import "./services.css";
-import consultation from "../../../assets/images/consultation.png";
-import pharma from "../../../assets/images/pharmacy.png";
-import hospital from "../../../assets/images/hospital.png";
-import bed from "../../../assets/images/bed.png";
 import brain from "../../../assets/images/barin.png";
 import neuron from "../../../assets/images/neuron.png";
 import cardiology from "../../../assets/images/cardiology.png";

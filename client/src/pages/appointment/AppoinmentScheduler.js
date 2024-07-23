@@ -5,35 +5,29 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import TextField from "@mui/material/TextField";
 import { Alert } from "@mui/material";
-import axios from "axios";
+import { getAllUnAvailableDates } from "../../state/unAvailableDatesSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const AppointmentScheduler = ({ selectedDate, setSelectedDate }) => {
-  const [unavailableDates, setUnavailableDates] = useState([]);
-  
+
+  const dispatch = useDispatch();
+  const { isLoading, unAvailableDates, error } = useSelector(
+    (state) => state.unAvailableDates
+  );
+
+  useEffect(() => {
+    dispatch(getAllUnAvailableDates());
+  }, []);
+
   // Define available days for appointments (e.g., Monday to Friday)
   const isAvailableDay = (date) => {
     const dayOfWeek = dayjs(date).day(); // Get day of the week (0-6, where 0 is Sunday)
-    return dayOfWeek >= 1 && dayOfWeek <= 5; // Enable Monday to Friday (days 1 to 5)
+    return dayOfWeek >= 1; // Enable Monday to Saturday (days 1 to 6)
   };
-
-  const fetchUnavailableDates = async () => {
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_DOCSTREAM_API_URL}/unAvailableDates/getAll`
-      );
-      setUnavailableDates(response.data);
-    } catch (error) {
-      console.log(error.response ? error.response.data : "An error occurred");
-    }
-  };
-
-  useEffect(() => {
-    fetchUnavailableDates();
-  }, [unavailableDates]);
 
   // Check if the date is an unavailable day
   const isUnavailableDay = (date) => {
-    return unavailableDates.some((data) =>
+    return unAvailableDates.some((data) =>
       dayjs(date).isSame(data.date, "date")
     );
   };
@@ -43,6 +37,7 @@ const AppointmentScheduler = ({ selectedDate, setSelectedDate }) => {
     return !isAvailableDay(date) || isUnavailableDay(date);
   };
 
+  if(isLoading) return <div>Loading ...</div>
   return (
     <div>
       <LocalizationProvider dateAdapter={AdapterDayjs}>

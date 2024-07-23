@@ -50,7 +50,6 @@
 .navbar-link:active,
 .navbar-link.isActive ,
 .navbar-links a.isActive {
-  /* background-color: #1f2b6c; Secondary color */
   color: var(--sub);
 }
 
@@ -61,9 +60,7 @@
 
 .appointment-button {
   background-color: var(--sub);
-  /* Secondary color */
   color: #f1f1f1;
-  /* Text color */
   padding: 10px 20px;
   border-radius: 0 10px 0 10px;
   cursor: pointer;
@@ -84,7 +81,6 @@
 
 .mobile_btn_container {
   display: flex;
-  /* justify-content: center; */
   align-items: center;
 }
 
@@ -118,10 +114,8 @@
   display: flex;
   flex-direction: column;
   background-color: #f1f1f1;
-  /* Main color */
   position: absolute;
   top: 60px;
-  /* Adjust based on your navbar height */
   width: 100%;
   left: 0;
   height: 0;
@@ -131,7 +125,6 @@
 
 .mobile-menu.open {
   height: 330px;
-  /* Adjust based on the content height */
 }
 
 .mobile-menu.closed {
@@ -141,5 +134,4 @@
 .mobile-menu .navbar-link {
   padding: 15px;
   border-bottom: .1px solid gray;
-  /* Secondary color */
 }

@@ -41,7 +41,6 @@
     font-weight: 600;
     letter-spacing: 0.5px;
     text-transform: uppercase;
-    /* margin-top: 10px; */
     cursor: pointer;
 }
 
@@ -213,9 +212,7 @@
 
 .quote::after {
     content: close-quote;
-    /* This will add the closing quote */
     position: absolute;
     right: 0;
-    /* Adjust this value to position the closing quote */
     font-size: 4em;
 }

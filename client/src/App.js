@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { checkUserStatus } from "./state/userSlice";
 import { Toaster } from "react-hot-toast";
 import Login from "./pages/login/Login";
-import Signup from "./pages/signup/Signup";
 import Home from "./pages/home/Home";
 import PageNotFound from "./pages/pageNotFound/PageNotFound";
 import Navbar from "./pages/navbar/Navbar";
@@ -98,7 +97,6 @@ function App() {
         </Route>
         <Route element={<PublicRoute />}>
           <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
         </Route>
         <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="/home" element={<Home />} />
