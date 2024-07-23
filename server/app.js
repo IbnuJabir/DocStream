@@ -31,7 +31,7 @@ app.use(
       process.env.FRONTEND_URL || "https://docstream-frontend.onrender.com",
       "http://localhost:3000",
       "http://localhost:3001",
-      "https://docstreamfront.netlify.app"
+      "https://docstream-admin.netlify.app",
     ],
     methods: ["POST", "GET", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -40,7 +40,6 @@ app.use(
 );
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "build")));
-
 
 app.use("/user", userRoute);
 app.use("/appointment", appoinmentRoute);
