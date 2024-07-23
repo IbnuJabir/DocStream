@@ -1,13 +1,12 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-// import DialogContentText from "@mui/material/DialogContentText;
-import DialogTitle from "@mui/material/DialogTitle";
-import Slide from "@mui/material/Slide";
-import Alert from "@mui/material/Alert";
 import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Slide,
+  Alert,
   Box,
   DialogContentText,
   FormControl,
@@ -25,11 +24,8 @@ import {
   TimePicker,
 } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-// import { useDoctorsData } from "../../contexts/FetchDoctors";
-// import { useAppointmentsData } from "../../contexts/FetchAppointment";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-
 import {
   openDialog,
   closeDialog,
@@ -43,6 +39,7 @@ import {
 import { getAllDoctors } from "../../state/doctorSlice";
 import { getAllAppointments } from "../../state/appointmentSlice";
 import dayjs from "dayjs";
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -53,7 +50,7 @@ export default function AlertDialogSlide({ content, selectedRows }) {
   const [meetingLink, setMeetingLink] = React.useState("");
   const [contactMessage, setContactMessage] = React.useState("");
   const [docEmail, setDocEmail] = React.useState("");
-  const [successMessage, setSuccessMessage] = React.useState("");
+  const [isContact, setIsContact] = React.useState(false);
   const [currentAppointmentIndex, setCurrentAppointmentIndex] =
     React.useState(0);
 
@@ -78,12 +75,8 @@ export default function AlertDialogSlide({ content, selectedRows }) {
 
   React.useEffect(() => {
     dispatch(getAllDoctors());
-  }, [dispatch, dialog, successDialog, cancelDialog]);
-  // React.useEffect(() => {
-  //   if (dialog || cancelDialog || contactDialog) {
-  //     dispatch(closeSuccessDialog());
-  //   }
-  // }, [dispatch, dialog, successDialog, cancelDialog, contactDialog]);
+  }, [dispatch]);
+
   const handleApproval = async () => {
     const currentAppointment = filteredAppointments[currentAppointmentIndex];
     const formattedDate = dayjs(currentAppointment.selectedDate).format(
@@ -121,15 +114,13 @@ export default function AlertDialogSlide({ content, selectedRows }) {
 
     try {
       await axios.post(
-       `${process.env.REACT_APP_DOCSTREAM_API_URL}/appointment/approve`,
+        `${process.env.REACT_APP_DOCSTREAM_API_URL}/appointment/approve`,
         approvalData
       );
+      setIsContact(false);
       setAppointmentTime(null);
       setDoctorName("");
       setMeetingLink("");
-      setSuccessMessage(
-        "Appointment is successfully approved and the details sent to"
-      );
       dispatch(openSuccessDialog());
     } catch (error) {
       console.error("Error while Approving the appointment:", error);
@@ -139,8 +130,7 @@ export default function AlertDialogSlide({ content, selectedRows }) {
   const handleSuccessDialogClose = () => {
     dispatch(closeContactDialog());
     setCurrentAppointmentIndex((prevIndex) => prevIndex + 1);
-    if (currentAppointmentIndex >= filteredAppointments.length) {
-      dispatch(closeContactDialog());
+    if (currentAppointmentIndex >= filteredAppointments.length - 1) {
       dispatch(closeDialog());
       dispatch(closeSuccessDialog());
     } else {
@@ -164,8 +154,11 @@ export default function AlertDialogSlide({ content, selectedRows }) {
       contactMessage,
     };
     try {
-      await axios.post(`${process.env.REACT_APP_DOCSTREAM_API_URL}/appointment/contact`, data);
-      setSuccessMessage("Your Message Successfully sent to ");
+      await axios.post(
+        `${process.env.REACT_APP_DOCSTREAM_API_URL}/appointment/contact`,
+        data
+      );
+      setIsContact(true);
       setContactMessage("");
       dispatch(closeContactDialog());
       dispatch(openSuccessDialog());
@@ -294,116 +287,135 @@ export default function AlertDialogSlide({ content, selectedRows }) {
                 }}
                 onClick={handleApproval}
               >
-                Approve and Send Email
+                Approve
               </Button>
             </DialogActions>
           </Dialog>
 
           <Dialog
-            open={successDialog && !cancelDialog && !contactDialog && !dialog}
+            open={successDialog}
             TransitionComponent={Transition}
             keepMounted
-            onClose={() => dispatch(closeSuccessDialog())}
+            onClose={handleSuccessDialogClose}
             aria-describedby="alert-dialog-slide-description"
             key={currentAppointment._id}
           >
-            <DialogTitle sx={{ padding: 0 }}>
-              <Alert
-                severity="success"
-                sx={{
-                  padding: "16px 24px",
-                  display: "flex",
-                  alignItems: "top",
-                }}
-              >
-                <DialogContentText
-                  sx={{
-                    fontSize: "1rem",
-                    fontWeight: "bold",
-                    textAlign: "center",
-                    marginBottom: "16px",
-                  }}
-                >
-                  {successMessage} <br></br>
-                  <Box
-                    component="span"
-                    sx={{ color: "#159eec", fontWeight: "bold" }}
-                  >
-                    {`${currentAppointment.firstName} ${currentAppointment.lastName}`}
-                  </Box>{" "}
-                  via Email{" "}
-                </DialogContentText>
-                <DialogActions sx={{ padding: 0 }}>
-                  <Button
-                    onClick={handleSuccessDialogClose}
-                    sx={{
-                      padding: "8px 16px",
-                      backgroundColor: "#159eec",
-                      color: "#fff",
-                      "&:hover": { backgroundColor: "#127abb" },
-                    }}
-                  >
-                    Ok
-                  </Button>
-                </DialogActions>
+            <DialogTitle>
+              <Alert severity="success" sx={{ marginBottom: 2 }}>
+                {isContact ? (
+                  <>
+                    Your message is sent Successfully to{" "}
+                    {`${currentAppointment.firstName} ${currentAppointment.lastName}`}{" "}
+                    via Email
+                  </>
+                ) : (
+                  <>
+                    Appointment with{" "}
+                    {`${currentAppointment.firstName} ${currentAppointment.lastName}`}{" "}
+                    on{" "}
+                    {dayjs(currentAppointment.selectedDate).format(
+                      "dddd, MMMM D, YYYY"
+                    )}{" "}
+                    is approved
+                  </>
+                )}
               </Alert>
             </DialogTitle>
+            <DialogContent sx={{ margin: 0, padding: 0, textAlign: "center" }}>
+              <DialogContentText
+                id="alert-dialog-slide-description"
+                sx={{ marginTop: 1 }}
+              >
+                The details are sent to {`${currentAppointment.email}`}
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button
+                sx={{
+                  padding: "8px 16px",
+                  backgroundColor: "#159eec",
+                  color: "#fff",
+                  "&:hover": { backgroundColor: "#127abb" },
+                }}
+                onClick={handleSuccessDialogClose}
+              >
+                Close
+              </Button>
+            </DialogActions>
           </Dialog>
+
           <Dialog
-            open={cancelDialog && !contactDialog}
+            open={cancelDialog}
             TransitionComponent={Transition}
             keepMounted
             onClose={() => dispatch(closeCancelDialog())}
             aria-describedby="alert-dialog-slide-description"
             key={currentAppointment._id}
           >
-            <DialogTitle sx={{ padding: 0 }}>
-              <Alert
-                severity="error"
-                sx={{
-                  padding: "16px 24px",
-                  display: "flex",
-                  alignItems: "top",
-                }}
-              >
-                <DialogContentText
-                  sx={{
-                    fontSize: "1rem",
-                    fontWeight: "bold",
-                    textAlign: "center",
-                    marginBottom: "16px",
-                  }}
-                >
-                  {selectedRows.length === 1 ? (
-                    <span>
-                      <Box
-                        component="span"
-                        sx={{ color: "#159eec", fontWeight: "bold" }}
-                      >
-                        {`${currentAppointment.firstName} ${currentAppointment.lastName}`}
-                      </Box>
-                      's Appointment is successfully suspended and email sent.
-                    </span>
-                  ) : (
-                    "All selected Appointments successfully suspended and email sent to the client"
-                  )}
-                </DialogContentText>
-
-                <DialogActions sx={{ padding: 0 }}>
-                  <Button
-                    onClick={() => dispatch(closeCancelDialog())}
-                    sx={{
-                      padding: "8px 16px",
-                      backgroundColor: "#159eec",
-                      color: "#fff",
-                      "&:hover": { backgroundColor: "#127abb" },
-                    }}
-                  >
-                    Ok
-                  </Button>
-                </DialogActions>
+            <DialogTitle>
+              <Alert severity="warning" sx={{ marginBottom: 2 }}>
+                Suspend Appointment
               </Alert>
             </DialogTitle>
+            <DialogContent>
+              <DialogContentText
+                id="alert-dialog-slide-description"
+                sx={{ marginTop: 1 }}
+              >
+                Are you sure you want to suspend the appointment with{" "}
+                <Box
+                  component="span"
+                  sx={{ color: "#159eec", fontWeight: "bold" }}
+                >
+                  {`${currentAppointment.firstName} ${currentAppointment.lastName}`}
+                </Box>{" "}
+                on{" "}
+                <Box
+                  component="span"
+                  sx={{ color: "#159eec", fontWeight: "bold" }}
+                >
+                  {dayjs(currentAppointment.selectedDate).format(
+                    "dddd, MMMM D, YYYY"
+                  )}
+                </Box>
+                ?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button
+                sx={{
+                  padding: "8px 16px",
+                  backgroundColor: "#FF0000",
+                  color: "#fff",
+                  "&:hover": { backgroundColor: "#CC0000" },
+                }}
+                onClick={() => dispatch(closeCancelDialog())}
+              >
+                No
+              </Button>
+              <Button
+                sx={{
+                  padding: "8px 16px",
+                  backgroundColor: "#159eec",
+                  color: "#fff",
+                  "&:hover": { backgroundColor: "#127abb" },
+                }}
+                onClick={async () => {
+                  try {
+                    await axios.post(
+                      `${process.env.REACT_APP_DOCSTREAM_API_URL}/appointment/suspend`,
+                      currentAppointment
+                    );
+                    dispatch(getAllAppointments());
+                    dispatch(closeCancelDialog());
+                  } catch (error) {
+                    console.error("Error while canceling appointment:", error);
+                  }
+                }}
+              >
+                Yes
+              </Button>
+            </DialogActions>
           </Dialog>
 
           <Dialog
@@ -415,14 +427,8 @@ export default function AlertDialogSlide({ content, selectedRows }) {
             key={currentAppointment._id}
           >
             <DialogTitle>
-              <Alert severity="info" sx={{ marginBottom: 4 }}>
-                {content}{" "}
-                <Box
-                  component="span"
-                  sx={{ color: "#159eec", fontWeight: "bold" }}
-                >
-                  {`${currentAppointment.firstName} ${currentAppointment.lastName}`}
-                </Box>{" "}
+              <Alert severity="info" sx={{ marginBottom: 2 }}>
+                Contact Client
               </Alert>
             </DialogTitle>
             <DialogContent>
@@ -430,22 +436,28 @@ export default function AlertDialogSlide({ content, selectedRows }) {
                 id="alert-dialog-slide-description"
                 sx={{ marginTop: 1 }}
               >
-                <Stack spacing={2} direction="row" sx={{ marginBottom: 4 }}>
-                  <TextField
-                    type="text"
-                    variant="outlined"
-                    label="Message"
-                    onChange={(e) => setContactMessage(e.target.value)}
-                    value={contactMessage}
-                    fullWidth
-                    error={Boolean(errors.contactMessage)}
-                    helperText={errors.contactMessage}
-                    multiline
-                    rows={4} // Sets the minimum number of rows
-                    inputProps={{ minLength: 20 }} // Sets the minimum number of characters (columns)
-                  />
-                </Stack>
+                Drop a message for{" "}
+                <Box
+                  component="span"
+                  sx={{ color: "#159eec", fontWeight: "bold" }}
+                >
+                  {`${currentAppointment.firstName} ${currentAppointment.lastName}`}
+                </Box>{" "}
+                to update on the appointment.
               </DialogContentText>
+              <TextField
+                type="text"
+                variant="outlined"
+                label="Message"
+                onChange={(e) => setContactMessage(e.target.value)}
+                value={contactMessage}
+                fullWidth
+                error={Boolean(errors.contactMessage)}
+                helperText={errors.contactMessage}
+                multiline
+                rows={4}
+                sx={{ marginTop: 2 }}
+              />
             </DialogContent>
             <DialogActions>
               <Button

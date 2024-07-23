@@ -1,6 +1,5 @@
-const Transaction = require("../models/Transaction"); // Import TicketTransaction model
-const Appointment = require("../models/Appointment"); // Import TicketTransaction model
-// const { SendEmail } = require("../services/sendEmail");
+const Transaction = require("../models/Transaction"); // Import Transaction model
+const Appointment = require("../models/Appointment"); // Import Appointment model
 const axios = require("axios");
 const Chapa = require("chapa-nodejs").Chapa;
 require("dotenv").config();
@@ -21,12 +20,10 @@ const createPayment = async (req, res) => {
   // a unique reference given to every transaction
   const TEXT_REF = await chapa.generateTransactionReference();
 
-  const publicUrl = process.env.BACKEND_URL; // Replace with your actual Localtunnel URL
+  const backEndUrl = process.env.BACKEND_URL;
   const frontEndUrl = process.env.FRONTEND_URL;
-  // const CALLBACK_URL = "http://localhost:4000/payment/verifypayment";
-  // const return_url = `http://localhost:3000/payment/success?tx_ref=${TEXT_REF}`;
 
-  const CALLBACK_URL = `${publicUrl}/payment/verifypayment/`;
+  const CALLBACK_URL = `${backEndUrl}/payment/verifypayment/`;
   const return_url = `${frontEndUrl}/success?tx_ref=${TEXT_REF}`;
 
   const { firstName, lastName, email, phone, _id: appointmentId } = req.body;
@@ -44,7 +41,6 @@ const createPayment = async (req, res) => {
   try {
     const result = await axios.post(CHAPA_URL, data, config);
     const paymentData = JSON.parse(result.config.data);
-    // console.log(paymentData);
     const appointmentTransaction = new Transaction({
       appointmentId: appointmentId,
       email: email,
@@ -58,55 +54,37 @@ const createPayment = async (req, res) => {
     });
     await appointmentTransaction.save();
 
-    // res.status(200).json({ result, TEXT_REF });
-
     res.json({
       paymentData: paymentData,
       status: result.data.status,
       appointmentId: appointmentId,
       checkout_url: result.data.data.checkout_url,
     });
-    // res.json(paymentData);
   } catch (error) {
     console.log(error);
     res.json(error);
   }
-
-  // res.json({
-  //   paymentData: paymentData,
-  //   status: result.data.status,
-  //   appointmentId: appointmentId,
-  //   checkout_url: result.data.data.checkout_url,
-  // });
-  // })
-  // .catch((err) => console.log(err));
 };
 
 const verifyPayment = async (req, res) => {
-  //   const { appointmentId, status } = req.body;
   const id = req.params.id;
   const parts = id.split("-");
   const tx_ref = parts.slice(0, 2).join("-");
   const appointmentId = parts[2];
-  console.log("payment verifying...");
-  console.log("from payment verify: "+tx_ref);
   //verify the transaction
   try {
     const response = await axios.get(
       "https://api.chapa.co/v1/transaction/verify/" + tx_ref,
       config
     );
-    console.log("verify response status: " + response.status);
     if (response.status === 200) {
       const appointment = await Appointment.findOne({ _id: appointmentId });
       if (appointment) {
         appointment.status = "paid";
         appointment.tx_ref = tx_ref;
         await appointment.save();
-        console.log("Payment successfully verified and appointment updated");
       } else {
-        console.log("Appointment not found");
-        // res.status(404).send("Appointment not found");
+        return res.status(404).send("Appointment not found");
       }
       const transaction = await Transaction.findOne({
         appointmentId: appointmentId,
@@ -114,21 +92,17 @@ const verifyPayment = async (req, res) => {
       if (transaction) {
         transaction.status = "paid";
         await transaction.save();
-        console.log(" Transaction updated to paid");
       } else {
-        console.log("Transaction not found");
-        // res.status(404).send("Transaction not found");
+        return res.status(404).send("Transaction not found");
       }
-      res.status(200).send("Payment successfully verified and upto-dated");
+      res.status(200).send("Payment successfully verified and Appointment upto-dated");
     }
   } catch (error) {
-    console.log("Payment can't be verfied", error);
     return res.status(404).json({ message: "Payment can't be verfied" });
   }
 };
 
 const paymentSuccess = async (req, res) => {
-  console.log("verify success");
   return res.status(200).json({ message: "Payment verified successfully" });
 };
 

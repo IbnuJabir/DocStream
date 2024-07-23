@@ -5,7 +5,6 @@ const getAllUnAvailableDates = async (req, res) => {
     const days = await UnavailableDay.find().sort({ createdAt: -1 });
 
     if (!days || days.length === 0) {
-      console.log("unavailable date not found")
       return res.status(404).send("No Un-Available dates found");
     }
 
@@ -56,7 +55,6 @@ const updateUnAvailableDate = async (req, res) => {
 
     res.status(200).json(updatedUnavailableDay);
   } catch (error) {
-    console.error("Error updating unavailable date:", error);
     res.status(500).json({ error: "Failed to update unavailable date" });
   }
 };

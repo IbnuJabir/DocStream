@@ -6,15 +6,13 @@ const authMiddleWare = (req, res, next) => {
   if (token) {
     jwt.verify(token, process.env.ADMIN_TOKEN_SECRET, (error, decodedToken) => {
       if (error) {
-        console.log(error.message);
         res.status(401).json({ error: "No authorithy for this access" });
       } else {
         next();
       }
     });
   } else {
-    // console.log("token not found")
-    res.status(401).json({ error: "No authorithy for this access" });
+    res.status(401).json({ error: "No authorized token found" });
   }
 };
 

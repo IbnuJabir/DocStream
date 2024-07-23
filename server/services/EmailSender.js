@@ -401,7 +401,7 @@ const SuspendedEmail = ({ updatedAppointment }) => {
                 } </p>
             </div>
             <p>You can reschedule your appointment by using your transaction reference on the DocStream website in the suspended appointments page. Alternatively, you can also use the following link:</p>
-            <a href="web_link_here" class="button">Reschedule Appointment</a>
+            <a href="https://docstream-frontend.onrender.com/my-appointments" class="button">Reschedule Appointment</a>
             <p>If you have any questions or need assistance, please contact us at info@docstream.gmail.com.</p>
             <p>Thank you,<br />DocStream Team</p>
         </section>
@@ -419,7 +419,7 @@ const SuspendedEmail = ({ updatedAppointment }) => {
     if (error) {
       console.log(error);
     } else {
-      console.log("Email sent to client");
+      console.log("Suspended Email sent to client");
     }
   });
 };

@@ -29,7 +29,6 @@ app.use(
   cors({
     origin: [
       process.env.FRONTEND_URL || "https://docstream-frontend.onrender.com",
-      "https://docstream-client.onrender.com",
       "http://localhost:3000",
       "http://localhost:3001",
       "https://docstreamfront.netlify.app"
@@ -40,23 +39,9 @@ app.use(
   })
 );
 app.use(cookieParser());
-// app.use(express.static(path.join(__dirname, "public")));
-
-// app.use(cors());
-// app.use(express.urlencoded({extended:false}))
-// app.use(express.json())
-// app.use(bodyParser.json());
-// app.use(cookieParser())
-// app.use(express.static('Images'))
-// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
 app.use(express.static(path.join(__dirname, "build")));
 
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "build", "index.html"));
-// });
 
-// app.use("/auth", authRoute);
 app.use("/user", userRoute);
 app.use("/appointment", appoinmentRoute);
 app.use("/payment", paymentRoute);

@@ -36,7 +36,6 @@ const userLogIn = async (req, res) => {
       return res.status(400).json({ message: "Email doesn't exist" });
     }
   } catch (error) {
-    console.error("Error during login:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -73,8 +72,6 @@ const userSignUp = async (req, res) => {
     // Create a new user if no user with the given email or username exists
     const newUser = await ClientModel.create(req.body);
     const token = createToken(newUser._id, newUser.email);
-    // res.cookie("token", token, { httpOnly: true, maxAge: maxAge * 1000 });
-    // console.log(newUser);
     res.status(201).json({ newUser });
   } catch (error) {
     if (error.code === 11000) {
@@ -93,9 +90,7 @@ const userSignUp = async (req, res) => {
 
 const checkAuth = async (req, res) => {
   const { email } = req.user;
-  // console.log("req.user", req.user);
   res.status(200).json({ userEmail: email, message: "Authentic user" }); // Send user data as response
-  // console.log("Authentic");
 };
 
 const userLogOut = async (req, res) => {

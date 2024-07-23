@@ -12,7 +12,7 @@ import { IoIosWoman } from "react-icons/io";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { MuiTelInput } from "mui-tel-input";
-import { makeStyles, ThemeProvider } from "@mui/material/styles";
+import { makeStyles, ThemeProvider } from "@mui/styles";
 import {
   TextField,
   Button,

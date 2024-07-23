@@ -4,6 +4,8 @@ import Title from "./Title";
 import axios from "axios";
 import { Alert } from "@mui/material";
 import { Fragment, useEffect, useState } from "react";
+import { getAllAppointmentsWithInterval } from "../../state/appointmentSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 // Generate Sales Data
 function createData(time, amount) {
@@ -11,42 +13,27 @@ function createData(time, amount) {
 }
 
 export default function Chart() {
-  const [appointmentData, setAppointmentData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const theme = useTheme();
 
+  const dispatch = useDispatch();
+  const { isLoading, appointmentWithInterval, error } = useSelector((store) => store.appointment);
+
   useEffect(() => {
-    const fetchAppointmentData = async () => {
-      try {
-        const response = await axios.get(
-          "/appointment/getAllAppointmentsWithInterval" // Adjust the URL to your actual endpoint
-        );
-        const fetchedData = response.data;
-
-        // Transform the fetched data into the required format
-        const transformedData = Object.entries(fetchedData).map(
-          ([time, amount]) => createData(time, amount)
-        );
-
-        setAppointmentData(transformedData);
-      } catch (error) {
-        console.log(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchAppointmentData();
+    dispatch(getAllAppointmentsWithInterval());
   }, []);
 
-  if (loading) {
+   // Transform the fetched data into the required format
+   const transformedData = Object.entries(appointmentWithInterval).map(
+    ([time, amount]) => createData(time, amount)
+  );
+
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 
   if (error) {
     return (
-      <div style={{ width: "100%", padding: 20}}>
+      <div style={{ width: "100%", padding: 20 }}>
         <Alert severity="error">{error}</Alert>
       </div>
     );
@@ -57,7 +44,7 @@ export default function Chart() {
       <Title>Today</Title>
       <div style={{ width: "100%", flexGrow: 1, overflow: "hidden" }}>
         <LineChart
-          dataset={appointmentData}
+          dataset={transformedData}
           margin={{
             top: 16,
             right: 20,
@@ -80,7 +67,7 @@ export default function Chart() {
                 fill: theme.palette.text.primary,
               },
               tickLabelStyle: theme.typography.body2,
-              max: Math.max(...appointmentData.map((data) => data.amount)) + 5,
+              max: Math.max(...transformedData.map((data) => data.amount)) + 5,
               tickNumber: 6,
             },
           ]}

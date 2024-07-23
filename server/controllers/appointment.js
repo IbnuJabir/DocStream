@@ -13,13 +13,11 @@ const getAllAppointments = async (req, res) => {
     });
 
     if (!appointments || appointments.length === 0) {
-      console.log("No Appointments");
       return res.status(404).send("Appointment not found");
     }
 
     return res.status(200).json(appointments);
   } catch (error) {
-    console.error("Error fetching appointments:", error);
     return res.status(500).send("Server error");
   }
 };
@@ -29,7 +27,6 @@ const getAllAppointmentsWithInterval = async (req, res) => {
     const appointments = await Appointment.find().sort({ createdAt: -1 });
 
     if (!appointments || appointments.length === 0) {
-      console.log("No Appointments");
       return res.status(404).send("Appointments not found");
     }
 
@@ -66,35 +63,28 @@ const getAllAppointmentsWithInterval = async (req, res) => {
 
     return res.status(200).json(result);
   } catch (error) {
-    console.error("Error fetching appointments:", error);
     return res.status(500).send("Server error");
   }
 };
 
 const getUsersAppointments = async (req, res) => {
   const { userEmail } = req.body;
-  console.log("userEmail:", userEmail);
-  
+
   try {
-    const userAppointments = await Appointment.find({ email: userEmail })
-      .sort({ createdAt: -1 });
-    
-    // console.log("Fetched Appointments:", userAppointments);
-    
+    const userAppointments = await Appointment.find({ email: userEmail }).sort({
+      createdAt: -1,
+    });
+
     if (!userAppointments || userAppointments.length === 0) {
-      console.log("No user Appointments found");
       return res.status(404).send("You have No Appointments!");
     }
-    
+
     return res.status(200).json(userAppointments);
   } catch (error) {
-    console.error("Error fetching appointments:", error);
     return res.status(500).send("Server error");
   }
 };
 const getSingleAppointment = async (req, res) => {
-  console.log("from getSingleAppointment");
-  // console.log(req.params);
   // const appointments = await Appointment.findOne({ _id: appointmentId });
 };
 
@@ -111,12 +101,10 @@ const getBookedAppointments = async (req, res) => {
       })
       .limit(5);
     if (!bookedAppointments || bookedAppointments.length === 0) {
-      console.log("No Booked Appointments");
       return res.status(404).send("No Booked Appointments found");
     }
     return res.status(200).json(bookedAppointments);
   } catch (error) {
-    console.error("Error fetching appointments:", error);
     return res.status(500).send("Server error");
   }
 };
@@ -160,33 +148,25 @@ const approve = async (req, res) => {
 
     res.json(updatedAppointment);
   } catch (error) {
-    console.error("Error while updating appointments:", error);
     res.status(500).json({ error: "Failed to update appointments" });
   }
 };
 
 const suspend = async (req, res) => {
-  const selectedRows = req.body;
+  const appointment = req.body;
+  console.log("appointment", appointment);
   try {
-    // Use Promise.all() to wait for all updates to complete
-    const updatedAppointments = await Promise.all(
-      selectedRows.map(async (id) => {
-        const updatedAppointment = await Appointment.findOneAndUpdate(
-          { _id: id },
-          { $set: { status: "suspended" } },
-          { new: true } // Ensure we get the updated document
-        );
-        await SuspendedEmail({
-          updatedAppointment,
-        });
-        console.log("updatedAppointment", updatedAppointment);
-        return updatedAppointment;
-      })
+    const updatedAppointment = await Appointment.findOneAndUpdate(
+      { _id: appointment._id },
+      { $set: { status: "suspended" } },
+      { new: true } // Ensure we get the updated document
     );
-    res.json(updatedAppointments);
+    await SuspendedEmail({
+      updatedAppointment,
+    });
+    res.json(updatedAppointment);
   } catch (error) {
-    console.error("Error while updating appointments:", error);
-    res.status(500).json({ error: "Failed to update appointments" });
+    res.status(500).json({ error: "Failed to suspend the appointment" });
   }
 };
 
@@ -199,7 +179,6 @@ const contact = async (req, res) => {
     });
     res.json({ message: contactMessage });
   } catch (error) {
-    console.error("Error while updating appointments:", error);
     res.status(500).json({ error: "Failed to update appointments" });
   }
 };

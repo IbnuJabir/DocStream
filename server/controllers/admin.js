@@ -13,13 +13,11 @@ const getAllAdmins = async (req, res) => {
     });
 
     if (!admins || admins.length === 0) {
-      console.log("No Admin Found");
       return res.status(404).send("No Admin Found");
     }
 
     return res.status(200).json(admins);
   } catch (error) {
-    console.error("Error fetching admins:", error);
     return res.status(500).send("Server error");
   }
 };
@@ -33,7 +31,6 @@ const addAdmin = async (req, res) => {
         data: fs.readFileSync(filePath),
         contentType: req.file.mimetype,
       };
-      console.log("image found");
     } else {
       console.log("image file not found");
       return false;
@@ -47,12 +44,13 @@ const addAdmin = async (req, res) => {
     await newAdmin.save();
     return res.status(200).json(newAdmin);
   } catch (error) {
-    console.error("Error while adding admin:", error);
     res.status(500).json({ error: "Failed to add the admin" });
   }
 };
 
 const deleteAdmin = async (req, res) => {
+  // logic to delette an admin - in the future
+  
   console.log("admin deleted");
 };
 
@@ -76,6 +74,8 @@ const adminLogIn = async (req, res) => {
         res.cookie("adt", token, {
           httpOnly: true,
           maxAge: maxAge * 1000,
+          sameSite: 'None',
+          secure: true, // Ensure the cookie is only sent over HTTPS
         });
         return res.status(200).json({ ...user.toObject(), isLogin: true });
       } else {
@@ -85,7 +85,6 @@ const adminLogIn = async (req, res) => {
       return res.status(400).json({ message: "Email doesn't exist" });
     }
   } catch (error) {
-    // console.error("Error during login:", error);
     res
       .status(500)
       .json({ message: "Internal server error", error: error.message });
@@ -123,8 +122,6 @@ const adminSignUp = async (req, res) => {
     // Create a new user if no user with the given email or username exists
     const newUser = await Admin.create(req.body);
     const token = createToken(newUser._id);
-    // res.cookie("adt", token, { httpOnly: true, maxAge: maxAge * 1000 });
-    // console.log(newUser);
     res.status(201).json({ newUser });
   } catch (error) {
     if (error.code === 11000) {
@@ -143,11 +140,9 @@ const adminSignUp = async (req, res) => {
 
 const checkAuth = async (req, res) => {
   res.status(200).json({ message: "Authentic Admin" }); // Send user data as response
-  // console.log("Authentic");
 };
 
 const adminLogOut = async (req, res) => {
-  console.log("user logged out");
   res.cookie("adt", "", { maxAge: 1 });
   return res.status(200).json({ message: "user logged out" });
 };

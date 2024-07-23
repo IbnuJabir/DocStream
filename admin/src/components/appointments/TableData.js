@@ -9,14 +9,7 @@ import {
 } from "material-react-table";
 
 //Material UI Imports
-import {
-  Box,
-  Button,
-  ListItemIcon,
-  MenuItem,
-  Typography,
-  lighten,
-} from "@mui/material";
+import { Box, Button, lighten } from "@mui/material";
 
 //Date Picker Imports - these should just be in your Context Provider
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -189,23 +182,15 @@ const AppointmentDataTable = () => {
     },
     renderDetailPanel: ({ row }) => <AppointmentDetails row={row} />,
     renderTopToolbar: ({ table }) => {
-      const handleDeactivate = async () => {
-        table.getSelectedRowModel().flatRows.forEach((row) => {
-          selectedRows.push(row.original._id);
-        });
-        try {
-          const response = await axios.post(
-            `${process.env.REACT_APP_DOCSTREAM_API_URL}/appointment/suspend`,
-            selectedRows
-          );
-          dispatch(openCancelDialog());
-          // dispatch(openDialog());
-        } catch (error) {
-          console.error("Error while posting data:", error);
-        }
+      const handleDeactivate = () => {
+        const selectedIds = table
+          .getSelectedRowModel()
+          .flatRows.map((row) => row.original._id);
+        setSelectedRows(selectedIds);
+        dispatch(openCancelDialog());
       };
 
-      const handleActivate = async () => {
+      const handleActivate = () => {
         const selectedIds = table
           .getSelectedRowModel()
           .flatRows.map((row) => row.original._id);
@@ -213,6 +198,7 @@ const AppointmentDataTable = () => {
         setDialogContent("Setup Appointment detail for");
         dispatch(openDialog());
       };
+
       const handleContact = () => {
         const selectedIds = table
           .getSelectedRowModel()
@@ -233,7 +219,6 @@ const AppointmentDataTable = () => {
           })}
         >
           <Box sx={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-            {/* import MRT sub-components */}
             <MRT_GlobalFilterTextField table={table} />
             <MRT_ToggleFiltersButton table={table} />
           </Box>
@@ -277,12 +262,12 @@ const AppointmentDataTable = () => {
               </Button>
             </Box>
           </Box>
-          {dialog || successDialog || cancelDialog || contactDialog ? (
+          {(dialog || successDialog || cancelDialog || contactDialog) && (
             <AlertDialogSlide
               content={dialogContent}
               selectedRows={selectedRows}
             />
-          ) : null}
+          )}
         </Box>
       );
     },

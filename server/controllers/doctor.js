@@ -9,13 +9,11 @@ const getAllDoctors = async (req, res) => {
     });
 
     if (!doctors || doctors.length === 0) {
-      console.log("No Doctor Found");
       return res.status(404).send("No Doctor Found");
     }
 
     return res.status(200).json(doctors);
   } catch (error) {
-    console.error("Error fetching Doctors:", error);
     return res.status(500).send("Server error");
   }
 };
@@ -42,7 +40,6 @@ const addDoctor = async (req, res) => {
     await newDoctor.save();
     return res.status(200).json(newDoctor);
   } catch (error) {
-    console.error("Error while adding a doctor:", error);
     res.status(500).json({ error: "Failed to add a doctor" });
   }
 };

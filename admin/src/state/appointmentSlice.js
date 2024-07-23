@@ -3,6 +3,7 @@ import axios from "axios";
 
 const initialState = {
   appointments: [],
+  appointmentWithInterval: [],
   error: null,
   isLoading: false,
 };
@@ -13,6 +14,21 @@ export const getAllAppointments = createAsyncThunk(
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_DOCSTREAM_API_URL}/appointment/getAll`
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response ? error.response.data : "An error occurred"
+      );
+    }
+  }
+);
+export const getAllAppointmentsWithInterval = createAsyncThunk(
+  "appointment/getAllAppointmentsWithInterval",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_DOCSTREAM_API_URL}/appointment/getAllAppointmentsWithInterval`
       );
       return response.data;
     } catch (error) {
@@ -48,6 +64,18 @@ const appointmentSlice = createSlice({
         state.appointments = action.payload;
       })
       .addCase(getAllAppointments.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(getAllAppointmentsWithInterval.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(getAllAppointmentsWithInterval.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.appointmentWithInterval = action.payload;
+      })
+      .addCase(getAllAppointmentsWithInterval.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });

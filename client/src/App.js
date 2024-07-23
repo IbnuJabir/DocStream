@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   Navigate,
   Routes,
@@ -24,14 +24,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import MyAppointments from "./pages/appointment/MyAppointments";
 
 function App() {
-  // const [userEmail, setUserEmail] = useState("");
   const action = useNavigationType();
   const location = useLocation();
   const dispatch = useDispatch();
-  const { isLoading } = useSelector((state) => state.user);
   useEffect(() => {
     dispatch(checkUserStatus());
   }, []);
+
   useEffect(() => {
     if (action !== "POP") {
       window.scrollTo(0, 0);

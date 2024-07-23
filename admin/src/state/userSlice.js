@@ -12,12 +12,19 @@ export const checkUserStatus = createAsyncThunk(
   "admin/checkUserAuth",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get("/admin/checkUserAuth", {
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        `${process.env.REACT_APP_DOCSTREAM_API_URL}/admin/checkUserAuth`,
+        {
+          withCredentials: true,
+        }
+      );
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      if (error.response) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue({ message: error.message });
+      }
     }
   }
 );
@@ -27,12 +34,20 @@ export const login = createAsyncThunk(
   "admin/login",
   async (data, { rejectWithValue }) => {
     try {
-      const result = await axios.post("/admin/login", data, {
-        withCredentials: true,
-      });
+      const result = await axios.post(
+        `${process.env.REACT_APP_DOCSTREAM_API_URL}/admin/login`,
+        data,
+        {
+          withCredentials: true,
+        }
+      );
       return result.data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      if (error.response) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue({ message: error.message });
+      }
     }
   }
 );
@@ -42,12 +57,19 @@ export const logout = createAsyncThunk(
   "admin/logout",
   async (_, { rejectWithValue }) => {
     try {
-      const result = await axios.get("/admin/logout", {
-        withCredentials: true,
-      });
+      const result = await axios.get(
+        `${process.env.REACT_APP_DOCSTREAM_API_URL}/admin/logout`,
+        {
+          withCredentials: true,
+        }
+      );
       return result.data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      if (error.response) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue({ message: error.message });
+      }
     }
   }
 );

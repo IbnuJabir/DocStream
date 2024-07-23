@@ -12,33 +12,21 @@ import { IoIosWoman } from "react-icons/io";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { MuiTelInput } from "mui-tel-input";
-import { createTheme, makeStyles, ThemeProvider } from "@mui/material/styles";
+import { makeStyles } from "@mui/styles";
 import {
   TextField,
   Button,
-  Container,
   Stack,
-  Box,
-  Chip,
   CircularProgress,
   FormControl,
   FormControlLabel,
-  FormGroup,
   FormLabel,
-  InputLabel,
   Link,
-  MenuItem,
-  OutlinedInput,
   Radio,
   RadioGroup,
-  Select,
-  TextareaAutosize,
   FormHelperText,
 } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
-// import { makeStyles } from "@material-ui/core/styles";
 import { RxAvatar } from "react-icons/rx";
-
 import bkgImg from "../../assets/images/doc.png";
 
 const useStyles = makeStyles((theme) => ({
@@ -221,7 +209,13 @@ function AddAdmin({ open, handleClose }) {
         <form
           onSubmit={handleSubmit}
           action={<Link to="/login" />}
-          style={{margin: "0 auto",alignContent:"center", justifyContent: "center",backgroundColor: "#fff", padding: "0 2rem" }}
+          style={{
+            margin: "0 auto",
+            alignContent: "center",
+            justifyContent: "center",
+            backgroundColor: "#fff",
+            padding: "0 2rem",
+          }}
         >
           <center>
             <h2 style={{ color: "#159eec" }}>REGISTER ADMIN</h2>
@@ -413,7 +407,7 @@ function AddAdmin({ open, handleClose }) {
             ) : (
               <Button
                 sx={{
-                    width: "450px",
+                  width: "450px",
                   mb: 4,
                   backgroundColor: "#159eec",
                   color: "#fff",

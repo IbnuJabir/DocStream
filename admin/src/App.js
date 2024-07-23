@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { BrowserRouter, Link, Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Appointments from "./components/appointments/Appointments";
 import Doctors from "./components/doctors/Doctors";
@@ -24,8 +24,6 @@ import { useDispatch, useSelector } from "react-redux";
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const { isLoading } = useSelector((state) => state.user);
 
   const action = useNavigationType();
   const location = useLocation();
@@ -100,10 +98,6 @@ function App() {
       }
     }
   }, [pathname]);
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <div className="App">
       <Routes>
