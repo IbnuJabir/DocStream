@@ -16,7 +16,7 @@ function Offer() {
       </div>
       <div className="offer_card">
         <img src={consultation} alt="#" />
-        <p className="offer_title">Request a Consultation</p>
+        <p className="offer_title">Request Consultation</p>
         <p className="offer_desc">
           Registration for a cehck at the clinic needed for treatment
         </p>

@@ -27,7 +27,7 @@
     background-repeat: no-repeat;
     width: 50%;
     height: 100%;
-    border-radius: 3rem;
+    border-radius: 0 3rem 0 3rem;
 }
 
 .about_right {
@@ -37,4 +37,46 @@
     justify-content: start;
     flex-direction: column;
     text-align: justify;
+}
+
+@media (max-width: 950px) {
+    .about_left {
+        width: 40%;
+    }
+
+    .about_right {
+        height: min-content;
+    }
+
+    .about_right {
+        width: 50%;
+    }
+}
+
+@media (max-width: 900px) {
+    .about_left {
+        width: 30%;
+        height: 80%;
+        border-radius: 10px;
+        float: left;
+    }
+
+    .about_right {
+        width: 60%;
+    }
+}
+
+@media (max-width: 700px) {
+    .about_left {
+        display: none;
+    }
+
+    .about_right {
+        width: 90%;
+    }
+
+    .about {
+        margin-top: 1rem;
+        height: 100%;
+    }
 }

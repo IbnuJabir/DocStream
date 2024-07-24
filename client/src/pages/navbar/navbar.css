@@ -33,10 +33,11 @@
   align-items: center;
 }
 
-.navbar-links a{
+.navbar-links a {
   text-decoration: none;
   color: var(--main);
 }
+
 .navbar-link {
   color: #003639;
   /* Text color */
@@ -48,7 +49,7 @@
 .navbar-link:hover,
 .navbar-links a:hover,
 .navbar-link:active,
-.navbar-link.isActive ,
+.navbar-link.isActive,
 .navbar-links a.isActive {
   color: var(--sub);
 }
@@ -84,8 +85,23 @@
   align-items: center;
 }
 
+.menu-icon {
+  display: none;
+}
+
 /* Responsive styles */
-@media (max-width: 768px) {
+@media (max-width: 1020px) {
+  .logo img {
+    width: 200px;
+    height: 30px;
+  }
+
+  .navbar-links {
+    gap: 15px;
+  }
+}
+
+@media (max-width: 950px) {
 
   .navbar-links,
   .btn_container {
@@ -103,11 +119,7 @@
   }
 }
 
-@media (min-width: 769px) {
-  .menu-icon {
-    display: none;
-  }
-}
+@media (min-width: 769px) {}
 
 /* Mobile menu */
 .mobile-menu {
@@ -134,4 +146,10 @@
 .mobile-menu .navbar-link {
   padding: 15px;
   border-bottom: .1px solid gray;
+}
+
+@media (max-width: 450px) {
+  .navbar-appointment {
+    display: none;
+  }
 }
