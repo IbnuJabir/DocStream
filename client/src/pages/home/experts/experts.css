@@ -1,6 +1,7 @@
 .experts {
     width: 100%;
     color: var(--main);
+    margin-bottom: 2rem;
 }
 
 .experts h1 {
