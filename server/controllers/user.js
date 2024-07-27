@@ -100,7 +100,7 @@ const userLogOut = async (req, res) => {
                 maxAge: 1, // maxAge in milliseconds
                 sameSite: 'None',
                 secure: true, // Ensure the cookie is only sent over HTTPS);
-              }
+              })
   return res.status(200).json({ message: "user logged out" });
 };
 
