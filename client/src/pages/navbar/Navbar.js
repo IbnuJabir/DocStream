@@ -29,7 +29,6 @@ function Navbar() {
   const handleLogout = async () => {
     dispatch(logout());
     toast.success("Successfully LoggedOut!");
-    setMobileMenuOpen(!isMobileMenuOpen);
     navigate("/login");
   };
 
